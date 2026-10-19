@@ -331,7 +331,7 @@ ul, ol { padding: 0; list-style: none; }
 .p-lang .a-sidebyside { grid-template-columns: minmax(0, 1fr); }
 .a-sortable .order { white-space: nowrap; min-width: 2ch; }
 
-/* ---------- Autenticação com senha única (543234) ---------- */
+/* ---------- Autenticação com senha única (3131) ---------- */
 html.admin-locked .a-shell {
   display: none !important;
 }

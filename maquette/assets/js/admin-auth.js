@@ -1,6 +1,6 @@
 /* ============================================================
    Soft Communication · Autenticação do Painel (/admin)
-   Senha única de acesso: 543234
+   Senha única de acesso: 3131
    Valida contra a tabela public.admin_auth no Supabase PostgreSQL.
    ============================================================ */
 (function (w, d) {
@@ -9,7 +9,7 @@
   var SUPABASE_URL = 'https://xvabghgvrhpnyywpmodb.supabase.co';
   var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YWJnaGd2cmhwbnl5d3Btb2RiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3NTgwNTEsImV4cCI6MjEwNzMzNDA1MX0.d0CNiaTYEnpsCY4N9qS6HNIxa3u7DYtzAOErvZHzC0w';
   var AUTH_STORAGE_KEY = 'soft_admin_session_auth_v1';
-  var MASTER_PASS = '543234';
+  var MASTER_PASS = '3131';
 
   function isAuth() {
     try {

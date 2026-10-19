@@ -160,7 +160,7 @@
     function login(a, b) {
       var pass = (b !== undefined ? b : a);
       if (typeof pass === 'string') pass = pass.trim();
-      var MASTER_PASS = '543234';
+      var MASTER_PASS = '3131';
       if (!pass) return Promise.reject(new Error('Digite a senha de administrador.'));
 
       function grant(email) {
