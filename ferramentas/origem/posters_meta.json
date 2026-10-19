@@ -1,0 +1,369 @@
+{
+ "meta": {
+  "9fa65923708f383e16e3afbb718e4dcd-720w.webm": {
+   "vw": 736,
+   "vh": 414,
+   "duration": 67.04,
+   "t": 3,
+   "poster": "9fa65923708f383e16e3afbb718e4dcd-720w.jpg"
+  },
+  "a6bd1da8-b768-425e-beb6-821075efbc2e-6748bfc5a91.webm": {
+   "vw": 506,
+   "vh": 900,
+   "duration": 15.08,
+   "t": 3,
+   "poster": "a6bd1da8-b768-425e-beb6-821075efbc2e-6748bfc5a91.jpg"
+  },
+  "defender-dakar-introducing-the-d7x-r-rally-car-d.webm": {
+   "vw": 1920,
+   "vh": 960,
+   "duration": 67.52,
+   "t": 3,
+   "poster": "defender-dakar-introducing-the-d7x-r-rally-car-d.jpg"
+  },
+  "calebe-versao-final.webm": {
+   "vw": 1920,
+   "vh": 1080,
+   "duration": 48.99,
+   "t": 3,
+   "poster": "calebe-versao-final.jpg"
+  },
+  "downloaded-file-1.webm": {
+   "vw": 720,
+   "vh": 1278,
+   "duration": 9.43,
+   "t": 2.36,
+   "poster": "downloaded-file-1.jpg"
+  },
+  "downloaded-file.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 4.01,
+   "t": 1,
+   "poster": "downloaded-file.jpg"
+  },
+  "generation.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 9.72,
+   "t": 2.43,
+   "poster": "generation.jpg"
+  },
+  "generation-1.webm": {
+   "vw": 1080,
+   "vh": 1920,
+   "duration": 20.04,
+   "t": 3,
+   "poster": "generation-1.jpg"
+  },
+  "hf-20260823-153751-621e55a6-c7dd-43d0-b2fb-339e5.webm": {
+   "vw": 1920,
+   "vh": 1080,
+   "duration": 7.08,
+   "t": 1.77,
+   "poster": "hf-20260823-153751-621e55a6-c7dd-43d0-b2fb-339e5.jpg"
+  },
+  "hf-20260622-203946-f032365c-922c-40d5-b866-3aab1.webm": {
+   "vw": 3840,
+   "vh": 2160,
+   "duration": 6.05,
+   "t": 1.51,
+   "poster": "hf-20260622-203946-f032365c-922c-40d5-b866-3aab1.jpg"
+  },
+  "hf-20260814-024423-23e78b00-c455-420b-b72f-fc8e9.webm": {
+   "vw": 1920,
+   "vh": 1080,
+   "duration": 30.09,
+   "t": 3,
+   "poster": "hf-20260814-024423-23e78b00-c455-420b-b72f-fc8e9.jpg"
+  },
+  "hf-20260824-000231-2fe11333-8f72-49d5-811f-84a4d.webm": {
+   "vw": 1280,
+   "vh": 720,
+   "duration": 6.07,
+   "t": 1.52,
+   "poster": "hf-20260824-000231-2fe11333-8f72-49d5-811f-84a4d.jpg"
+  },
+  "hf-20260912-023042-6ecde9b3-903b-4a78-8a68-27fdf.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 12.05,
+   "t": 3,
+   "poster": "hf-20260912-023042-6ecde9b3-903b-4a78-8a68-27fdf.jpg"
+  },
+  "hf-20260916-115912-cd9efcc6-cf5b-43e1-9ddb-155cc.webm": {
+   "vw": 1920,
+   "vh": 1080,
+   "duration": 13.06,
+   "t": 3,
+   "poster": "hf-20260916-115912-cd9efcc6-cf5b-43e1-9ddb-155cc.jpg"
+  },
+  "hf-20260916-121927-1205b7db-e9d4-4899-9b7b-79a52.webm": {
+   "vw": 1440,
+   "vh": 2560,
+   "duration": 7.3,
+   "t": 1.83,
+   "poster": "hf-20260916-121927-1205b7db-e9d4-4899-9b7b-79a52.jpg"
+  },
+  "hf-20260915-233031-db9219cb-f246-4f96-beee-46cab.webm": {
+   "vw": 1080,
+   "vh": 1920,
+   "duration": 10.09,
+   "t": 2.52,
+   "poster": "hf-20260915-233031-db9219cb-f246-4f96-beee-46cab.jpg"
+  },
+  "hf-20260916-172714-1af6ca43-fdb5-4844-91c5-2e49e.webm": {
+   "vw": 1470,
+   "vh": 630,
+   "duration": 30.05,
+   "t": 3,
+   "poster": "hf-20260916-172714-1af6ca43-fdb5-4844-91c5-2e49e.jpg"
+  },
+  "hf-20260916-175331-858d1e7b-fe93-481c-b4ee-5e259.webm": {
+   "vw": 992,
+   "vh": 432,
+   "duration": 30.05,
+   "t": 3,
+   "poster": "hf-20260916-175331-858d1e7b-fe93-481c-b4ee-5e259.jpg"
+  },
+  "hf-20260916-202713-c1d6d6c3-5880-472e-8418-e38c1.webm": {
+   "vw": 1080,
+   "vh": 1920,
+   "duration": 6.09,
+   "t": 1.52,
+   "poster": "hf-20260916-202713-c1d6d6c3-5880-472e-8418-e38c1.jpg"
+  },
+  "hf-20260918-032056-188e0b0e-dcc5-45ea-9d7b-752d3.webm": {
+   "vw": 1920,
+   "vh": 1080,
+   "duration": 10.09,
+   "t": 2.52,
+   "poster": "hf-20260918-032056-188e0b0e-dcc5-45ea-9d7b-752d3.jpg"
+  },
+  "hf-20260916-205451-ffa9c935-4f6e-41eb-b441-f85c6.webm": {
+   "vw": 1620,
+   "vh": 2880,
+   "duration": 6.09,
+   "t": 1.52,
+   "poster": "hf-20260916-205451-ffa9c935-4f6e-41eb-b441-f85c6.jpg"
+  },
+  "hf-20260919-011209-f8f32146-09b2-420f-bc1d-19a30.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 12.07,
+   "t": 3,
+   "poster": "hf-20260919-011209-f8f32146-09b2-420f-bc1d-19a30.jpg"
+  },
+  "hf-20260921-194749-5e8280bb-9362-4fb0-952f-7445a.webm": {
+   "vw": 1080,
+   "vh": 1920,
+   "duration": 12.07,
+   "t": 3,
+   "poster": "hf-20260921-194749-5e8280bb-9362-4fb0-952f-7445a.jpg"
+  },
+  "hf-20261011-144855-f123ae85-d29b-4e90-9e21-1536a.webm": {
+   "vw": 1080,
+   "vh": 1920,
+   "duration": 6.73,
+   "t": 1.68,
+   "poster": "hf-20261011-144855-f123ae85-d29b-4e90-9e21-1536a.jpg"
+  },
+  "img-4465.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 15.08,
+   "t": 3,
+   "poster": "img-4465.jpg"
+  },
+  "hf-20261011-205447-8e5d6ddd-dc00-49ea-9c0f-811a8.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 12.07,
+   "t": 3,
+   "poster": "hf-20261011-205447-8e5d6ddd-dc00-49ea-9c0f-811a8.jpg"
+  },
+  "img-4473.webm": {
+   "vw": 1920,
+   "vh": 1080,
+   "duration": 4.09,
+   "t": 1.02,
+   "poster": "img-4473.jpg"
+  },
+  "img-4879.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 14.14,
+   "t": 3,
+   "poster": "img-4879.jpg"
+  },
+  "img-4501.webm": {
+   "vw": 1080,
+   "vh": 1920,
+   "duration": 6.09,
+   "t": 1.52,
+   "poster": "img-4501.jpg"
+  },
+  "img-4728.webm": {
+   "vw": 1920,
+   "vh": 1080,
+   "duration": 28.31,
+   "t": 3,
+   "poster": "img-4728.jpg"
+  },
+  "img-4983.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 25.13,
+   "t": 3,
+   "poster": "img-4983.jpg"
+  },
+  "img-4903.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 12.19,
+   "t": 3,
+   "poster": "img-4903.jpg"
+  },
+  "img-5168.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 27.75,
+   "t": 3,
+   "poster": "img-5168.jpg"
+  },
+  "img-5170.webm": {
+   "vw": 720,
+   "vh": 720,
+   "duration": 11.33,
+   "t": 2.83,
+   "poster": "img-5170.jpg"
+  },
+  "img-5169.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 14.65,
+   "t": 3,
+   "poster": "img-5169.jpg"
+  },
+  "img-5389.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 18.88,
+   "t": 3,
+   "poster": "img-5389.jpg"
+  },
+  "img-7032.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 28.01,
+   "t": 3,
+   "poster": "img-7032.jpg"
+  },
+  "miria-s-project-final-v01-1-2.webm": {
+   "vw": 1076,
+   "vh": 1928,
+   "duration": 49.32,
+   "t": 3,
+   "poster": "miria-s-project-final-v01-1-2.jpg"
+  },
+  "img-7197.webm": {
+   "vw": 1080,
+   "vh": 1920,
+   "duration": 9,
+   "t": 2.25,
+   "poster": "img-7197.jpg"
+  },
+  "mkt.webm": {
+   "vw": 600,
+   "vh": 1066,
+   "duration": 15.11,
+   "t": 3,
+   "poster": "mkt.jpg"
+  },
+  "mktt.webm": {
+   "vw": 600,
+   "vh": 1066,
+   "duration": 15.11,
+   "t": 3,
+   "poster": "mktt.jpg"
+  },
+  "preview-30fps-1.webm": {
+   "vw": 1080,
+   "vh": 1920,
+   "duration": 37.51,
+   "t": 3,
+   "poster": "preview-30fps-1-hero.jpg"
+  },
+  "saveclip-app-aqn7upaehwixmbz0b2hrpfoyzkuaatqhuec.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 22.43,
+   "t": 3,
+   "poster": "saveclip-app-aqn7upaehwixmbz0b2hrpfoyzkuaatqhuec.jpg"
+  },
+  "quem-e-soubarbarotti-stories-9x16-v2.webm": {
+   "vw": 1080,
+   "vh": 1920,
+   "duration": 35.21,
+   "t": 3,
+   "poster": "quem-e-soubarbarotti-stories-9x16-v2.jpg"
+  },
+  "saveclip-app-aqojydcalld4fboi8d3hibfg2q-wktxpfx-.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 13.86,
+   "t": 3,
+   "poster": "saveclip-app-aqojydcalld4fboi8d3hibfg2q-wktxpfx-.jpg"
+  },
+  "saveclip-app-aqpih5tj8rmpriemnuk97e2ojkug-9eipzs.webm": {
+   "vw": 1280,
+   "vh": 720,
+   "duration": 32.19,
+   "t": 3,
+   "poster": "saveclip-app-aqpih5tj8rmpriemnuk97e2ojkug-9eipzs.jpg"
+  },
+  "saveclip-app-aqpvjyamwmee4zspdgq34jxhumqlm4ohuvm.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 65.6,
+   "t": 3,
+   "poster": "saveclip-app-aqpvjyamwmee4zspdgq34jxhumqlm4ohuvm.jpg"
+  },
+  "saveclip-app-aqoznyxrj4saxc0fuim2izvfneajkziyfgs.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 10.01,
+   "t": 2.5,
+   "poster": "saveclip-app-aqoznyxrj4saxc0fuim2izvfneajkziyfgs.jpg"
+  },
+  "saveclip-app-aqpzp4elexuw9jzzw8pg-ntfpbyjn9nas56.webm": {
+   "vw": 720,
+   "vh": 1280,
+   "duration": 12.04,
+   "t": 3,
+   "poster": "saveclip-app-aqpzp4elexuw9jzzw8pg-ntfpbyjn9nas56.jpg"
+  },
+  "soubarbarotti-servicos-9x16.webm": {
+   "vw": 1080,
+   "vh": 1920,
+   "duration": 90.01,
+   "t": 3,
+   "poster": "soubarbarotti-servicos-9x16.jpg"
+  },
+  "soft-motion-fr-9x16-60fps-1.webm": {
+   "vw": 1080,
+   "vh": 1920,
+   "duration": 35.83,
+   "t": 3,
+   "poster": "soft-motion-fr-9x16-60fps-1.jpg"
+  },
+  "whatsapp-video-2026-09-19-at-23-46-34.webm": {
+   "vw": 1024,
+   "vh": 576,
+   "duration": 3.74,
+   "t": 0.94,
+   "poster": "whatsapp-video-2026-09-19-at-23-46-34.jpg"
+  }
+ },
+ "failed": []
+}

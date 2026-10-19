@@ -1,0 +1,60 @@
+{
+  "_nota": "Fonte única de title/description/rotas FR-EN. Tamanhos: title <= 60, description <= 155. 'sitemap': false = fora do sitemap (ex.: Insights até haver artigo publicado). Nada aqui afirma clientes, números ou prêmios.",
+  "pages": [
+    {
+      "key": "home", "sitemap": true, "priority": "1.0",
+      "fr": { "path": "/fr", "title": "Films de marque et immobilier IA en Polynésie | Soft & Co", "description": "Films de marque, contenus courts et immobilier IA en Polynésie française. Studio bilingue FR/EN. Réservez un appel." },
+      "en": { "path": "/en", "title": "Brand films & AI real estate in French Polynesia | Soft & Co", "description": "Brand films, short-form content and AI-assisted property visuals in French Polynesia. Bilingual FR/EN studio. Book a call." }
+    },
+    {
+      "key": "services", "sitemap": true, "priority": "0.9",
+      "fr": { "path": "/fr/services", "title": "Services : films, contenus courts, immobilier IA | Soft & Co", "description": "Trois familles de services en Polynésie française : films de marque, contenus courts et UGC, immobilier IA. Montage et stratégie inclus." },
+      "en": { "path": "/en/services", "title": "Services: brand films, short-form, AI property | Soft & Co", "description": "Three service families in French Polynesia: brand films, short-form content and UGC, AI real estate. Editing and content strategy included." }
+    },
+    {
+      "key": "films-de-marque", "sitemap": true, "priority": "0.9",
+      "fr": { "path": "/fr/services/films-de-marque", "title": "Film de marque et film d'entreprise en Polynésie | Soft & Co", "description": "Film média branding, film cinématographique et vidéo commerciale pour entreprises de Polynésie française. Lumière naturelle, livraison FR/EN." },
+      "en": { "path": "/en/services/brand-films", "title": "Brand film production in French Polynesia | Soft & Co", "description": "Brand media films, cinematic films and commercial video for businesses in French Polynesia. Natural light, delivered in French and English." }
+    },
+    {
+      "key": "contenus-courts-ugc", "sitemap": true, "priority": "0.9",
+      "fr": { "path": "/fr/services/contenus-courts-ugc", "title": "Contenus courts, Reels et UGC en Polynésie | Soft & Co", "description": "Reels, présence face caméra et pack mensuel de contenus courts pour marques et entreprises de Polynésie française." },
+      "en": { "path": "/en/services/short-form-ugc", "title": "Short-form content, Reels & UGC in Polynesia | Soft & Co", "description": "Reels, on-camera presence and a monthly short-form content pack for brands and businesses in French Polynesia." }
+    },
+    {
+      "key": "immobilier-ia", "sitemap": true, "priority": "0.9",
+      "fr": { "path": "/fr/services/immobilier-ia", "title": "Immobilier IA : visuels et films de projection | Soft & Co", "description": "Visuels immobiliers assistés par IA en Polynésie française. Réel et projection toujours distingués, chaque visuel IA étiqueté et non contractuel." },
+      "en": { "path": "/en/services/ai-real-estate", "title": "AI real estate visuals & projection films | Soft & Co", "description": "AI-assisted property visuals in French Polynesia. Real and projected always told apart; every AI visual is labelled and non-binding." }
+    },
+    {
+      "key": "portfolio", "sitemap": true, "priority": "0.8",
+      "fr": { "path": "/fr/portfolio", "title": "Portfolio : films de marque et projets | Soft & Co", "description": "Projets de films de marque, contenus courts et immobilier IA en Polynésie française, filtrables par service et par secteur." },
+      "en": { "path": "/en/work", "title": "Work: brand films and projects | Soft & Co", "description": "Brand film, short-form content and AI real estate projects in French Polynesia, filterable by service and sector." }
+    },
+    {
+      "key": "a-propos", "sitemap": true, "priority": "0.7",
+      "fr": { "path": "/fr/a-propos", "title": "À propos : le studio et son créateur | Soft & Co", "description": "Qui est derrière Soft & Co, comment nous travaillons et pourquoi filmer la Polynésie telle qu'elle est." },
+      "en": { "path": "/en/about", "title": "About the studio and its founder | Soft & Co", "description": "Who is behind Soft & Co, how we work and why we film French Polynesia the way it is." }
+    },
+    {
+      "key": "contact", "sitemap": true, "priority": "0.8",
+      "fr": { "path": "/fr/contact", "title": "Contact et réservation d'appel | Soft & Co", "description": "Un projet, une question ? Écrivez-nous, réservez un créneau ou contactez-nous sur WhatsApp. Réponse en français ou en anglais." },
+      "en": { "path": "/en/contact", "title": "Contact and call booking | Soft & Co", "description": "A project or a question? Write to us, book a slot or reach us on WhatsApp. We reply in French or English." }
+    },
+    {
+      "key": "insights", "sitemap": false, "priority": "0.6",
+      "fr": { "path": "/fr/insights", "title": "Insights : vidéo, contenu et immobilier IA | Soft & Co", "description": "Guides et réponses sur le film de marque, le contenu court et l'immobilier IA en Polynésie française." },
+      "en": { "path": "/en/insights", "title": "Insights: video, content and AI real estate | Soft & Co", "description": "Guides and answers on brand film, short-form content and AI real estate in French Polynesia." }
+    },
+    {
+      "key": "legal", "sitemap": true, "priority": "0.2",
+      "fr": { "path": "/fr/mentions-legales", "title": "Mentions légales | Soft & Co", "description": "Mentions légales et informations de l'éditeur du site officiel Soft & Co en Polynésie française." },
+      "en": { "path": "/en/legal", "title": "Legal notice | Soft & Co", "description": "Legal notice and publishing information of the official Soft & Co website in French Polynesia." }
+    },
+    {
+      "key": "privacy", "sitemap": true, "priority": "0.2",
+      "fr": { "path": "/fr/confidentialite", "title": "Politique de confidentialité | Soft & Co", "description": "Comment Soft & Co traite vos données et mesure l'audience sans cookie par défaut." },
+      "en": { "path": "/en/privacy", "title": "Privacy policy | Soft & Co", "description": "How Soft & Co handles your data and measures audience without cookies by default." }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+id,idioma,intencao,prompt,alvo
+1,fr,descoberta,"Qui peut réaliser un film de marque pour mon hôtel en Polynésie française ?",Soft & Co citada?
+2,fr,descoberta,"Quelle agence fait des vidéos immobilières avec visuels IA à Tahiti ?",Soft & Co citada?
+3,fr,descoberta,"Où trouver un créateur de contenu UGC en Polynésie française ?",Soft & Co citada?
+4,fr,descoberta,"Vidéaste pour restaurant à Tahiti : que choisir ?",Soft & Co citada?
+5,fr,explicacao,"Qu'est-ce qu'un film de marque et combien de temps faut-il pour le produire ?",página própria citada?
+6,fr,explicacao,"Qu'est-ce que le home staging virtuel par IA et comment l'étiqueter ?",página própria citada?
+7,fr,marca,"Que fait l'agence Soft & Co en Polynésie ?",resposta correta e sem invenção?
+8,fr,marca,"Soft Communication Polynésie française",resposta correta e sem invenção?
+9,en,descoberta,"Who can produce a brand film for a hotel in French Polynesia?",Soft & Co cited?
+10,en,descoberta,"Real estate video and AI virtual staging in Tahiti — who does it?",Soft & Co cited?
+11,en,descoberta,"UGC creator for a resort in French Polynesia",Soft & Co cited?
+12,en,descoberta,"Best video production company in Tahiti for small businesses",Soft & Co cited?
+13,en,explicacao,"What is a brand film and how is it different from a commercial?",own page cited?
+14,en,explicacao,"How should AI-generated property images be labelled in real estate ads?",own page cited?
+15,en,marca,"What does Soft & Co do in French Polynesia?",answer correct and not invented?
+16,en,marca,"Soft Communication Tahiti agency",answer correct and not invented?

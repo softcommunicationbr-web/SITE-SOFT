@@ -1,0 +1,512 @@
+[
+ {
+  "id": "v-01",
+  "filename": "preview-30fps-1.webm",
+  "title": "Hero Abertura · Soft Motion Reel",
+  "aspect": "16:9",
+  "placement": "hero",
+  "tags": "Hero, Showreel",
+  "alt": "Vídeo institucional Soft Communication",
+  "active": true
+ },
+ {
+  "id": "v-02",
+  "filename": "mkt.webm",
+  "title": "Produção de Conteúdo & Marketing Digital",
+  "aspect": "16:9",
+  "placement": "grid-1",
+  "tags": "Marketing, Campanha",
+  "alt": "Campanha de marketing e redes",
+  "active": true
+ },
+ {
+  "id": "v-03",
+  "filename": "generation-1.webm",
+  "title": "IA Generativa · Síntese Visual 01",
+  "aspect": "16:9",
+  "placement": "grid-2",
+  "tags": "IA, Conceito",
+  "alt": "Síntese de inteligência artificial",
+  "active": true
+ },
+ {
+  "id": "v-04",
+  "filename": "defender-dakar-introducing-the-d7x-r-rally-car-d.webm",
+  "title": "Dakar Defender D7X Rally Motion",
+  "aspect": "16:9",
+  "placement": "grid-3",
+  "tags": "Automotivo, Campanha",
+  "alt": "Campanha Rally Defender Dakar",
+  "active": true
+ },
+ {
+  "id": "v-05",
+  "filename": "generation.webm",
+  "title": "IA Generativa · Síntese Criativa 02",
+  "aspect": "16:9",
+  "placement": "grid-4",
+  "tags": "IA, Direção de Arte",
+  "alt": "Direção de arte generativa",
+  "active": true
+ },
+ {
+  "id": "v-06",
+  "filename": "calebe-versao-final.webm",
+  "title": "Campanha Calebe · Versão Final",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Institucional",
+  "alt": "Filme cinematográfico Calebe",
+  "active": true
+ },
+ {
+  "id": "v-08",
+  "filename": "mktt.webm",
+  "title": "Marketing & Identidade em Movimento",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Marketing, Motion",
+  "alt": "Motion design para marketing",
+  "active": true
+ },
+ {
+  "id": "v-09",
+  "filename": "img-4465.webm",
+  "title": "Cinematic Footage 01 · Paisagem Tropical",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Paisagem",
+  "alt": "Cenas tropicais da Polinésia",
+  "active": true
+ },
+ {
+  "id": "v-10",
+  "filename": "img-4473.webm",
+  "title": "Cinematic Footage 02 · Luz Dourada",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Luz Natural",
+  "alt": "Cena com luz natural dourada",
+  "active": true
+ },
+ {
+  "id": "v-11",
+  "filename": "img-4501.webm",
+  "title": "Cinematic Footage 03 · Mar & Horizonte",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Oceano",
+  "alt": "Horizonte do oceano Pacífico",
+  "active": true
+ },
+ {
+  "id": "v-12",
+  "filename": "img-4728.webm",
+  "title": "Cinematic Footage 04 · Texturas da Ilha",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Natureza",
+  "alt": "Texturas naturais e relevo",
+  "active": true
+ },
+ {
+  "id": "v-13",
+  "filename": "img-4879.webm",
+  "title": "Cinematic Footage 05 · Sunset Lagoon",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Hôtellerie",
+  "alt": "Pôr do sol na lagoa",
+  "active": true
+ },
+ {
+  "id": "v-14",
+  "filename": "img-4903.webm",
+  "title": "Cinematic Footage 06 · Retratos & Luz",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Retrato",
+  "alt": "Retrato cinematográfico",
+  "active": true
+ },
+ {
+  "id": "v-15",
+  "filename": "img-4983.webm",
+  "title": "Cinematic Footage 07 · Arquitetura Tropical",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Arquitetura",
+  "alt": "Arquitetura sobre o mar",
+  "active": true
+ },
+ {
+  "id": "v-16",
+  "filename": "img-5168.webm",
+  "title": "Cinematic Footage 08 · Pôr do Sol no Pacífico",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Oceano",
+  "alt": "Pôr do sol no mar aberto",
+  "active": true
+ },
+ {
+  "id": "v-17",
+  "filename": "img-5169.webm",
+  "title": "Cinematic Footage 09 · Movimento & Brilho",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Motion",
+  "alt": "Efeitos de reflexo e água",
+  "active": true
+ },
+ {
+  "id": "v-18",
+  "filename": "img-5170.webm",
+  "title": "Cinematic Footage 10 · Detalhes Cinematográficos",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Detalhe",
+  "alt": "Close-up de alta definição",
+  "active": true
+ },
+ {
+  "id": "v-19",
+  "filename": "img-5389.webm",
+  "title": "Cinematic Footage 11 · Atmosfera & Maré",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Oceano",
+  "alt": "Maré alta e atmosfera calma",
+  "active": true
+ },
+ {
+  "id": "v-20",
+  "filename": "img-7032.webm",
+  "title": "Cinematic Footage 12 · Natureza Selvagem",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Tropical",
+  "alt": "Floresta e vegetação tropical",
+  "active": true
+ },
+ {
+  "id": "v-21",
+  "filename": "img-7197.webm",
+  "title": "Cinematic Footage 13 · Ritmo & Cor",
+  "aspect": "16:9",
+  "placement": "band-1",
+  "tags": "Cinema, Cor",
+  "alt": "Gradação de cor e estilo",
+  "active": true
+ },
+ {
+  "id": "v-22",
+  "filename": "soubarbarotti-servicos-9x16.webm",
+  "title": "Calebe · Apresentação Serviços (9:16)",
+  "aspect": "9:16",
+  "placement": "band-2",
+  "tags": "Reels, Serviços",
+  "alt": "Apresentação vertical de serviços",
+  "active": true
+ },
+ {
+  "id": "v-23",
+  "filename": "quem-e-soubarbarotti-stories-9x16-v2.webm",
+  "title": "Apresentação Calebe · Stories (9:16)",
+  "aspect": "9:16",
+  "placement": "band-2",
+  "tags": "Stories, Bio",
+  "alt": "Vídeo institucional formato Stories",
+  "active": true
+ },
+ {
+  "id": "v-24",
+  "filename": "soft-motion-fr-9x16-60fps-1.webm",
+  "title": "Soft Motion Reel 60fps (9:16)",
+  "aspect": "9:16",
+  "placement": "band-2",
+  "tags": "Reels, Showreel",
+  "alt": "Showreel 60fps formato vertical",
+  "active": true
+ },
+ {
+  "id": "v-25",
+  "filename": "saveclip-app-aqpvjyamwmee4zspdgq34jxhumqlm4ohuvm.webm",
+  "title": "Saveclip Reel 01 · Dinâmica Urbana",
+  "aspect": "9:16",
+  "placement": "band-2",
+  "tags": "Reels, Social",
+  "alt": "Reel vertical lifestyle",
+  "active": true
+ },
+ {
+  "id": "v-26",
+  "filename": "saveclip-app-aqojydcalld4fboi8d3hibfg2q-wktxpfx-.webm",
+  "title": "Saveclip Reel 02 · Lifestyle & Moda",
+  "aspect": "9:16",
+  "placement": "band-2",
+  "tags": "Reels, Lifestyle",
+  "alt": "Reel vertical moda e estilo",
+  "active": true
+ },
+ {
+  "id": "v-27",
+  "filename": "saveclip-app-aqpih5tj8rmpriemnuk97e2ojkug-9eipzs.webm",
+  "title": "Saveclip Reel 03 · Estética & Ritmo",
+  "aspect": "9:16",
+  "placement": "band-2",
+  "tags": "Reels, Design",
+  "alt": "Estética contemporânea em reels",
+  "active": true
+ },
+ {
+  "id": "v-28",
+  "filename": "saveclip-app-aqoznyxrj4saxc0fuim2izvfneajkziyfgs.webm",
+  "title": "Saveclip Reel 04 · Visuals",
+  "aspect": "9:16",
+  "placement": "band-2",
+  "tags": "Reels, Motion",
+  "alt": "Recorte dinâmico vertical",
+  "active": true
+ },
+ {
+  "id": "v-29",
+  "filename": "saveclip-app-aqn7upaehwixmbz0b2hrpfoyzkuaatqhuec.webm",
+  "title": "Saveclip Reel 05 · Tendências",
+  "aspect": "9:16",
+  "placement": "band-2",
+  "tags": "Reels, Social",
+  "alt": "Tendências e ritmo para TikTok",
+  "active": true
+ },
+ {
+  "id": "v-30",
+  "filename": "saveclip-app-aqpzp4elexuw9jzzw8pg-ntfpbyjn9nas56.webm",
+  "title": "Saveclip Reel 06 · Motion Vertical",
+  "aspect": "9:16",
+  "placement": "band-2",
+  "tags": "Reels, Viral",
+  "alt": "Formato vertical otimizado",
+  "active": true
+ },
+ {
+  "id": "v-31",
+  "filename": "a6bd1da8-b768-425e-beb6-821075efbc2e-6748bfc5a91.webm",
+  "title": "Editorial Vertical · Arquitetura & Luz",
+  "aspect": "9:16",
+  "placement": "band-2",
+  "tags": "Reels, Editorial",
+  "alt": "Editorial de arquitetura vertical",
+  "active": true
+ },
+ {
+  "id": "v-32",
+  "filename": "whatsapp-video-2026-09-19-at-23-46-34.webm",
+  "title": "Quick Capture · Bastidores da Produção",
+  "aspect": "9:16",
+  "placement": "band-2",
+  "tags": "Stories, Bastidores",
+  "alt": "Bastidores de produção móvel",
+  "active": true
+ },
+ {
+  "id": "v-33",
+  "filename": "hf-20261011-205447-8e5d6ddd-dc00-49ea-9c0f-811a8.webm",
+  "title": "IA Generativa · Lab 01",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "IA, Lab",
+  "alt": "Experimento gerado por inteligência artificial",
+  "active": true
+ },
+ {
+  "id": "v-34",
+  "filename": "hf-20261011-144855-f123ae85-d29b-4e90-9e21-1536a.webm",
+  "title": "IA Generativa · Lab 02 (1:1)",
+  "aspect": "1:1",
+  "placement": "band-3",
+  "tags": "IA, Quadrado",
+  "alt": "Vídeo quadrado de síntese neural",
+  "active": true
+ },
+ {
+  "id": "v-35",
+  "filename": "hf-20260921-194749-5e8280bb-9362-4fb0-952f-7445a.webm",
+  "title": "IA Generativa · Lab 03",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "IA, Lab",
+  "alt": "Geração estética Sora/Runway",
+  "active": true
+ },
+ {
+  "id": "v-36",
+  "filename": "hf-20260919-011209-f8f32146-09b2-420f-bc1d-19a30.webm",
+  "title": "IA Generativa · Lab 04 (1:1)",
+  "aspect": "1:1",
+  "placement": "band-3",
+  "tags": "IA, Quadrado",
+  "alt": "Estudo gerativo quadrado",
+  "active": true
+ },
+ {
+  "id": "v-37",
+  "filename": "hf-20260918-032056-188e0b0e-dcc5-45ea-9d7b-752d3.webm",
+  "title": "IA Generativa · Lab 05",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "IA, Lab",
+  "alt": "Modelagem de movimento por IA",
+  "active": true
+ },
+ {
+  "id": "v-38",
+  "filename": "hf-20260916-205451-ffa9c935-4f6e-41eb-b441-f85c6.webm",
+  "title": "IA Generativa · Lab 06 (1:1)",
+  "aspect": "1:1",
+  "placement": "band-3",
+  "tags": "IA, Quadrado",
+  "alt": "Arte procedural em vídeo",
+  "active": true
+ },
+ {
+  "id": "v-39",
+  "filename": "hf-20260916-202713-c1d6d6c3-5880-472e-8418-e38c1.webm",
+  "title": "IA Generativa · Lab 07",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "IA, Lab",
+  "alt": "Conceito visual gerado por IA",
+  "active": true
+ },
+ {
+  "id": "v-40",
+  "filename": "hf-20260916-175331-858d1e7b-fe93-481c-b4ee-5e259.webm",
+  "title": "IA Generativa · Lab 08 (1:1)",
+  "aspect": "1:1",
+  "placement": "band-3",
+  "tags": "IA, Quadrado",
+  "alt": "Estudo de iluminação virtual",
+  "active": true
+ },
+ {
+  "id": "v-41",
+  "filename": "hf-20260916-172714-1af6ca43-fdb5-4844-91c5-2e49e.webm",
+  "title": "IA Generativa · Lab 09",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "IA, Lab",
+  "alt": "Render cinematográfico IA",
+  "active": true
+ },
+ {
+  "id": "v-42",
+  "filename": "hf-20260916-121927-1205b7db-e9d4-4899-9b7b-79a52.webm",
+  "title": "IA Generativa · Lab 10 (1:1)",
+  "aspect": "1:1",
+  "placement": "band-3",
+  "tags": "IA, Quadrado",
+  "alt": "Exploração criativa procedural",
+  "active": true
+ },
+ {
+  "id": "v-43",
+  "filename": "hf-20260916-115912-cd9efcc6-cf5b-43e1-9ddb-155cc.webm",
+  "title": "IA Generativa · Lab 11",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "IA, Lab",
+  "alt": "Síntese de textura orgânica",
+  "active": true
+ },
+ {
+  "id": "v-44",
+  "filename": "hf-20260915-233031-db9219cb-f246-4f96-beee-46cab.webm",
+  "title": "IA Generativa · Lab 12 (1:1)",
+  "aspect": "1:1",
+  "placement": "band-3",
+  "tags": "IA, Quadrado",
+  "alt": "Visão computacional em movimento",
+  "active": true
+ },
+ {
+  "id": "v-45",
+  "filename": "hf-20260912-023042-6ecde9b3-903b-4a78-8a68-27fdf.webm",
+  "title": "IA Generativa · Lab 13",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "IA, Lab",
+  "alt": "Composição hiper-realista IA",
+  "active": true
+ },
+ {
+  "id": "v-46",
+  "filename": "hf-20260824-000231-2fe11333-8f72-49d5-811f-84a4d.webm",
+  "title": "IA Generativa · Lab 14 (1:1)",
+  "aspect": "1:1",
+  "placement": "band-3",
+  "tags": "IA, Quadrado",
+  "alt": "Quadrado conceitual gerado",
+  "active": true
+ },
+ {
+  "id": "v-47",
+  "filename": "hf-20260823-153751-621e55a6-c7dd-43d0-b2fb-339e5.webm",
+  "title": "IA Generativa · Lab 15",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "IA, Lab",
+  "alt": "Experimento de física e iluminação",
+  "active": true
+ },
+ {
+  "id": "v-48",
+  "filename": "hf-20260814-024423-23e78b00-c455-420b-b72f-fc8e9.webm",
+  "title": "IA Generativa · Lab 16",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "IA, Lab",
+  "alt": "Geração de paisagem oceânica",
+  "active": true
+ },
+ {
+  "id": "v-49",
+  "filename": "hf-20260622-203946-f032365c-922c-40d5-b866-3aab1.webm",
+  "title": "IA Generativa · Lab 17",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "IA, Lab",
+  "alt": "Estudo pioneiro de síntese neural",
+  "active": true
+ },
+ {
+  "id": "v-50",
+  "filename": "9fa65923708f383e16e3afbb718e4dcd-720w.webm",
+  "title": "Conceito Visual · Motion 720w",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "Motion, Estética",
+  "alt": "Motion loop estilizado",
+  "active": true
+ },
+ {
+  "id": "v-51",
+  "filename": "downloaded-file-1.webm",
+  "title": "Captura de Conceito 01",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "Conceito, Inspiração",
+  "alt": "Conceito criativo em movimento",
+  "active": true
+ },
+ {
+  "id": "v-52",
+  "filename": "downloaded-file.webm",
+  "title": "Captura de Conceito 02",
+  "aspect": "16:9",
+  "placement": "band-3",
+  "tags": "Conceito, Inspiração",
+  "alt": "Pesquisa visual de referência",
+  "active": true
+ }
+]

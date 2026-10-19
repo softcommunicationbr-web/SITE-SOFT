@@ -1,0 +1,378 @@
+[
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "calebe-versao-final.webm",
+  "title": "Calebe · Produção Final",
+  "label": "Calebe · Final"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "miria-s-project-final-v01-1-2.webm",
+  "title": "Miria Project · Campanha de Marca",
+  "label": "Miria · Campanha"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-4465.webm",
+  "title": "Cinematografia Polinésia 01",
+  "label": "Ilhas · Luz Natural"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-4473.webm",
+  "title": "Cinematografia Polinésia 02",
+  "label": "Polinésia 02"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-4501.webm",
+  "title": "Cinematografia Ilhas 03",
+  "label": "Luz do Pacífico"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-4728.webm",
+  "title": "Lagoa & Cores 04",
+  "label": "Lagoa & Cores"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-4879.webm",
+  "title": "Cultura & Paisagens 05",
+  "label": "Cultura Viva"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-4903.webm",
+  "title": "Luz Natural & Retrato 06",
+  "label": "Retrato Ilhas"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-4983.webm",
+  "title": "Arquitetura Tropical 07",
+  "label": "Arquitetura"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-5168.webm",
+  "title": "Sunset & Texturas 08",
+  "label": "Sunset Vibes"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-5169.webm",
+  "title": "Motion & Luz 09",
+  "label": "Motion & Luz"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-5170.webm",
+  "title": "Detalhes Cinematográficos 10",
+  "label": "Detalhes 10"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-5389.webm",
+  "title": "Atmosfera & Mar 11",
+  "label": "Atmosfera & Mar"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-7032.webm",
+  "title": "Natureza Viva 12",
+  "label": "Natureza Viva"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "img-7197.webm",
+  "title": "Aventuras & Horizonte 13",
+  "label": "Horizonte 13"
+ },
+ {
+  "band": 1,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "mktt.webm",
+  "title": "Comunicação Criativa 14",
+  "label": "Comunicação 14"
+ },
+ {
+  "band": 2,
+  "dir": "right",
+  "cls": "tile-9x16",
+  "file": "soubarbarotti-servicos-9x16.webm",
+  "title": "Serviços Soft Motion · 9:16",
+  "label": "Serviços Soft"
+ },
+ {
+  "band": 2,
+  "dir": "right",
+  "cls": "tile-9x16",
+  "file": "quem-e-soubarbarotti-stories-9x16-v2.webm",
+  "title": "Apresentação Calebe · Stories",
+  "label": "Calebe"
+ },
+ {
+  "band": 2,
+  "dir": "right",
+  "cls": "tile-9x16",
+  "file": "soft-motion-fr-9x16-60fps-1.webm",
+  "title": "Soft Motion Reel · 60fps",
+  "label": "Motion 60fps"
+ },
+ {
+  "band": 2,
+  "dir": "right",
+  "cls": "tile-9x16",
+  "file": "saveclip-app-aqpvjyamwmee4zspdgq34jxhumqlm4ohuvm.webm",
+  "title": "Reel Impacto Visual",
+  "label": "Impacto Reel"
+ },
+ {
+  "band": 2,
+  "dir": "right",
+  "cls": "tile-9x16",
+  "file": "saveclip-app-aqojydcalld4fboi8d3hibfg2q-wktxpfx-.webm",
+  "title": "Gastronomia & Lifestyle",
+  "label": "Gastronomia"
+ },
+ {
+  "band": 2,
+  "dir": "right",
+  "cls": "tile-9x16",
+  "file": "saveclip-app-aqpih5tj8rmpriemnuk97e2ojkug-9eipzs.webm",
+  "title": "Estilo & Presença em Câmera",
+  "label": "Moda & Presença"
+ },
+ {
+  "band": 2,
+  "dir": "right",
+  "cls": "tile-9x16",
+  "file": "saveclip-app-aqoznyxrj4saxc0fuim2izvfneajkziyfgs.webm",
+  "title": "Storytelling Vertical",
+  "label": "Storytelling"
+ },
+ {
+  "band": 2,
+  "dir": "right",
+  "cls": "tile-9x16",
+  "file": "saveclip-app-aqn7upaehwixmbz0b2hrpfoyzkuaatqhuec.webm",
+  "title": "UGC & Conexão de Marca",
+  "label": "UGC Autêntico"
+ },
+ {
+  "band": 2,
+  "dir": "right",
+  "cls": "tile-9x16",
+  "file": "saveclip-app-aqpzp4elexuw9jzzw8pg-ntfpbyjn9nas56.webm",
+  "title": "Tendências & Som Social",
+  "label": "Social Trends"
+ },
+ {
+  "band": 2,
+  "dir": "right",
+  "cls": "tile-9x16",
+  "file": "a6bd1da8-b768-425e-beb6-821075efbc2e-6748bfc5a91.webm",
+  "title": "Motion Art 9:16",
+  "label": "Motion Art"
+ },
+ {
+  "band": 2,
+  "dir": "right",
+  "cls": "tile-9x16",
+  "file": "whatsapp-video-2026-09-19-at-23-46-34.webm",
+  "title": "Bastidores de Gravação",
+  "label": "Bastidores"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "hf-20261011-205447-8e5d6ddd-dc00-49ea-9c0f-811a8.webm",
+  "title": "IA Generativa · Lab 01",
+  "label": "IA Lab 01"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-1x1",
+  "file": "hf-20261011-144855-f123ae85-d29b-4e90-9e21-1536a.webm",
+  "title": "IA Generativa · Lab 02 (1:1)",
+  "label": "IA Lab 02"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "hf-20260921-194749-5e8280bb-9362-4fb0-952f-7445a.webm",
+  "title": "IA Generativa · Lab 03",
+  "label": "IA Lab 03"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-1x1",
+  "file": "hf-20260919-011209-f8f32146-09b2-420f-bc1d-19a30.webm",
+  "title": "IA Generativa · Lab 04 (1:1)",
+  "label": "IA Lab 04"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "hf-20260918-032056-188e0b0e-dcc5-45ea-9d7b-752d3.webm",
+  "title": "IA Generativa · Lab 05",
+  "label": "IA Lab 05"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-1x1",
+  "file": "hf-20260916-205451-ffa9c935-4f6e-41eb-b441-f85c6.webm",
+  "title": "IA Generativa · Lab 06 (1:1)",
+  "label": "IA Lab 06"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "hf-20260916-202713-c1d6d6c3-5880-472e-8418-e38c1.webm",
+  "title": "IA Generativa · Lab 07",
+  "label": "IA Lab 07"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-1x1",
+  "file": "hf-20260916-175331-858d1e7b-fe93-481c-b4ee-5e259.webm",
+  "title": "IA Generativa · Lab 08 (1:1)",
+  "label": "IA Lab 08"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "hf-20260916-172714-1af6ca43-fdb5-4844-91c5-2e49e.webm",
+  "title": "IA Generativa · Lab 09",
+  "label": "IA Lab 09"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-1x1",
+  "file": "hf-20260916-121927-1205b7db-e9d4-4899-9b7b-79a52.webm",
+  "title": "IA Generativa · Lab 10 (1:1)",
+  "label": "IA Lab 10"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "hf-20260916-115912-cd9efcc6-cf5b-43e1-9ddb-155cc.webm",
+  "title": "IA Generativa · Lab 11",
+  "label": "IA Lab 11"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-1x1",
+  "file": "hf-20260915-233031-db9219cb-f246-4f96-beee-46cab.webm",
+  "title": "IA Generativa · Lab 12 (1:1)",
+  "label": "IA Lab 12"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "hf-20260912-023042-6ecde9b3-903b-4a78-8a68-27fdf.webm",
+  "title": "IA Generativa · Lab 13",
+  "label": "IA Lab 13"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-1x1",
+  "file": "hf-20260824-000231-2fe11333-8f72-49d5-811f-84a4d.webm",
+  "title": "IA Generativa · Lab 14 (1:1)",
+  "label": "IA Lab 14"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "hf-20260823-153751-621e55a6-c7dd-43d0-b2fb-339e5.webm",
+  "title": "IA Generativa · Lab 15",
+  "label": "IA Lab 15"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-1x1",
+  "file": "hf-20260814-024423-23e78b00-c455-420b-b72f-fc8e9.webm",
+  "title": "IA Generativa · Lab 16 (1:1)",
+  "label": "IA Lab 16"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "hf-20260622-203946-f032365c-922c-40d5-b866-3aab1.webm",
+  "title": "IA Generativa · Lab 17",
+  "label": "IA Lab 17"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-1x1",
+  "file": "9fa65923708f383e16e3afbb718e4dcd-720w.webm",
+  "title": "Render Conceitual 18 (1:1)",
+  "label": "Render 18"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-16x9",
+  "file": "downloaded-file-1.webm",
+  "title": "Motion Short 19",
+  "label": "Motion 19"
+ },
+ {
+  "band": 3,
+  "dir": "left",
+  "cls": "tile-1x1",
+  "file": "downloaded-file.webm",
+  "title": "Loop Experimento 20 (1:1)",
+  "label": "Loop 20"
+ }
+]

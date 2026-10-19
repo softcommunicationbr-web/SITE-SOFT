@@ -1,0 +1,24 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://softcommunication.com/fr/services/films-de-marque#service",
+      "name": "Films de marque",
+      "serviceType": "Production de films de marque",
+      "description": "Film média branding, film cinématographique et vidéo commerciale pour entreprises de Polynésie française. Écoute, tournage en lumière naturelle, livraison de formats prêts pour vos canaux, en français et en anglais.",
+      "provider": { "@id": "https://softcommunication.com/#organization" },
+      "areaServed": { "@type": "AdministrativeArea", "name": "Polynésie française" },
+      "inLanguage": "fr",
+      "url": "https://softcommunication.com/fr/services/films-de-marque"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://softcommunication.com/fr" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://softcommunication.com/fr/services" },
+        { "@type": "ListItem", "position": 3, "name": "Films de marque" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "_LISEZ_MOI": "Modèle pour une page projet. Remplacer les {{...}}. Une seule vidéo principale par page (exigence Google : la vidéo doit être le contenu principal). Supprimer cette clé avant publication. Ne jamais publier un projet dont les droits ne sont pas confirmés.",
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://softcommunication.com/fr/portfolio/{{slug}}#webpage",
+      "url": "https://softcommunication.com/fr/portfolio/{{slug}}",
+      "name": "{{titre du projet}}",
+      "inLanguage": "fr",
+      "isPartOf": { "@id": "https://softcommunication.com/#website" },
+      "primaryImageOfPage": { "@id": "https://softcommunication.com/fr/portfolio/{{slug}}#thumb" },
+      "mainEntity": { "@id": "https://softcommunication.com/fr/portfolio/{{slug}}#video" }
+    },
+    {
+      "@type": "VideoObject",
+      "@id": "https://softcommunication.com/fr/portfolio/{{slug}}#video",
+      "name": "{{titre du projet}}",
+      "description": "{{brief et approche en 1 à 2 phrases réelles. Si contenu IA : « Visuel non contractuel. Aménagements générés par IA. »}}",
+      "thumbnailUrl": "https://softcommunication.com/media/{{slug}}/thumb.jpg",
+      "uploadDate": "{{AAAA-MM-JJ}}T09:00:00-10:00",
+      "duration": "{{PT1M30S}}",
+      "contentUrl": "https://softcommunication.com/media/{{slug}}/film.mp4",
+      "inLanguage": "fr",
+      "creator": { "@id": "https://softcommunication.com/#organization" },
+      "publisher": { "@id": "https://softcommunication.com/#organization" }
+    },
+    {
+      "@type": "ImageObject",
+      "@id": "https://softcommunication.com/fr/portfolio/{{slug}}#thumb",
+      "contentUrl": "https://softcommunication.com/media/{{slug}}/thumb.jpg",
+      "creditText": "Soft & Co",
+      "creator": { "@id": "https://softcommunication.com/#organization" },
+      "copyrightNotice": "© {{année}} Soft & Co"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://softcommunication.com/fr" },
+        { "@type": "ListItem", "position": 2, "name": "Portfolio", "item": "https://softcommunication.com/fr/portfolio" },
+        { "@type": "ListItem", "position": 3, "name": "{{titre du projet}}" }
+      ]
+    }
+  ]
+}

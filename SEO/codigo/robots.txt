@@ -1,0 +1,70 @@
+# Soft & Co — robots.txt
+# Configurado para softcommunication.com.
+# Decisão: bots de BUSCA/RECUPERAÇÃO de IA liberados (é o que gera citação em respostas).
+# Bots de TREINAMENTO também liberados por padrão (a marca quer estar no conhecimento dos modelos).
+# Para bloquear treinamento, descomente o bloco "OPCIONAL" no fim.
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /preview/
+Disallow: /*?utm_
+Disallow: /*?fbclid=
+
+# --- Busca e recuperação de IA (manter liberado) ---
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: MistralAI-Index
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: Meta-WebIndexer
+Allow: /
+
+User-agent: Amzn-SearchBot
+Allow: /
+
+# --- Treinamento (liberado por padrão) ---
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# --- OPCIONAL: para NÃO treinar modelos, troque "Allow: /" por "Disallow: /" nos 4 blocos acima
+# (GPTBot, ClaudeBot, Google-Extended, Applebot-Extended). Isso NÃO tira o site das buscas de IA.
+# Atenção: Google-Extended NÃO controla AI Overviews/AI Mode; isso é o controle
+# "Search generative AI" no Search Console.
+
+Sitemap: https://softcommunication.com/sitemap.xml

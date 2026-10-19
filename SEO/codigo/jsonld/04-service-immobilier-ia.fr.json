@@ -1,0 +1,24 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://softcommunication.com/fr/services/immobilier-ia#service",
+      "name": "Immobilier IA",
+      "serviceType": "Visuels immobiliers assistés par IA",
+      "description": "Visuels et films immobiliers assistés par IA pour la Polynésie française. Le réel et la projection sont toujours distingués : chaque visuel généré est étiqueté « Projection IA » et non contractuel.",
+      "provider": { "@id": "https://softcommunication.com/#organization" },
+      "areaServed": { "@type": "AdministrativeArea", "name": "Polynésie française" },
+      "inLanguage": "fr",
+      "url": "https://softcommunication.com/fr/services/immobilier-ia"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://softcommunication.com/fr" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://softcommunication.com/fr/services" },
+        { "@type": "ListItem", "position": 3, "name": "Immobilier IA" }
+      ]
+    }
+  ]
+}

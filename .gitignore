@@ -1,0 +1,23 @@
+# Sistema
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Temporários e backups
+*.bak
+*.swp
+*.tgz
+_to_delete_*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# IDE e ferramentas
+.idea/
+.vscode/
+.claude/

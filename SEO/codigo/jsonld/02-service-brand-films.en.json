@@ -1,0 +1,24 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://softcommunication.com/en/services/brand-films#service",
+      "name": "Brand films",
+      "serviceType": "Brand film production",
+      "description": "Brand media films, cinematic films and commercial video for businesses in French Polynesia. We listen, shoot in natural light and deliver formats ready for your channels, in French and English.",
+      "provider": { "@id": "https://softcommunication.com/#organization" },
+      "areaServed": { "@type": "AdministrativeArea", "name": "French Polynesia" },
+      "inLanguage": "en",
+      "url": "https://softcommunication.com/en/services/brand-films"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://softcommunication.com/en" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://softcommunication.com/en/services" },
+        { "@type": "ListItem", "position": 3, "name": "Brand films" }
+      ]
+    }
+  ]
+}

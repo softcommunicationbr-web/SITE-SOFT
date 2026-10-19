@@ -1,0 +1,24 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://softcommunication.com/en/services/ai-real-estate#service",
+      "name": "AI real estate visuals",
+      "serviceType": "AI-assisted property visuals",
+      "description": "AI-assisted property visuals and films for French Polynesia. Real and projected are always told apart: every generated visual is labelled \"AI projection\" and is non-binding.",
+      "provider": { "@id": "https://softcommunication.com/#organization" },
+      "areaServed": { "@type": "AdministrativeArea", "name": "French Polynesia" },
+      "inLanguage": "en",
+      "url": "https://softcommunication.com/en/services/ai-real-estate"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://softcommunication.com/en" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://softcommunication.com/en/services" },
+        { "@type": "ListItem", "position": 3, "name": "AI real estate visuals" }
+      ]
+    }
+  ]
+}

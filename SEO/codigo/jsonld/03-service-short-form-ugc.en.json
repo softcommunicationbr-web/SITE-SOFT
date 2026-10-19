@@ -1,0 +1,24 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://softcommunication.com/en/services/short-form-ugc#service",
+      "name": "Short-form content & UGC",
+      "serviceType": "Short-form content and UGC creation",
+      "description": "Reels, on-camera presence and a monthly content pack for brands and businesses in French Polynesia.",
+      "provider": { "@id": "https://softcommunication.com/#organization" },
+      "areaServed": { "@type": "AdministrativeArea", "name": "French Polynesia" },
+      "inLanguage": "en",
+      "url": "https://softcommunication.com/en/services/short-form-ugc"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://softcommunication.com/en" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://softcommunication.com/en/services" },
+        { "@type": "ListItem", "position": 3, "name": "Short-form content & UGC" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": "https://softcommunication.com/fr/a-propos#webpage",
+  "url": "https://softcommunication.com/fr/a-propos",
+  "inLanguage": "fr",
+  "mainEntity": {
+    "@type": "Person",
+    "@id": "https://softcommunication.com/#founder",
+    "name": "Calebe",
+    "jobTitle": "Fondateur et réalisateur",
+    "image": "https://softcommunication.com/media/a-propos/portrait.jpg",
+    "worksFor": { "@id": "https://softcommunication.com/#organization" },
+    "knowsLanguage": ["fr", "en", "pt"],
+    "sameAs": [
+      "https://instagram.com/soft.communicationbr"
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Organization", "ProfessionalService"],
+      "@id": "https://softcommunication.com/#organization",
+      "name": "Soft & Co",
+      "alternateName": "Soft Communication",
+      "legalName": "Soft Communication",
+      "founder": {
+        "@type": "Person",
+        "name": "Calebe Barbarotti",
+        "jobTitle": "Director & Cinematographer"
+      },
+      "url": "https://softcommunication.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "https://softcommunication.com/#logo",
+        "url": "https://softcommunication.com/assets/brand/soft-principal-chocolate.svg",
+        "contentUrl": "https://softcommunication.com/assets/brand/soft-principal-chocolate.svg",
+        "caption": "Soft Communication"
+      },
+      "image": "https://softcommunication.com/assets/brand/soft-principal-chocolate.svg",
+      "description": "Boutique audiovisual production studio based in French Polynesia serving luxury hospitality, brands, and real estate developers worldwide, including the United States, Europe, and the Pacific. Specialists in cinema brand films, 9:16 vertical reels, and AI-assisted architectural projections.",
+      "slogan": "Cinéma de marque, présence verticale et projection immobilière IA.",
+      "knowsLanguage": ["fr", "en", "pt"],
+      "areaServed": [
+        { "@type": "Country", "name": "French Polynesia" },
+        { "@type": "Country", "name": "United States" },
+        { "@type": "AdministrativeArea", "name": "California, United States" },
+        { "@type": "AdministrativeArea", "name": "Florida, United States" },
+        { "@type": "AdministrativeArea", "name": "New York, United States" },
+        { "@type": "AdministrativeArea", "name": "Hawaii, United States" },
+        { "@type": "AdministrativeArea", "name": "Texas, United States" },
+        { "@type": "Country", "name": "France" },
+        { "@type": "Country", "name": "Brazil" },
+        { "@type": "GeoShape", "name": "Worldwide / International Luxury Hospitality" }
+      ],
+      "knowsAbout": [
+        "Brand film production",
+        "Luxury resort & hotel cinematography",
+        "Tahiti & Bora Bora commercial videography",
+        "Short-form social video & 9:16 Reels",
+        "AI-assisted property visuals and architectural projection",
+        "UGC and authentic brand presence",
+        "Films de marque hôtellerie et tourisme",
+        "Production vidéo commerciale Polynésie française",
+        "Immobilier IA et rendus photoréalistes",
+        "Produção cinematográfica e branding audiovisual de luxo"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Production Combos & Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Combo 01: Cinema & Branding",
+              "description": "Flagship 4K master brand film, narrative storytelling, color grading, sound design, and full commercial usage rights."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Combo 02: Presence & Monthly Reels",
+              "description": "Pack of 12 high-retention 9:16 vertical videos for Instagram and TikTok with on-camera presence, hooks, and dynamic sound."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Combo 03: Real Estate & AI Visuals",
+              "description": "Architectural showcase films, drone sweeps, and AI-assisted generative visual projections for unbuilt or conceptual villas."
+            }
+          }
+        ]
+      },
+      "sameAs": [
+        "https://instagram.com/soft.communicationbr",
+        "https://instagram.com/softcommunication",
+        "https://linkedin.com/company/soft-communication"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://softcommunication.com/#website",
+      "url": "https://softcommunication.com/",
+      "name": "Soft Communication",
+      "alternateName": "Soft & Co",
+      "publisher": { "@id": "https://softcommunication.com/#organization" },
+      "inLanguage": ["fr", "en", "pt"]
+    }
+  ]
+}
