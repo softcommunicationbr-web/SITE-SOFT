@@ -280,7 +280,7 @@ def header(lg, loc, key, root, home_anchor):
     <nav class="nav" aria-label="{e(s['nav_aria'])}">
       <div class="nav-links">
         <a href="{a('#selecao')}">{s['n_sel']}</a>
-        <a href="{a('#faixas')}">{s['n_vid']} (<span data-video-count>52</span>)</a>
+        <a href="{a('#faixas')}">{s['n_vid']}</a>
         <a href="{a('#servicos')}">{s['n_srv']}</a>
         <a href="{a('#sobre')}">{s['n_about']}</a>
         <a href="{a('#contato')}">{s['n_contact']}</a>
@@ -306,7 +306,7 @@ def header(lg, loc, key, root, home_anchor):
   </div>
   <nav aria-label="{e(s['mobile_aria'])}">
     <a href="{a('#selecao')}" data-menu-close>{s['n_sel']}</a>
-    <a href="{a('#faixas')}" data-menu-close>{s['n_vid']} (<span data-video-count>52</span>)</a>
+    <a href="{a('#faixas')}" data-menu-close>{s['n_vid']}</a>
     <a href="{a('#servicos')}" data-menu-close>{s['n_srv']}</a>
     <a href="{a('#sobre')}" data-menu-close>{s['n_about']}</a>
     <a href="{a('#contato')}" data-menu-close>{s['n_contact']}</a>
@@ -330,7 +330,7 @@ def footer(lg, loc, root, home_anchor):
         <h2 class="eyebrow">{s['foot_explore']}</h2>
         <ul>
           <li><a href="{a('#selecao')}">{s['n_sel']}</a></li>
-          <li><a href="{a('#faixas')}">{s['n_vid']} (<span data-video-count>52</span>)</a></li>
+          <li><a href="{a('#faixas')}">{s['n_vid']}</a></li>
           <li><a href="{a('#servicos')}">{s['n_srv']}</a></li>
           <li><a href="{a('#sobre')}">{s['n_about']}</a></li>
           <li><a href="{a('#contato')}">{s['n_contact']}</a></li>
