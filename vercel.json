@@ -1,32 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": false,
-  "rewrites": [
-    { "source": "/", "destination": "/maquette/index.html" },
-    { "source": "/index.html", "destination": "/maquette/index.html" },
-    { "source": "/assets/:path*", "destination": "/maquette/assets/:path*" },
-    { "source": "/admin", "destination": "/maquette/admin/index.html" },
-    { "source": "/admin/", "destination": "/maquette/admin/index.html" },
-    { "source": "/admin/:path*", "destination": "/maquette/admin/:path*" },
-    { "source": "/fr", "destination": "/maquette/fr/index.html" },
-    { "source": "/fr/", "destination": "/maquette/fr/index.html" },
-    { "source": "/fr/:path*", "destination": "/maquette/fr/:path*" },
-    { "source": "/en", "destination": "/maquette/en/index.html" },
-    { "source": "/en/", "destination": "/maquette/en/index.html" },
-    { "source": "/en/:path*", "destination": "/maquette/en/:path*" },
-    { "source": "/pt", "destination": "/maquette/pt/index.html" },
-    { "source": "/pt/", "destination": "/maquette/pt/index.html" },
-    { "source": "/pt/:path*", "destination": "/maquette/pt/:path*" },
-    { "source": "/cliente", "destination": "/maquette/cliente.html" },
-    { "source": "/cliente.html", "destination": "/maquette/cliente.html" },
-    { "source": "/entrega-cinema", "destination": "/maquette/entrega-cinema.html" },
-    { "source": "/entrega-cinema.html", "destination": "/maquette/entrega-cinema.html" },
-    { "source": "/entrega-reels", "destination": "/maquette/entrega-reels.html" },
-    { "source": "/entrega-reels.html", "destination": "/maquette/entrega-reels.html" },
-    { "source": "/robots.txt", "destination": "/maquette/robots.txt" },
-    { "source": "/sitemap.xml", "destination": "/maquette/sitemap.xml" },
-    { "source": "/llms.txt", "destination": "/maquette/llms.txt" },
-    { "source": "/google805618d3b3339e62.html", "destination": "/maquette/google805618d3b3339e62.html" },
-    { "source": "/a4b7f8c92e104d5b8c3f7a1e9b2c4d6f.txt", "destination": "/maquette/a4b7f8c92e104d5b8c3f7a1e9b2c4d6f.txt" }
+  "outputDirectory": "maquette",
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/maquette", "destination": "/", "permanent": true },
+    { "source": "/maquette/:path*", "destination": "/:path*", "permanent": true }
   ]
 }
