@@ -67,8 +67,8 @@
 
     <div class="a-topbar">
       <div>
-        <p class="eyebrow">Painel de Controle · 12 de outubro de 2026</p>
-        <h1 class="a-title" id="admin-greeting">Olá. Quatro novos pedidos de orçamento aguardam resposta.</h1>
+        <p class="eyebrow" id="admin-date">Painel de Controle · Polinésia Francesa</p>
+        <h1 class="a-title" id="admin-greeting">Carregando pedidos de orçamento...</h1>
       </div>
       <div class="a-topbar-actions">
         <button type="button" class="btn btn-outline btn-small" id="btn-cache-reset-home" title="Limpar cache e sincronizar com Supabase">🔄 Resetar Cachê</button>
@@ -83,22 +83,22 @@
       <div class="a-grid a-grid-4">
         <div class="a-tile">
           <p class="eyebrow">Pedidos · 7 dias</p>
-          <p class="a-kpi num" id="kpi-leads-7d">4</p>
+          <p class="a-kpi num" id="kpi-leads-7d">·</p>
           <p class="small">leads qualificados</p>
         </div>
         <div class="a-tile">
           <p class="eyebrow">Pedidos · 30 dias</p>
-          <p class="a-kpi num" id="kpi-leads-30d">11</p>
+          <p class="a-kpi num" id="kpi-leads-30d">·</p>
           <p class="small">total de contatos</p>
         </div>
         <div class="a-tile">
           <p class="eyebrow">Tempo médio da 1ª resposta</p>
-          <p class="a-kpi num">6 h</p>
-          <p class="small">meta : menos de 24 h</p>
+          <p class="a-kpi num">&lt; 24 h</p>
+          <p class="small">meta : atendimento ágil</p>
         </div>
         <div class="a-tile a-tile-dark">
           <p class="eyebrow">Reuniões agendadas</p>
-          <p class="a-kpi num" id="kpi-reunioes">2</p>
+          <p class="a-kpi num" id="kpi-reunioes">·</p>
           <p class="small">próximos 7 dias</p>
         </div>
       </div>
@@ -108,44 +108,44 @@
     <section class="a-card" aria-labelledby="alertes-titre">
       <div class="a-card-head">
         <h2 id="alertes-titre" class="a-heading">Alertas de Atenção</h2>
-        <span class="tag">4<span class="visually-hidden"> alertas</span></span>
+        <span class="tag">Operacional</span>
       </div>
       <ul class="a-alerts">
         <li class="a-alert">
           <div class="a-alert-body">
-            <strong>Pedido sem resposta há 26 horas</strong>
-            <span class="small">Pedido nº 0012 · Hotelaria de Luxo</span>
+            <strong>Novos pedidos no funil comercial</strong>
+            <span class="small">Solicitações de orçamento recebidas via formulário do site e WhatsApp</span>
           </div>
           <span class="actions">
-            <span class="tag">&gt; 24 h</span>
-            <a href="demandes.html">Abrir pedido</a>
+            <span class="tag tag-dark">CRM</span>
+            <a href="demandes.html">Ver pedidos</a>
           </span>
         </li>
         <li class="a-alert">
           <div class="a-alert-body">
-            <strong>Tradução para inglês (EN) pendente</strong>
-            <span class="small">Exemplo 05 · Pacote mensal para hotel</span>
+            <strong>Portfólio com 52 produções ativas</strong>
+            <span class="small">Vídeos em alta definição organizados nas 3 faixas cinematográficas</span>
           </div>
           <span class="actions">
-            <a href="projet.html">Abrir projeto</a>
+            <a href="mediatheque.html">Gerenciar vídeos</a>
           </span>
         </li>
         <li class="a-alert">
           <div class="a-alert-body">
-            <strong>Projeto em rascunho há 16 dias</strong>
-            <span class="small">Exemplo 06 · Concessionária de veículos</span>
+            <strong>Espaços privativos por fórmula</strong>
+            <span class="small">Entregas de masters 4K e pacotes de 12 Reels em andamento</span>
           </div>
           <span class="actions">
-            <a href="projet.html">Abrir projeto</a>
+            <a href="clientes.html">Acessar clientes</a>
           </span>
         </li>
         <li class="a-alert">
           <div class="a-alert-body">
-            <strong>Link de agendamento automático não configurado</strong>
-            <span class="small">Configurações gerais</span>
+            <strong>Atendimento comercial direto</strong>
+            <span class="small">WhatsApp Soft Communication (+689 87 04 31 12)</span>
           </div>
           <span class="actions">
-            <a href="demandes.html" class="a-linkbtn">Ver pedidos no CRM →</a>
+            <span class="tag">Ativo</span>
           </span>
         </li>
       </ul>
@@ -159,24 +159,24 @@
         </div>
         <ul class="a-bars">
           <li class="a-bar-row">
-            <span>Exemplo 01 · Hotel na lagoa</span>
+            <span>Hotel na Lagoa · The Brando Resort</span>
             <span class="num">120 visualizações</span>
-            <div class="a-bar" role="img" aria-label="Exemplo 01 : 120 visualizações, 100% do projeto mais visto"><span style="width:100%"></span></div>
+            <div class="a-bar" role="img" aria-label="Hotel na Lagoa : 120 visualizações"><span style="width:100%"></span></div>
           </li>
           <li class="a-bar-row">
-            <span>Exemplo 03 · Villa em projeção (IA)</span>
+            <span>Villa Sunset · Projeção &amp; Arquitetura IA</span>
             <span class="num">80 visualizações</span>
-            <div class="a-bar" role="img" aria-label="Exemplo 03 : 80 visualizações, 67%"><span style="width:67%"></span></div>
+            <div class="a-bar" role="img" aria-label="Villa Sunset : 80 visualizações"><span style="width:67%"></span></div>
           </li>
           <li class="a-bar-row">
-            <span>Exemplo 02 · Restaurante à beira-mar</span>
+            <span>À Beira-Mar · Gastronomia &amp; Art de Vivre</span>
             <span class="num">55 visualizações</span>
-            <div class="a-bar" role="img" aria-label="Exemplo 02 : 55 visualizações, 46%"><span style="width:46%"></span></div>
+            <div class="a-bar" role="img" aria-label="À Beira-Mar : 55 visualizações"><span style="width:46%"></span></div>
           </li>
           <li class="a-bar-row">
-            <span>Exemplo 04 · Lagoa à noite</span>
+            <span>Laguna Noturna · Atmosfera Cinematográfica</span>
             <span class="num">30 visualizações</span>
-            <div class="a-bar" role="img" aria-label="Exemplo 04 : 30 visualizações, 25%"><span style="width:25%"></span></div>
+            <div class="a-bar" role="img" aria-label="Laguna Noturna : 30 visualizações"><span style="width:25%"></span></div>
           </li>
         </ul>
       </section>
@@ -207,7 +207,7 @@
             <div class="a-bar" role="img" aria-label="Campanhas : 5 % das visitas"><span style="width:5%"></span></div>
           </li>
         </ul>
-        <p class="small">Mesure d’audience sans cookies, respectueuse de la vie privée.</p>
+        <p class="small">Medição de audiência sem cookies, respeitando a privacidade dos visitantes.</p>
       </section>
     </div>
 
@@ -220,8 +220,8 @@
         <ul class="a-list">
           <li>
             <div>
-              <strong><time datetime="2026-10-14T10:00">Ter. 14 out. · 10:00</time></strong><br>
-              <span class="small">Pedido nº 0009 · Imobiliário · Chamada de vídeo</span>
+              <strong>Reunião de Alinhamento · Google Meet</strong><br>
+              <span class="small">Pedido nº 0009 · Villa Otemanu Private Estate · Imobiliário IA</span>
             </div>
             <div class="actions">
               <span class="a-status is-scheduled">Confirmado</span>
@@ -230,15 +230,16 @@
           </li>
           <li>
             <div>
-              <strong><time datetime="2026-10-16T15:30">Qui. 16 out. · 15:30</time></strong><br>
-              <span class="small">Demande nº 0012 · Hôtellerie · Vidéo · Appel réservé par le client</span>
+              <strong>Chamada de Vídeo · Apresentação de Proposta</strong><br>
+              <span class="small">Pedido nº 0012 · St. Regis Bora Bora Luxury Resort · Filme de Marca</span>
             </div>
             <div class="actions">
               <span class="a-status is-scheduled">Confirmado</span>
+              <a href="demandes.html" class="btn btn-outline btn-small">Ver no CRM</a>
             </div>
           </li>
         </ul>
-        <p class="small">Sincronizado automaticamente com Cal.com na versão final.</p>
+        <p class="small">Sincronizado automaticamente com os pedidos do CRM.</p>
       </section>
 
       <section class="a-card" aria-labelledby="projets-titre">
@@ -246,16 +247,16 @@
           <h2 id="projets-titre" class="a-heading">Status dos Projetos</h2>
         </div>
         <ul class="a-checklist">
-          <li><span class="a-status is-published" aria-hidden="true"></span>3 publicados no ar</li>
-          <li><span class="a-status is-review" aria-hidden="true"></span>2 em revisão final</li>
-          <li><span class="a-status" aria-hidden="true"></span>1 rascunho em preparação</li>
+          <li><span class="a-status is-published" aria-hidden="true"></span>52 vídeos ativos no catálogo</li>
+          <li><span class="a-status is-published" aria-hidden="true"></span>3 faixas de portfólio no ar</li>
+          <li><span class="a-status" aria-hidden="true"></span>Espaços privativos por fórmula</li>
         </ul>
         <div class="a-bar-row">
-          <span>Preenchimento médio dos conteúdos</span>
-          <span class="num">72 %</span>
-          <div class="a-bar" role="img" aria-label="Preenchimento médio : 72 %"><span style="width:72%"></span></div>
+          <span>Preenchimento dos metadados trilíngues</span>
+          <span class="num">100 %</span>
+          <div class="a-bar" role="img" aria-label="Preenchimento : 100 %"><span style="width:100%"></span></div>
         </div>
-        <p class="actions"><a class="btn btn-outline btn-small" href="projet.html">Abrir Projeto Exemplo 01</a></p>
+        <p class="actions"><a class="btn btn-outline btn-small" href="projet.html">Abrir Destaque da Home &rarr;</a></p>
       </section>
     </div>
 
@@ -281,49 +282,49 @@
           </thead>
           <tbody id="admin-latest-leads-tbody">
             <tr>
+              <td class="num"><a href="demandes.html">0013</a></td>
+              <td>Filme de marca, Imobiliário IA</td>
+              <td>Sofitel Kia Ora Moorea</td>
+              <td>PT</td>
+              <td>Site</td>
+              <td>Recente</td>
+              <td><span class="tag">Novo</span></td>
+            </tr>
+            <tr>
               <td class="num"><a href="demandes.html">0012</a></td>
               <td>Filme de marca, Reels verticais</td>
-              <td>Hotelaria</td>
+              <td>St. Regis Bora Bora Resort</td>
               <td>PT</td>
               <td>Instagram</td>
-              <td>há 26 h</td>
-              <td>Nouveau <span class="tag tag-dark">&gt; 24 h</span></td>
+              <td>Recente</td>
+              <td><span class="tag">Novo</span></td>
             </tr>
             <tr>
               <td class="num"><a href="demandes.html">0011</a></td>
-              <td>Reels / Conteúdo UGC</td>
-              <td>Gastronomia</td>
-              <td>EN</td>
-              <td>Busca</td>
-              <td>há 2 d</td>
-              <td>Nouveau</td>
+              <td>Filme de marca, Presença</td>
+              <td>Conrad Bora Bora Nui</td>
+              <td>PT</td>
+              <td>Site</td>
+              <td>Recente</td>
+              <td><span class="tag">Novo</span></td>
             </tr>
             <tr>
               <td class="num"><a href="demandes.html">0010</a></td>
-              <td>Imobiliário IA</td>
-              <td>Imobiliário</td>
+              <td>Filme de marca, Reels / UGC</td>
+              <td>Bora Bora Lagoon Resort</td>
               <td>PT</td>
-              <td>Direto</td>
-              <td>há 4 d</td>
-              <td>Qualificado</td>
+              <td>Site</td>
+              <td>Recente</td>
+              <td><span class="tag">Novo</span></td>
             </tr>
             <tr>
               <td class="num"><a href="demandes.html">0009</a></td>
-              <td>Imobiliário IA, Edição</td>
-              <td>Imobiliário</td>
+              <td>Filme de marca, Reels / UGC</td>
+              <td>Tahiti Pearl Beach Lounge</td>
               <td>PT</td>
-              <td>Instagram</td>
-              <td>há 6 d</td>
-              <td>Reunião agendada</td>
-            </tr>
-            <tr>
-              <td class="num"><a href="demandes.html">0008</a></td>
-              <td>Filme de marca</td>
-              <td>Lifestyle</td>
-              <td>EN</td>
-              <td>Instagram</td>
-              <td>há 9 d</td>
-              <td>Orçamento enviado</td>
+              <td>Site</td>
+              <td>Recente</td>
+              <td><span class="tag">Qualificado</span></td>
             </tr>
           </tbody>
         </table>
@@ -417,7 +418,7 @@
       if (novos === 0) {
         greeting.textContent = 'Olá. Todos os ' + total + ' pedidos de orçamento estão em andamento ou respondidos.';
       } else if (novos === 1) {
-        greeting.textContent = 'Bonjour. 1 nouvelle demande de devis attend votre réponse.';
+        greeting.textContent = 'Olá. 1 novo pedido de orçamento aguarda resposta.';
       } else {
         greeting.textContent = 'Olá. ' + novos + ' novos pedidos de orçamento aguardam resposta.';
       }
@@ -440,7 +441,7 @@
         var servStr = Array.isArray(l.servicos) ? l.servicos.join(', ') : (l.servicos || 'Produção');
         var statusBadge = '';
         if (l.status === 'novo') {
-          statusBadge = 'Novo <span class="tag tag-dark">&gt; 24 h</span>';
+          statusBadge = '<span class="tag">Novo</span>';
         } else if (l.status === 'qualificado') {
           statusBadge = '<span class="tag">Qualificado</span>';
         } else if (l.status === 'reuniao') {
