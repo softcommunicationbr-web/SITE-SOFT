@@ -1251,6 +1251,30 @@ html.has-preloader .pl3-svg { transform: rotateX(82deg) translateY(58%); opacity
 .will-reveal.is-visible { opacity: 1; transform: none; transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
 @media (prefers-reduced-motion: reduce) { .will-reveal { opacity: 1; transform: none; transition: none; } }
 
+/* ---------- Animação dos textos surgindo do chão ao passar o scroll ---------- */
+.text-rise {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--rise-delay, 0ms);
+  will-change: opacity, transform;
+}
+.text-rise.is-risen {
+  opacity: 1;
+  transform: none;
+}
+.text-rise.is-risen:hover {
+  transition-delay: 0ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-rise {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 /* ---------- Page « à venir » (étape 2) ---------- */
 .placeholder-page { min-height: calc(var(--viewport-h, 100svh) * 0.6); display: grid; place-items: center; text-align: center; }
 .placeholder-page > * { max-width: 100%; min-width: 0; }

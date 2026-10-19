@@ -443,7 +443,7 @@ def home(lg, root_page):
   </section>
 
   <!-- 2. Seleção + faixas : montadas por home.js a partir do catálogo -->
-  <section class="section t-noir" id="selecao" data-reveal aria-labelledby="selection-title">
+  <section class="section t-noir" id="selecao" aria-labelledby="selection-title">
     <div class="container">
       <div class="section-head">
         <div class="stack-3">
@@ -477,7 +477,7 @@ def home(lg, root_page):
   </section>
 
   <!-- 3. Serviços -->
-  <section class="section t-creme" id="servicos" data-reveal aria-labelledby="services-title">
+  <section class="section t-creme" id="servicos" aria-labelledby="services-title">
     <div class="container">
       <div class="section-head">
         <div class="stack-3">
@@ -508,7 +508,7 @@ def home(lg, root_page):
   </section>
 
   <!-- 4. Abordagem + bloco « soft » -->
-  <section class="section t-areia" id="metodo" data-reveal aria-labelledby="abordagem-title">
+  <section class="section t-areia" id="metodo" aria-labelledby="abordagem-title">
     <div class="container">
       <div class="split">
         <div class="stack-8">
@@ -532,7 +532,7 @@ def home(lg, root_page):
   </section>
 
   <!-- 5. O criador -->
-  <section class="section t-creme" id="sobre" data-reveal aria-labelledby="createur-title">
+  <section class="section t-creme" id="sobre" aria-labelledby="createur-title">
     <div class="container">
       <div class="split split-wide" style="align-items:center;">
         <div class="media-4x5" style="position:relative; overflow:hidden; border:1px solid var(--areia); background:var(--chocolate);">
@@ -554,7 +554,7 @@ def home(lg, root_page):
   </section>
 
   <!-- 6. Contato : WhatsApp, e-mail e formulário que prepara a mensagem -->
-  <section class="section t-chocolate" id="contato" data-reveal aria-labelledby="contact-title">
+  <section class="section t-chocolate" id="contato" aria-labelledby="contact-title">
     <div class="container contact-grid">
       <div class="stack-8">
         <div class="stack-3">

@@ -118,14 +118,157 @@
     closeLangs(); if (open) open.focus();
   });
 
-  /* ---------- Aparição das seções (uma vez) ---------- */
+  /* ---------- Animação dos textos surgindo do chão ao passar o scroll ---------- */
   if (!reduceMotion && 'IntersectionObserver' in w) {
-    var vh = w.innerHeight, rev = d.querySelectorAll('[data-reveal]');
-    rev.forEach(function (el) { if (el.getBoundingClientRect().top > vh) el.classList.add('will-reveal'); });
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-visible'); io.unobserve(en.target); } });
-    }, { rootMargin: '0px 0px -8% 0px' });
-    rev.forEach(function (el) { io.observe(el); });
+    var textSelectors = [
+      // Hero
+      '.hero-content > h1',
+      '.hero-content > .display-hero',
+      '.hero-content > .hero-lead',
+      '.hero-cta-group',
+      '.hero-sublink',
+      // Cabeçalhos de seção e títulos
+      '.section-head .eyebrow',
+      '.section-head h2',
+      '.section-head .display-xl',
+      '.section-head .display',
+      '.section-head p',
+      '.section-head .lead',
+      '.section-head .link-arrow',
+      // Bento cards e notas
+      '.home-bento .bento-card',
+      '.home-bands-note',
+      // Serviços e pacotes
+      '.services .service',
+      '.home-services-note',
+      '.combos-grid .combo-card',
+      // Abordagem / passos / bloco de citação
+      '.home-steps > div',
+      '.split > figure.block',
+      // Sobre / O criador
+      '#sobre .media-4x5',
+      '#sobre .stack-3 .eyebrow',
+      '#sobre .stack-3 h2',
+      '#sobre .stack-8 p',
+      // Contato e formulário
+      '#contato .stack-8 .eyebrow',
+      '#contato .stack-8 h2',
+      '#contato .stack-8 p',
+      '#contato .stack-8 .actions',
+      '#contato .contact-lines',
+      '.contact-form .stack-2',
+      '.contact-form .fields',
+      '.contact-form fieldset',
+      '.contact-form .field',
+      '.contact-form .checkbox',
+      '.contact-form .actions',
+      '.contact-form > p.small',
+      // Rodapé
+      '.footer-cols > div',
+      '.wordmark-wrap',
+      // Páginas legais e institucionais
+      '.breadcrumb',
+      '#legal-title',
+      '.legal-layout .legal-nav',
+      '.legal > section',
+      // Fallback abrangente para títulos e parágrafos principais
+      'main h1',
+      'main h2',
+      'main h3',
+      'main p.lead',
+      'main p.measure',
+      'main blockquote'
+    ];
+
+    // Coleta elementos únicos
+    var rawEls = d.querySelectorAll(textSelectors.join(', '));
+    var candidateEls = [];
+    rawEls.forEach(function (el) {
+      if (candidateEls.indexOf(el) === -1) candidateEls.push(el);
+    });
+
+    // Filtra para evitar animação duplicada/aninhada se um ancestral já está animando
+    var targets = [];
+    candidateEls.forEach(function (el) {
+      var p = el.parentElement;
+      var hasAncestor = false;
+      while (p && p !== d.body) {
+        if (candidateEls.indexOf(p) !== -1) {
+          hasAncestor = true;
+          break;
+        }
+        p = p.parentElement;
+      }
+      if (!hasAncestor) targets.push(el);
+    });
+
+    // Atribui atraso escalonado (stagger) para elementos irmãos
+    targets.forEach(function (el) {
+      el.classList.add('text-rise');
+      var parent = el.parentElement;
+      var idx = 0;
+      if (parent) {
+        idx = parent.__riseCount || 0;
+        parent.__riseCount = idx + 1;
+      }
+      var delay = Math.min(idx * 75, 380);
+      if (delay > 0) {
+        el.style.setProperty('--rise-delay', delay + 'ms');
+      }
+    });
+
+    // Observer para disparar quando os textos entram na visão ao rolar o scroll
+    var vh = w.innerHeight;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-risen');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.05
+    });
+
+    // Separa elementos do topo (como hero) dos elementos abaixo do scroll
+    var topElements = [];
+    targets.forEach(function (el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < vh && rect.bottom > 0) {
+        topElements.push(el);
+      } else {
+        io.observe(el);
+      }
+    });
+
+    function revealTop() {
+      topElements.forEach(function (el) {
+        el.classList.add('is-risen');
+      });
+    }
+
+    if (d.documentElement.classList.contains('has-preloader')) {
+      w.addEventListener('soft-preloader-done', function () {
+        setTimeout(revealTop, 90);
+      }, { once: true });
+      setTimeout(revealTop, 2700);
+    } else {
+      setTimeout(revealTop, 60);
+    }
+
+    // Suporte caso cards ou itens sejam inseridos dinamicamente
+    w.SOFT_OBSERVE_RISE = function (container) {
+      if (!container) return;
+      var newEls = container.querySelectorAll('.card-project, .tile, .bento-card');
+      newEls.forEach(function (el, i) {
+        if (!el.classList.contains('text-rise')) {
+          el.classList.add('text-rise');
+          el.style.setProperty('--rise-delay', Math.min(i * 60, 300) + 'ms');
+          io.observe(el);
+        }
+      });
+    };
   }
 
   /* ---------- Capas leves com hover intent inteligente (zero travamento) ---------- */

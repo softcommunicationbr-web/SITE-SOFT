@@ -56,6 +56,7 @@
     var list = [];
     ['grid-1', 'grid-2', 'grid-3', 'grid-4'].forEach(function (pl) { C.byPlacement(items, pl).forEach(function (i) { list.push(i); }); });
     host.innerHTML = list.map(card).join('');
+    if (w.SOFT_OBSERVE_RISE) w.SOFT_OBSERVE_RISE(host);
     var sec = d.getElementById('selecao');
   }
   function renderBands(items) {
