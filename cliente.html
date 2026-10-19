@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title id="page-title">Espace Client · Soft Communication</title>
+<meta name="description" content="Espace exclusif et sécurisé du projet livré par Soft Communication.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="assets/brand/soft-simbolo-tiki-chocolate.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+  body {
+    background: #140E0A;
+    color: var(--creme);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .client-header {
+    background: rgba(26, 18, 15, 0.92);
+    border-bottom: 1px solid rgba(216, 200, 176, 0.2);
+    backdrop-filter: blur(16px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .client-header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .client-badge-secure {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(216, 200, 176, 0.12);
+    border: 1px solid rgba(216, 200, 176, 0.25);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--areia);
+  }
+  .client-hero {
+    padding: 60px 24px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .client-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .client-company-eyebrow {
+    color: var(--areia);
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .client-main-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.1;
+    font-weight: 500;
+    color: var(--creme);
+  }
+  .client-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: #1F3A27;
+    color: #4ADE80;
+    border: 1px solid #4ADE80;
+  }
+  .client-status-badge.is-production {
+    background: #3B2A10;
+    color: #FBBF24;
+    border-color: #FBBF24;
+  }
+
+  /* Etapas do Projeto */
+  .timeline-card {
+    background: rgba(30, 22, 18, 0.85);
+    border: 1px solid rgba(216, 200, 176, 0.18);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 36px;
+  }
+  .timeline-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    position: relative;
+  }
+  @media (max-width: 768px) {
+    .timeline-steps { grid-template-columns: 1fr; }
+  }
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .step-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--areia);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .step-item.is-done .step-icon {
+    background: #25D366;
+    border-color: #25D366;
+    color: #000;
+  }
+  .step-item.is-active .step-icon {
+    background: var(--areia);
+    border-color: var(--creme);
+    color: var(--chocolate);
+    box-shadow: 0 0 10px rgba(216, 200, 176, 0.5);
+  }
+  .step-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--creme);
+  }
+  .step-desc {
+    font-size: 11px;
+    color: var(--areia);
+    margin-top: 2px;
+  }
+
+  /* Player & Grid Principal */
+  .client-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1.2fr;
+    gap: 32px;
+  }
+  @media (max-width: 991px) {
+    .client-grid { grid-template-columns: 1fr; }
+  }
+  .video-card {
+    background: rgba(30, 22, 18, 0.85);
+    border: 1px solid rgba(216, 200, 176, 0.2);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .video-player-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+  .video-player-wrap video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .video-details {
+    padding: 24px;
+  }
+  .video-details h2 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    color: var(--creme);
+    margin-bottom: 8px;
+  }
+  .video-details p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--areia);
+  }
+
+  /* Painel lateral de Entregáveis */
+  .deliverables-card {
+    background: rgba(30, 22, 18, 0.85);
+    border: 1px solid rgba(216, 200, 176, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .deliverable-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .deliverable-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(216, 200, 176, 0.15);
+    border-radius: 8px;
+  }
+  .deliv-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .deliv-icon {
+    font-size: 18px;
+  }
+  .deliv-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--creme);
+  }
+  .deliv-size {
+    font-size: 11px;
+    color: var(--areia);
+  }
+  .deliv-btn {
+    padding: 6px 14px;
+    font-size: 11px;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--areia);
+    color: var(--chocolate);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .deliv-btn:hover {
+    background: var(--creme);
+    transform: scale(1.04);
+  }
+
+  @media (max-width: 480px) {
+    .client-shell { padding: 16px 12px 64px 12px; }
+    .client-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .client-title-row { gap: 14px; margin-bottom: 24px; }
+    .deliverable-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .deliv-btn { width: 100%; text-align: center; min-height: 42px; display: inline-flex; align-items: center; justify-content: center; }
+    .timeline-card, .video-card, .deliverables-card { padding: 18px 14px; border-radius: 12px; }
+  }
+
+  /* Card do Gestor / Contato Direto */
+  .manager-box {
+    margin-top: auto;
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(59, 42, 32, 0.4);
+    border: 1px solid rgba(216, 200, 176, 0.25);
+  }
+  .manager-title {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--areia);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .manager-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .manager-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid var(--areia);
+  }
+  .manager-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--creme);
+  }
+  .manager-role {
+    font-size: 12px;
+    color: var(--areia);
+  }
+  .btn-contact-manager {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 9999px;
+    background: #25D366;
+    color: #000;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+  .btn-contact-manager:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+  }
+
+  .client-footer {
+    margin-top: auto;
+    border-top: 1px solid rgba(216, 200, 176, 0.15);
+    padding: 28px 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--areia);
+  }
+</style>
+</head>
+<body>
+
+<header class="client-header">
+  <div class="client-header-container">
+    <a href="index.html" aria-label="Soft Communication Accueil">
+      <img src="assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="120" height="38">
+    </a>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="client-badge-secure">🔒 Espace Privé Client</span>
+      <a href="admin/demandes.html" class="btn btn-outline btn-small" id="btn-back-admin" style="display:none; border-radius:9999px; font-size:11px;">Retour au Panneau</a>
+    </div>
+  </div>
+</header>
+
+<main class="client-hero">
+  <div class="client-title-row">
+    <div>
+      <p class="client-company-eyebrow" id="c-eyebrow">Projet Exclusif · Formule Souscrite</p>
+      <h1 class="client-main-title" id="c-client-name">Hôtel Polynesian Sun Resort</h1>
+      <p class="small" id="c-combo-type" style="color:var(--areia); margin-top:6px; font-size:14px;">Formule 01 : Cinéma Branding &amp; Présence Digitale Complète</p>
+    </div>
+    <div>
+      <span class="client-status-badge" id="c-status-badge">✓ Contrat Validé &amp; En Production</span>
+    </div>
+  </div>
+
+  <!-- Barra de Etapas do Projeto -->
+  <div class="timeline-card">
+    <div class="timeline-steps">
+      <div class="step-item is-done">
+        <div class="step-icon">✓</div>
+        <div>
+          <div class="step-label">1. Cadrage &amp; Formule</div>
+          <div class="step-desc">Validé et signé</div>
+        </div>
+      </div>
+      <div class="step-item is-done">
+        <div class="step-icon">✓</div>
+        <div>
+          <div class="step-label">2. Tournage &amp; Prises de vue</div>
+          <div class="step-desc">Polynésie française (4K)</div>
+        </div>
+      </div>
+      <div class="step-item is-active">
+        <div class="step-icon">3</div>
+        <div>
+          <div class="step-label">3. Montage &amp; Étalonnage</div>
+          <div class="step-desc">Masterisation en cours</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-icon">4</div>
+        <div>
+          <div class="step-label">4. Livraison Finale</div>
+          <div class="step-desc">Téléchargements &amp; Cessions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conteúdo Principal: Player + Entregáveis -->
+  <div class="client-grid">
+    <div class="video-card">
+      <div class="video-player-wrap">
+        <video id="c-video" controls playsinline poster="assets/posters/preview-30fps-1-hero.jpg" src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm"></video>
+      </div>
+      <div class="video-details">
+        <h2 id="c-project-headline">Film Officiel de Présentation · Aperçu du Montage</h2>
+        <p id="c-project-description">
+          Production cinématographique captée en lumière naturelle. Cet aperçu inclut l’étalonnage exclusif DaVinci Resolve, une bande sonore sous licence et les déclinaisons optimisées pour vos canaux digitaux.
+        </p>
+      </div>
+    </div>
+
+    <div class="deliverables-card">
+      <div>
+        <h3 class="eyebrow" style="color:var(--areia); margin-bottom:12px;">Livrables de la Formule</h3>
+        <p class="small" style="color:var(--creme); margin-bottom:16px;">Fichiers définitifs et éléments inclus dans votre commande :</p>
+        <div class="deliverable-list" id="deliverables-container">
+          <div class="deliverable-item">
+            <div class="deliv-info">
+              <span class="deliv-icon">🎬</span>
+              <div>
+                <div class="deliv-title">Film Master 4K (ProRes + H.265)</div>
+                <div class="deliv-size">Résolution 3840×2160 · 2min14s</div>
+              </div>
+            </div>
+            <a class="deliv-btn" id="deliv-btn-master" href="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" target="_blank" rel="noopener" download>Télécharger</a>
+          </div>
+
+          <div class="deliverable-item">
+            <div class="deliv-info">
+              <span class="deliv-icon">📱</span>
+              <div>
+                <div class="deliv-title">Pack 12x Reels / Shorts (9:16)</div>
+                <div class="deliv-size">Prêts pour Instagram &amp; TikTok</div>
+              </div>
+            </div>
+            <a class="deliv-btn" href="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/soft-motion-fr-9x16-60fps-1.webm" target="_blank" rel="noopener" download>Télécharger</a>
+          </div>
+
+          <div class="deliverable-item">
+            <div class="deliv-info">
+              <span class="deliv-icon">📸</span>
+              <div>
+                <div class="deliv-title">Galerie Still Photographique (45 clichés)</div>
+                <div class="deliv-size">Haute résolution pour presse &amp; web</div>
+              </div>
+            </div>
+            <a class="deliv-btn" href="assets/posters/hero-meadow-sunrise.jpg" target="_blank" rel="noopener" download>Télécharger</a>
+          </div>
+
+          <div class="deliverable-item">
+            <div class="deliv-info">
+              <span class="deliv-icon">📄</span>
+              <div>
+                <div class="deliv-title">Certificat de Cession &amp; Licence Musicale</div>
+                <div class="deliv-size">Usage commercial mondial sans restriction</div>
+              </div>
+            </div>
+            <a class="deliv-btn" href="assets/brand/soft-horizontal-creme.svg" target="_blank" rel="noopener">Voir la Licence</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="manager-box">
+        <p class="manager-title">Direction de votre Projet</p>
+        <div class="manager-info">
+          <img class="manager-avatar" src="assets/brand/calebe.jpg" alt="Calebe · Direction Créative">
+          <div>
+            <div class="manager-name">Calebe</div>
+            <div class="manager-role">Direction Créative &amp; Post-Production</div>
+          </div>
+        </div>
+        <a class="btn-contact-manager" href="https://wa.me/68987043112?text=Bonjour%20Calebe%2C%20je%20consulte%20mon%20espace%20client%20et%20je%20souhaite%20%C3%A9changer%20sur%20le%20projet." target="_blank" rel="noopener">
+          Échanger avec Calebe sur WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="client-footer">
+  <p>© 2026 Soft Communication · Polynésie française. Contenu confidentiel et réservé au client.</p>
+</footer>
+
+<script>
+(function() {
+  // Se for admin logado, mostra botão de retorno
+  try {
+    if (sessionStorage.getItem('soft_admin_session_auth_v1') === 'authenticated') {
+      var b = document.getElementById('btn-back-admin');
+      if (b) b.style.display = 'inline-flex';
+    }
+  } catch(e) {}
+
+  // Carrega parâmetros da URL ou do localStorage
+  var params = new URLSearchParams(window.location.search);
+  var clientId = params.get('id') || params.get('client');
+
+  if (clientId) {
+    try {
+      var stored = localStorage.getItem('soft_client_pages');
+      if (stored) {
+        var pages = JSON.parse(stored);
+        var p = pages[clientId];
+        if (p) {
+          document.title = (p.clientName || 'Client') + ' · Soft Communication';
+          document.getElementById('c-client-name').textContent = p.clientName || 'Client';
+          if (p.comboTitle) document.getElementById('c-combo-type').textContent = p.comboTitle;
+          if (p.headline) document.getElementById('c-project-headline').textContent = p.headline;
+          if (p.description) document.getElementById('c-project-description').textContent = p.description;
+          if (p.status) {
+            var badge = document.getElementById('c-status-badge');
+            badge.textContent = p.status;
+            if (p.status.toLowerCase().indexOf('livré') >= 0) {
+              badge.className = 'client-status-badge';
+            } else {
+              badge.className = 'client-status-badge is-production';
+            }
+          }
+          if (p.videoUrl) {
+            var v = document.getElementById('c-video');
+            v.src = p.videoUrl;
+            var dl = document.getElementById('deliv-btn-master');
+            if (dl) dl.href = p.videoUrl;
+          }
+        }
+      }
+    } catch(e) {}
+  }
+})();
+</script>
+</body>
+</html>

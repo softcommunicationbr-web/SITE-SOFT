@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="fr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Painel de Controle · Admin Soft Communication</title>
+<meta name="description" content="Área administrativa de demonstração : painel geral com métricas, pedidos de orçamento, projetos, alertas e gestão de mídia.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://softcommunicaiton.com/admin/index.html">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/soft-simbolo-tiki-chocolate.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/admin.css">
+<script src="../assets/js/admin-auth.js"></script>
+<style>
+  /* Anneau de focus lisible sur fond chocolat */
+  .a-side :focus-visible, .a-bottom :focus-visible, .a-mobile-head :focus-visible { outline-color: var(--areia); }
+
+  /* Propres au tableau de bord */
+  .a-bars { display: grid; gap: var(--space-4); }
+  .a-bar-row .a-bar { grid-column: 1 / -1; }
+  .a-linkbtn {
+    padding: 0; border: 0; background: transparent; color: inherit; font: inherit;
+    text-decoration: underline; text-underline-offset: 4px; cursor: pointer;
+  }
+  .a-alert-body { display: grid; gap: var(--space-1); min-width: 0; }
+  .a-alert-body .small { color: var(--areia); }
+  .a-tile .small { margin-top: var(--space-1); }
+  .a-card > .small:last-child { margin-top: calc(-1 * var(--space-2)); }
+  .a-table th, .a-table td { white-space: nowrap; }
+  .a-scroll-hint { display: none; }
+  @media (max-width: 1023px) { .a-scroll-hint { display: block; } }
+</style>
+</head>
+<body>
+<a class="skip-link btn" href="#contenu">Pular para o conteúdo</a>
+
+<div class="a-shell">
+  <aside class="a-side">
+    <a class="brand" href="index.html" aria-label="Admin Soft Communication, painel de controle">
+      <img src="../assets/brand/soft-horizontal-creme.svg" alt="" width="110" height="36">
+    </a>
+    <nav class="a-nav" aria-label="Navegação administrativa">
+      <a href="index.html" aria-current="page">Visão geral</a>
+      <a href="demandes.html">Pedidos de orçamento <span class="count" id="admin-nav-demandes-count">·</span></a>
+      <a href="clientes.html">Clients &amp; Formules <span class="count" id="admin-nav-clients-count">2</span></a>
+      <a href="projet.html">Destaques da home</a>
+      <a href="mediatheque.html">Vídeos <span class="count" data-video-count>52</span></a>
+      <a href="../index.html" target="_blank" rel="noopener" style="margin-top:auto; color:var(--areia);">Ver site público ↗</a>
+    </nav>
+    <div class="a-side-foot">
+      <div class="a-user">
+        <img src="../assets/brand/soft-simbolo-tiki-chocolate.svg" alt="">
+        <span>Administrador<br><span class="small">Proprietário</span></span>
+      </div>
+      <button type="button" class="btn btn-outline btn-small" id="btn-side-logout" style="border-color:var(--areia);color:var(--creme)">Sair</button>
+    </div>
+  </aside>
+
+  <main class="a-main" id="contenu">
+    <div class="a-mobile-head">
+      <img src="../assets/brand/soft-horizontal-creme.svg" alt="Soft Communication">
+      <span class="eyebrow" style="color:var(--areia)">Admin</span>
+    </div>
+
+    <div class="a-topbar">
+      <div>
+        <p class="eyebrow">Painel de Controle · 12 de outubro de 2026</p>
+        <h1 class="a-title" id="admin-greeting">Olá. Quatro novos pedidos de orçamento aguardam resposta.</h1>
+      </div>
+      <div class="a-topbar-actions">
+        <button type="button" class="btn btn-outline btn-small" id="btn-cache-reset-home" title="Limpar cache e sincronizar com Supabase">🔄 Resetar Cachê</button>
+        <a class="btn btn-secondary btn-small" href="mediatheque.html">Gerenciar Vídeos (52)</a>
+        <button type="button" class="btn btn-outline btn-small" id="btn-generate-report">Relatório executivo</button>
+      </div>
+    </div>
+
+    <!-- Indicadores -->
+    <section aria-labelledby="kpi-titre">
+      <h2 id="kpi-titre" class="visually-hidden">Indicadores Principais</h2>
+      <div class="a-grid a-grid-4">
+        <div class="a-tile">
+          <p class="eyebrow">Pedidos · 7 dias</p>
+          <p class="a-kpi num" id="kpi-leads-7d">4</p>
+          <p class="small">leads qualificados</p>
+        </div>
+        <div class="a-tile">
+          <p class="eyebrow">Pedidos · 30 dias</p>
+          <p class="a-kpi num" id="kpi-leads-30d">11</p>
+          <p class="small">total de contatos</p>
+        </div>
+        <div class="a-tile">
+          <p class="eyebrow">Tempo médio da 1ª resposta</p>
+          <p class="a-kpi num">6 h</p>
+          <p class="small">meta : menos de 24 h</p>
+        </div>
+        <div class="a-tile a-tile-dark">
+          <p class="eyebrow">Reuniões agendadas</p>
+          <p class="a-kpi num" id="kpi-reunioes">2</p>
+          <p class="small">próximos 7 dias</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Alertas -->
+    <section class="a-card" aria-labelledby="alertes-titre">
+      <div class="a-card-head">
+        <h2 id="alertes-titre" class="a-heading">Alertas de Atenção</h2>
+        <span class="tag">4<span class="visually-hidden"> alertas</span></span>
+      </div>
+      <ul class="a-alerts">
+        <li class="a-alert">
+          <div class="a-alert-body">
+            <strong>Pedido sem resposta há 26 horas</strong>
+            <span class="small">Pedido nº 0012 · Hotelaria de Luxo</span>
+          </div>
+          <span class="actions">
+            <span class="tag">&gt; 24 h</span>
+            <a href="demandes.html">Abrir pedido</a>
+          </span>
+        </li>
+        <li class="a-alert">
+          <div class="a-alert-body">
+            <strong>Tradução para inglês (EN) pendente</strong>
+            <span class="small">Exemplo 05 · Pacote mensal para hotel</span>
+          </div>
+          <span class="actions">
+            <a href="projet.html">Abrir projeto</a>
+          </span>
+        </li>
+        <li class="a-alert">
+          <div class="a-alert-body">
+            <strong>Projeto em rascunho há 16 dias</strong>
+            <span class="small">Exemplo 06 · Concessionária de veículos</span>
+          </div>
+          <span class="actions">
+            <a href="projet.html">Abrir projeto</a>
+          </span>
+        </li>
+        <li class="a-alert">
+          <div class="a-alert-body">
+            <strong>Link de agendamento automático não configurado</strong>
+            <span class="small">Configurações gerais</span>
+          </div>
+          <span class="actions">
+            <a href="demandes.html" class="a-linkbtn">Ver pedidos no CRM →</a>
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Audiência e Origens -->
+    <div class="a-grid a-grid-2">
+      <section class="a-card" aria-labelledby="vus-titre">
+        <div class="a-card-head">
+          <h2 id="vus-titre" class="a-heading">Projetos mais vistos · 30 dias</h2>
+        </div>
+        <ul class="a-bars">
+          <li class="a-bar-row">
+            <span>Exemplo 01 · Hotel na lagoa</span>
+            <span class="num">120 visualizações</span>
+            <div class="a-bar" role="img" aria-label="Exemplo 01 : 120 visualizações, 100% do projeto mais visto"><span style="width:100%"></span></div>
+          </li>
+          <li class="a-bar-row">
+            <span>Exemplo 03 · Villa em projeção (IA)</span>
+            <span class="num">80 visualizações</span>
+            <div class="a-bar" role="img" aria-label="Exemplo 03 : 80 visualizações, 67%"><span style="width:67%"></span></div>
+          </li>
+          <li class="a-bar-row">
+            <span>Exemplo 02 · Restaurante à beira-mar</span>
+            <span class="num">55 visualizações</span>
+            <div class="a-bar" role="img" aria-label="Exemplo 02 : 55 visualizações, 46%"><span style="width:46%"></span></div>
+          </li>
+          <li class="a-bar-row">
+            <span>Exemplo 04 · Lagoa à noite</span>
+            <span class="num">30 visualizações</span>
+            <div class="a-bar" role="img" aria-label="Exemplo 04 : 30 visualizações, 25%"><span style="width:25%"></span></div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="a-card" aria-labelledby="sources-titre">
+        <div class="a-card-head">
+          <h2 id="sources-titre" class="a-heading">Origem das visitas · 30 dias</h2>
+        </div>
+        <ul class="a-bars">
+          <li class="a-bar-row">
+            <span>Instagram &amp; Reels</span>
+            <span class="num">52 %</span>
+            <div class="a-bar" role="img" aria-label="Instagram : 52 % das visitas"><span style="width:52%"></span></div>
+          </li>
+          <li class="a-bar-row">
+            <span>Busca Orgânica</span>
+            <span class="num">31 %</span>
+            <div class="a-bar" role="img" aria-label="Busca : 31 % das visitas"><span style="width:31%"></span></div>
+          </li>
+          <li class="a-bar-row">
+            <span>Acesso Direto</span>
+            <span class="num">12 %</span>
+            <div class="a-bar" role="img" aria-label="Direto : 12 % das visitas"><span style="width:12%"></span></div>
+          </li>
+          <li class="a-bar-row">
+            <span>Campanhas UTM</span>
+            <span class="num">5 %</span>
+            <div class="a-bar" role="img" aria-label="Campanhas : 5 % das visitas"><span style="width:5%"></span></div>
+          </li>
+        </ul>
+        <p class="small">Mesure d’audience sans cookies, respectueuse de la vie privée.</p>
+      </section>
+    </div>
+
+    <!-- Reuniões e Projetos -->
+    <div class="a-grid a-grid-2">
+      <section class="a-card" aria-labelledby="rdv-titre">
+        <div class="a-card-head">
+          <h2 id="rdv-titre" class="a-heading">Próximos Agendamentos</h2>
+        </div>
+        <ul class="a-list">
+          <li>
+            <div>
+              <strong><time datetime="2026-10-14T10:00">Ter. 14 out. · 10:00</time></strong><br>
+              <span class="small">Pedido nº 0009 · Imobiliário · Chamada de vídeo</span>
+            </div>
+            <div class="actions">
+              <span class="a-status is-scheduled">Confirmado</span>
+              <a href="demandes.html" class="btn btn-outline btn-small">Ver no CRM</a>
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong><time datetime="2026-10-16T15:30">Qui. 16 out. · 15:30</time></strong><br>
+              <span class="small">Demande nº 0012 · Hôtellerie · Vidéo · Appel réservé par le client</span>
+            </div>
+            <div class="actions">
+              <span class="a-status is-scheduled">Confirmado</span>
+            </div>
+          </li>
+        </ul>
+        <p class="small">Sincronizado automaticamente com Cal.com na versão final.</p>
+      </section>
+
+      <section class="a-card" aria-labelledby="projets-titre">
+        <div class="a-card-head">
+          <h2 id="projets-titre" class="a-heading">Status dos Projetos</h2>
+        </div>
+        <ul class="a-checklist">
+          <li><span class="a-status is-published" aria-hidden="true"></span>3 publicados no ar</li>
+          <li><span class="a-status is-review" aria-hidden="true"></span>2 em revisão final</li>
+          <li><span class="a-status" aria-hidden="true"></span>1 rascunho em preparação</li>
+        </ul>
+        <div class="a-bar-row">
+          <span>Preenchimento médio dos conteúdos</span>
+          <span class="num">72 %</span>
+          <div class="a-bar" role="img" aria-label="Preenchimento médio : 72 %"><span style="width:72%"></span></div>
+        </div>
+        <p class="actions"><a class="btn btn-outline btn-small" href="projet.html">Abrir Projeto Exemplo 01</a></p>
+      </section>
+    </div>
+
+    <!-- Últimos Pedidos -->
+    <section class="a-card" aria-labelledby="demandes-titre">
+      <div class="a-card-head">
+        <h2 id="demandes-titre" class="a-heading">Últimos Pedidos de Orçamento</h2>
+      </div>
+      <p class="small a-scroll-hint">A tabela pode ser rolada horizontalmente no celular.</p>
+      <div class="a-table-wrap" tabindex="0" role="region" aria-label="Últimos pedidos, tabela com rolagem horizontal">
+        <table class="a-table">
+          <caption class="visually-hidden">Cinco últimos pedidos recebidos</caption>
+          <thead>
+            <tr>
+              <th scope="col">Nº</th>
+              <th scope="col">Necessidade</th>
+              <th scope="col">Contato</th>
+              <th scope="col">Idioma</th>
+              <th scope="col">Origem</th>
+              <th scope="col">Recebido</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody id="admin-latest-leads-tbody">
+            <tr>
+              <td class="num"><a href="demandes.html">0012</a></td>
+              <td>Filme de marca, Reels verticais</td>
+              <td>Hotelaria</td>
+              <td>PT</td>
+              <td>Instagram</td>
+              <td>há 26 h</td>
+              <td>Nouveau <span class="tag tag-dark">&gt; 24 h</span></td>
+            </tr>
+            <tr>
+              <td class="num"><a href="demandes.html">0011</a></td>
+              <td>Reels / Conteúdo UGC</td>
+              <td>Gastronomia</td>
+              <td>EN</td>
+              <td>Busca</td>
+              <td>há 2 d</td>
+              <td>Nouveau</td>
+            </tr>
+            <tr>
+              <td class="num"><a href="demandes.html">0010</a></td>
+              <td>Imobiliário IA</td>
+              <td>Imobiliário</td>
+              <td>PT</td>
+              <td>Direto</td>
+              <td>há 4 d</td>
+              <td>Qualificado</td>
+            </tr>
+            <tr>
+              <td class="num"><a href="demandes.html">0009</a></td>
+              <td>Imobiliário IA, Edição</td>
+              <td>Imobiliário</td>
+              <td>PT</td>
+              <td>Instagram</td>
+              <td>há 6 d</td>
+              <td>Reunião agendada</td>
+            </tr>
+            <tr>
+              <td class="num"><a href="demandes.html">0008</a></td>
+              <td>Filme de marca</td>
+              <td>Lifestyle</td>
+              <td>EN</td>
+              <td>Instagram</td>
+              <td>há 9 d</td>
+              <td>Orçamento enviado</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="actions"><a class="btn btn-outline btn-small" href="demandes.html">Ver todos os pedidos no funil &rarr;</a></p>
+    </section>
+
+    <!-- Automações -->
+    <section class="a-card" aria-labelledby="auto-titre">
+      <div class="a-card-head">
+        <h2 id="auto-titre" class="a-heading">Automações Ativas</h2>
+      </div>
+      <ul class="a-list small">
+        <li><span>Confirmação de recebimento imediata (PT / FR / EN)</span><span class="tag">Ativo</span></li>
+        <li><span>Alerta interno se passar de 24 h sem resposta</span><span class="tag">Ativo</span></li>
+        <li><span>Relatório semanal nas segundas-feiras</span><span class="tag tag-outline">A configurar</span></li>
+      </ul>
+      <p class="small">Regra da Soft Communication : nenhuma mensagem comercial parte para clientes sem validação prévia do proprietário.</p>
+    </section>
+
+  </main>
+</div>
+
+<nav class="a-bottom" aria-label="Navegação administrativa móvel">
+  <a href="index.html" aria-current="page">Painel</a>
+  <a href="demandes.html">Pedidos</a>
+  <a href="clientes.html">Clients</a>
+  <a href="projet.html">Destaques</a>
+  <a href="mediatheque.html">Vídeos</a>
+</nav>
+
+<!-- Modal: Relatório Executivo -->
+<dialog class="modal-dialog" id="modal-report" style="border:1px solid var(--areia);border-radius:var(--radius-md);background:var(--creme);color:var(--chocolate);max-width:600px;width:90vw;padding:var(--space-6);">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4);">
+    <h3 class="a-heading" style="margin:0;">Relatório Executivo Semanal</h3>
+    <button type="button" class="btn btn-outline btn-small" id="btn-close-report" style="padding:2px 8px;">✕</button>
+  </div>
+  <div id="report-content" class="stack-3" style="font-size:14px;line-height:1.6;">
+    <p><strong>Soft Communication · Resumo Executivo</strong></p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;background:var(--surface);padding:14px;border:1px solid var(--areia);border-radius:8px;">
+      <div>Pedidos recebidos: <strong id="rep-total">11</strong></div>
+      <div>Leads qualificados: <strong id="rep-novos">4</strong></div>
+      <div>Reuniões marcadas: <strong id="rep-reu">2</strong></div>
+      <div>Clients avec Formule : <strong id="rep-combos">2</strong></div>
+    </div>
+    <p class="small" style="color:var(--ink-muted);margin-top:8px;">Pipeline atualizado em tempo real com o banco de dados Supabase e o gestor de clientes.</p>
+  </div>
+  <div class="actions" style="margin-top:var(--space-5);">
+    <button type="button" class="btn btn-primary" onclick="window.print()">Imprimer / Exporter PDF</button>
+    <button type="button" class="btn btn-outline" id="btn-download-report-json">Exportar Relatório (JSON)</button>
+  </div>
+</dialog>
+
+<div class="a-toast" id="toast" hidden role="status" aria-live="polite"></div>
+<a class="maquette-banner" href="../index.html">Ver o site</a>
+
+<script>
+(function() {
+  'use strict';
+  var SUPABASE_URL = 'https://xvabghgvrhpnyywpmodb.supabase.co';
+  var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YWJnaGd2cmhwbnl5d3Btb2RiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3NTgwNTEsImV4cCI6MjEwNzMzNDA1MX0.d0CNiaTYEnpsCY4N9qS6HNIxa3u7DYtzAOErvZHzC0w';
+
+  fetch(SUPABASE_URL + '/rest/v1/pedidos_orcamento?order=id.desc', {
+    headers: {
+      'apikey': SUPABASE_ANON,
+      'Authorization': 'Bearer ' + ((window.AdminUI && window.AdminUI.token && window.AdminUI.token()) || SUPABASE_ANON)
+    }
+  })
+  .then(function(res) {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return res.json();
+  })
+  .then(function(leads) {
+    if (!leads || !leads.length) return;
+
+    var total = leads.length;
+    var novos = leads.filter(function(l){ return l.status === 'novo'; }).length;
+    var reunioes = leads.filter(function(l){ return l.status === 'reuniao'; }).length;
+
+    var now = new Date();
+    var d7 = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
+    var d30 = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+    var leads7d = leads.filter(function(l){ return new Date(l.created_at) >= d7; }).length;
+    var leads30d = leads.filter(function(l){ return new Date(l.created_at) >= d30; }).length;
+
+    var navCount = document.getElementById('admin-nav-demandes-count');
+    if (navCount) navCount.textContent = total;
+
+    var greeting = document.getElementById('admin-greeting');
+    if (greeting) {
+      if (novos === 0) {
+        greeting.textContent = 'Olá. Todos os ' + total + ' pedidos de orçamento estão em andamento ou respondidos.';
+      } else if (novos === 1) {
+        greeting.textContent = 'Bonjour. 1 nouvelle demande de devis attend votre réponse.';
+      } else {
+        greeting.textContent = 'Olá. ' + novos + ' novos pedidos de orçamento aguardam resposta.';
+      }
+    }
+
+    var kpi7 = document.getElementById('kpi-leads-7d');
+    if (kpi7) kpi7.textContent = leads7d;
+
+    var kpi30 = document.getElementById('kpi-leads-30d');
+    if (kpi30) kpi30.textContent = leads30d;
+
+    var kpiReu = document.getElementById('kpi-reunioes');
+    if (kpiReu) kpiReu.textContent = reunioes;
+
+    var tbody = document.getElementById('admin-latest-leads-tbody');
+    if (tbody) {
+      var latest5 = leads.slice(0, 5);
+      var rowsHtml = '';
+      latest5.forEach(function(l) {
+        var servStr = Array.isArray(l.servicos) ? l.servicos.join(', ') : (l.servicos || 'Produção');
+        var statusBadge = '';
+        if (l.status === 'novo') {
+          statusBadge = 'Novo <span class="tag tag-dark">&gt; 24 h</span>';
+        } else if (l.status === 'qualificado') {
+          statusBadge = '<span class="tag">Qualificado</span>';
+        } else if (l.status === 'reuniao') {
+          statusBadge = '<span class="tag">Reunião agendada</span>';
+        } else if (l.status === 'orcamento_enviado') {
+          statusBadge = '<span class="tag">Orçamento enviado</span>';
+        } else if (l.status === 'fechado') {
+          statusBadge = '<span class="tag tag-outline">Contrato Fechado</span>';
+        } else {
+          statusBadge = '<span class="tag tag-outline">Perdido</span>';
+        }
+
+        var createdDate = new Date(l.created_at);
+        var diffHours = Math.round((now - createdDate) / (1000 * 60 * 60));
+        var tempoTexto = diffHours < 24 ? ('há ' + diffHours + ' h') : ('há ' + Math.round(diffHours / 24) + ' d');
+
+        rowsHtml += '<tr>' +
+          '<td class="num"><a href="demandes.html?id=' + l.id + '">' + l.numero + '</a></td>' +
+          '<td>' + l.cliente_nome + '<br><span class="small" style="opacity:0.8">' + servStr + '</span></td>' +
+          '<td>' + (l.cliente_telefone || l.cliente_email || '—') + '</td>' +
+          '<td>' + (l.idioma || 'PT').toUpperCase() + '</td>' +
+          '<td>' + (l.origem || 'Site') + '</td>' +
+          '<td>' + tempoTexto + '</td>' +
+          '<td>' + statusBadge + '</td>' +
+        '</tr>';
+      });
+      tbody.innerHTML = rowsHtml;
+    }
+  })
+  .catch(function(err) {
+    console.warn('Erro ao carregar do Supabase:', err);
+  });
+
+  // Contador de clientes / combos fechados
+  try {
+    var raw = localStorage.getItem('soft_client_pages');
+    if (raw) {
+      var cp = JSON.parse(raw);
+      var cCount = Object.keys(cp).length;
+      var cNav = document.getElementById('admin-nav-clients-count');
+      if (cNav) cNav.textContent = cCount;
+      var repC = document.getElementById('rep-combos');
+      if (repC) repC.textContent = cCount;
+    }
+  } catch(e) {}
+
+  // Relatório Executivo
+  var btnRep = document.getElementById('btn-generate-report');
+  var modalRep = document.getElementById('modal-report');
+  var btnCloseRep = document.getElementById('btn-close-report');
+  if (btnRep && modalRep) {
+    btnRep.addEventListener('click', function() {
+      if (typeof modalRep.showModal === 'function') modalRep.showModal();
+    });
+  }
+  if (btnCloseRep && modalRep) {
+    btnCloseRep.addEventListener('click', function() { modalRep.close(); });
+  }
+
+  var btnDownRep = document.getElementById('btn-download-report-json');
+  if (btnDownRep) {
+    btnDownRep.addEventListener('click', function() {
+      var data = {
+        data: new Date().toISOString(),
+        relatorio: 'Soft Communication · Relatório Executivo',
+        pedidos_total: document.getElementById('rep-total') ? document.getElementById('rep-total').textContent : '11',
+        novos_leads: document.getElementById('rep-novos') ? document.getElementById('rep-novos').textContent : '4',
+        combos_fechados: document.getElementById('rep-combos') ? document.getElementById('rep-combos').textContent : '2'
+      };
+      var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'relatorio-soft-' + new Date().toISOString().slice(0, 10) + '.json';
+      a.click();
+    });
+  }
+
+  // Reset de cache no dashboard
+  var btnCacheHome = document.getElementById('btn-cache-reset-home');
+  if (btnCacheHome) {
+    btnCacheHome.addEventListener('click', function() {
+      btnCacheHome.disabled = true;
+      btnCacheHome.textContent = '🔄 Recarregando…';
+      try {
+        localStorage.removeItem('soft_catalog_draft_v2');
+        sessionStorage.removeItem('soft_catalog_cache');
+      } catch(e) {}
+      if (window.SoftCatalog && window.SoftCatalog.resetCache) {
+        window.SoftCatalog.resetCache(true).then(function() {
+          btnCacheHome.disabled = false;
+          btnCacheHome.textContent = '🔄 Resetar Cachê';
+          alert('Cache réinitialisé avec succès ! Synchronisé directement avec Supabase.');
+          window.location.reload();
+        }).catch(function() {
+          btnCacheHome.disabled = false;
+          btnCacheHome.textContent = '🔄 Resetar Cachê';
+          window.location.reload();
+        });
+      } else {
+        setTimeout(function() {
+          btnCacheHome.disabled = false;
+          btnCacheHome.textContent = '🔄 Resetar Cachê';
+          alert('Cache local nettoyé avec succès.');
+          window.location.reload();
+        }, 500);
+      }
+    });
+  }
+
+  // Logout
+  var btnLogout = document.getElementById('btn-side-logout');
+  if (btnLogout) {
+    btnLogout.addEventListener('click', function() {
+      try { sessionStorage.removeItem('soft_admin_session_auth_v1'); } catch(e) {}
+      window.location.reload();
+    });
+  }
+})();
+</script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/data/catalog.js"></script>
+<script src="../assets/js/soft-catalog.js"></script>
+<script src="../assets/js/admin.js"></script>
+<script src="../assets/js/admin-core.js"></script>
+</body>
+</html>

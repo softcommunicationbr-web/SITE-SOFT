@@ -1,0 +1,148 @@
+/* ============================================================
+   Soft Communication — jetons du design system (CSS)
+   Source : design system officiel (tokens.json v1, octobre 2026)
+   + « Direção Web » p. 4 (échelle web, display-hero).
+   Quatre couleurs, aucune autre : pas de teinte intermédiaire,
+   pas de transparence, pas de dégradé, pas d'ombre.
+   ============================================================ */
+
+:root {
+  /* Couleurs de la marque */
+  --chocolate: #3B2A20;
+  --creme: #F3EDE3;
+  --areia: #D8C8B0;
+  --quase-preto: #1A1A1A;
+
+  /* Familles */
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-sans: Poppins, "Helvetica Neue", Arial, sans-serif;
+
+  /* Échelle typographique (taille / interligne) */
+  --fs-display-hero: clamp(56px, 7.8vw, 112px);  /* 112/108 — hero display */
+  --lh-display-hero: 0.965;
+  --fs-display-xl: clamp(44px, 5vw, 72px);        /* 72/76, mobile 44/48 */
+  --lh-display-xl: 1.056;
+  --fs-display: clamp(36px, 3.4vw, 48px);         /* 48/54 */
+  --lh-display: 1.125;
+  --fs-heading: 32px;  --lh-heading: 40px;         /* 600 */
+  --fs-quote: 28px;    --lh-quote: 38px;           /* italique */
+  --fs-title: 20px;    --lh-title: 28px;           /* 500 */
+  --fs-body: 16px;     --lh-body: 26px;
+  --fs-small: 14px;    --lh-small: 22px;
+  --fs-eyebrow: 12px;  --lh-eyebrow: 16px;  --ls-eyebrow: 0.32em;
+  --fs-button: 13px;   --lh-button: 16px;   --ls-button: 0.16em;
+
+  /* Espace : base 4 px */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --space-28: 112px;
+  --space-32: 128px;
+  --space-40: 160px;
+  --gutter: var(--space-16);     /* marges de page : 64 px ordinateur, 24 px mobile */
+  --section: clamp(108px, 11vw, 168px);    /* espacement luxueux entre sections */
+  --header-h: 80px;
+
+  /* Forme — SEM RADIUS (Bordas retas arquiteturais) */
+  --radius-xs: 0px;      /* botões e campos */
+  --radius-md: 0px;      /* cartões e blocos de cor */
+  --radius-lg: 0px;      /* mídias */
+  --radius-full: 0px;    /* etiquetas e pills */
+
+  /* Mouvement */
+  --dur: 400ms;
+  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+@media (max-width: 767px) {
+  :root {
+    --gutter: var(--space-6);
+    --section: clamp(68px, 9vw, 96px);
+    --header-h: 64px;
+    --lh-display-hero: 1;            /* 56/56 */
+    --lh-display-xl: 1.09;           /* 44/48 */
+    --fs-heading: 28px; --lh-heading: 36px;
+    --fs-quote: 24px;   --lh-quote: 34px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --gutter: var(--space-4);
+    --fs-display-hero: clamp(38px, 11vw, 52px);
+    --fs-display-xl: clamp(32px, 8.5vw, 42px);
+    --fs-display: clamp(26px, 7vw, 36px);
+  }
+}
+
+/* ------------------------------------------------------------
+   Thèmes de section : jetons sémantiques
+   (mêmes noms que tokens.json : surface, ink, primary…)
+   Paires interdites : areia sur creme (1,4:1), chocolate sur quase-preto (1,3:1).
+   ------------------------------------------------------------ */
+:root,
+.t-creme {
+  --surface: var(--creme);
+  --surface-alt: var(--areia);
+  --ink: var(--chocolate);
+  --ink-accent: var(--chocolate);
+  --line: var(--areia);           /* filet décoratif seulement */
+  --line-strong: var(--chocolate);
+  --rule: var(--quase-preto);
+  --primary: var(--chocolate);
+  --on-primary: var(--creme);
+  --secondary: var(--areia);
+  --on-secondary: var(--chocolate);
+  --focus-ring: var(--quase-preto);
+}
+
+.t-chocolate {
+  --surface: var(--chocolate);
+  --surface-alt: var(--areia);
+  --ink: var(--creme);
+  --ink-accent: var(--areia);
+  --line: var(--areia);
+  --line-strong: var(--areia);
+  --rule: var(--areia);
+  --primary: var(--creme);
+  --on-primary: var(--chocolate);
+  --secondary: var(--areia);
+  --on-secondary: var(--chocolate);
+  --focus-ring: var(--areia);
+}
+
+.t-noir {
+  --surface: var(--quase-preto);
+  --surface-alt: var(--areia);
+  --ink: var(--creme);
+  --ink-accent: var(--areia);
+  --line: var(--areia);
+  --line-strong: var(--areia);
+  --rule: var(--areia);
+  --primary: var(--creme);
+  --on-primary: var(--chocolate);
+  --secondary: var(--areia);
+  --on-secondary: var(--chocolate);
+  --focus-ring: var(--areia);
+}
+
+.t-areia {
+  --surface: var(--areia);
+  --surface-alt: var(--creme);
+  --ink: var(--chocolate);
+  --ink-accent: var(--chocolate);
+  --line: var(--chocolate);
+  --line-strong: var(--chocolate);
+  --rule: var(--quase-preto);
+  --primary: var(--chocolate);
+  --on-primary: var(--creme);
+  --secondary: var(--creme);
+  --on-secondary: var(--chocolate);
+  --focus-ring: var(--quase-preto);
+}

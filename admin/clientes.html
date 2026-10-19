@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="fr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Clients &amp; Formules Fechados · Admin Soft Communication</title>
+<meta name="description" content="Gestão de clientes com contratos e combos fechados. Cada cliente possui sua própria página exclusiva gerada automaticamente.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://softcommunicaiton.com/admin/clientes.html">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/soft-simbolo-tiki-chocolate.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/admin.css">
+<script src="../assets/js/admin-auth.js"></script>
+<style>
+  .client-card {
+    background: var(--creme);
+    border: 1px solid var(--areia);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .client-card:hover {
+    border-color: var(--chocolate);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+  .client-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .client-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--chocolate);
+    line-height: 1.2;
+  }
+  .client-combo-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    background: var(--areia);
+    color: var(--chocolate);
+    margin-top: 4px;
+  }
+  .client-status-pill {
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .client-status-pill.is-done {
+    background: #E6F7ED;
+    color: #166534;
+    border: 1px solid #BBF7D0;
+  }
+  .client-status-pill.is-prod {
+    background: #FEF3C7;
+    color: #92400E;
+    border: 1px solid #FDE68A;
+  }
+  .client-card-meta {
+    font-size: 12px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+  .client-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: var(--space-3);
+    border-top: 1px solid rgba(59, 42, 32, 0.1);
+  }
+  .modal-dialog {
+    border: 1px solid var(--areia);
+    border-radius: var(--radius-md);
+    background: var(--creme);
+    color: var(--chocolate);
+    max-width: 580px;
+    width: 90vw;
+    padding: var(--space-6);
+  }
+  .modal-dialog::backdrop {
+    background: rgba(23, 17, 14, 0.7);
+    backdrop-filter: blur(4px);
+  }
+</style>
+</head>
+<body>
+<a class="skip-link btn" href="#contenu">Pular para o conteúdo</a>
+
+<div class="a-shell">
+  <aside class="a-side">
+    <a class="brand" href="index.html" aria-label="Admin Soft Communication, painel de controle">
+      <img src="../assets/brand/soft-horizontal-creme.svg" alt="" width="110" height="36">
+    </a>
+    <nav class="a-nav" aria-label="Navegação administrativa">
+      <a href="index.html">Visão geral</a>
+      <a href="demandes.html">Pedidos de orçamento <span class="count" id="admin-nav-demandes-count">·</span></a>
+      <a href="clientes.html" aria-current="page">Clients &amp; Formules <span class="count" id="admin-nav-clients-count">2</span></a>
+      <a href="projet.html">Destaques da home</a>
+      <a href="mediatheque.html">Vídeos <span class="count" data-video-count>52</span></a>
+      <a href="../index.html" target="_blank" rel="noopener" style="margin-top:auto; color:var(--areia);">Ver site público ↗</a>
+    </nav>
+    <div class="a-side-foot">
+      <div class="a-user">
+        <img src="../assets/brand/soft-simbolo-tiki-chocolate.svg" alt="">
+        <span>Administrador<br><span class="small">Proprietário</span></span>
+      </div>
+      <button type="button" class="btn btn-outline btn-small" id="btn-side-logout" style="border-color:var(--areia);color:var(--creme)">Sair</button>
+    </div>
+  </aside>
+
+  <main class="a-main" id="contenu">
+    <div class="a-mobile-head">
+      <img src="../assets/brand/soft-horizontal-creme.svg" alt="Soft Communication">
+      <span class="eyebrow" style="color:var(--areia)">Admin</span>
+    </div>
+
+    <div class="a-topbar">
+      <div>
+        <p class="eyebrow">Gestão de Projetos &amp; Entregas</p>
+        <h1 class="a-title">Clients &amp; Espaces Privés par Formule</h1>
+        <p class="small">Chaque client ayant souscrit une formule dispose automatiquement d’un espace privé avec statut, lecteur vidéo et livrables finaux.</p>
+      </div>
+      <div class="a-topbar-actions">
+        <button type="button" class="btn btn-primary btn-small" id="btn-open-create-client">+ Nouveau Client &amp; Créer un Espace</button>
+      </div>
+    <!-- Busca e Filtros de Clientes -->
+    <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between; margin:20px 0 16px;">
+      <div style="flex:1 1 300px; max-width:460px;">
+        <input type="search" id="client-search" placeholder="Buscar clientes por nome, combo, status ou projeto..." class="input" style="width:100%; min-height:40px; border-radius:9999px; padding:8px 18px; font-size:13px;">
+      </div>
+      <div class="small" id="client-count-badge" style="color:var(--areia);">Affichage des clients</div>
+    </div>
+
+    <!-- Grid de Clientes e Páginas Criadas -->
+    <div class="a-grid a-grid-3" id="clients-grid" style="margin-top:var(--space-2);">
+      <!-- Preenchido via JavaScript -->
+    </div>
+  </main>
+</div>
+
+<!-- Modal: Criar / Editar Página de Cliente -->
+<dialog class="modal-dialog" id="modal-client">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-4);">
+    <h3 class="a-heading" id="modal-client-title">Créer un Nouvel Espace Client</h3>
+    <button type="button" class="btn btn-outline btn-small" id="btn-close-modal-client" style="padding:2px 8px;">✕</button>
+  </div>
+  <form id="form-client" class="stack-3">
+    <input type="hidden" id="fc-id">
+    <div class="field">
+      <label for="fc-name" class="small">Nom du Client ou Entreprise *</label>
+      <input class="input" type="text" id="fc-name" required placeholder="Ex: Polynesian Sun Resort &amp; Spa">
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-3);">
+      <div class="field">
+        <label for="fc-combo" class="small">Formule Souscrite *</label>
+        <select class="select" id="fc-combo" required>
+          <option value="Formule 01 : Cinéma Branding">Formule 01 : Cinéma Branding</option>
+          <option value="Formule 02 : Présence &amp; Reels">Formule 02 : Présence &amp; Reels</option>
+          <option value="Formule 03 : Immobilier &amp; IA">Formule 03 : Immobilier &amp; IA</option>
+          <option value="Formule Sur Mesure">Formule Sur Mesure</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fc-status" class="small">Status da Produção *</label>
+        <select class="select" id="fc-status" required>
+          <option value="Contrato Fechado &amp; Em Produção">Contrato Fechado &amp; Em Produção</option>
+          <option value="Filmagem Concluída">Filmagem Concluída</option>
+          <option value="Edição &amp; Cor">Edição &amp; Cor</option>
+          <option value="100% Entregue &amp; Aprovado">100% Entregue &amp; Aprovado</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="fc-headline" class="small">Titre du Projet sur l’Espace</label>
+      <input class="input" type="text" id="fc-headline" placeholder="Ex: Filme Oficial de Apresentação · Temporada 2026">
+    </div>
+    <div class="field">
+      <label for="fc-video" class="small">URL do Vídeo Entregue (WebM ou MP4)</label>
+      <input class="input" type="url" id="fc-video" placeholder="https://... ou deixe em branco para usar prévia do portfólio">
+    </div>
+    <div class="field">
+      <label for="fc-desc" class="small">Resumo / Detalhes dos Entregáveis</label>
+      <textarea class="textarea" id="fc-desc" rows="3" placeholder="Ex: Filme institucional 4K ProRes + 12 Reels verticais + 45 fotos still tratadas..."></textarea>
+    </div>
+    <div class="actions" style="margin-top:var(--space-4);">
+      <button type="submit" class="btn btn-primary">Créer et Publier l’Espace</button>
+      <button type="button" class="btn btn-outline" id="btn-cancel-modal-client">Annuler</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="a-toast" id="toast" role="status" hidden></div>
+
+<script>
+(function() {
+  'use strict';
+  var STORAGE_KEY = 'soft_client_pages';
+
+  // Seed inicial padrão
+  var defaultPages = {
+    'polynesian-sun': {
+      id: 'polynesian-sun',
+      clientName: 'Hotel Polynesian Sun Resort',
+      comboTitle: 'Formule 01 : Cinéma Branding',
+      status: 'Contrat Validé & En Production',
+      headline: 'Film Officiel de Présentation · Aperçu du Montage',
+      description: 'Production cinématographique captée en lumière naturelle en Polynésie française. Inclut étalonnage artistique, musique sous licence et masters 16:9 et 9:16.',
+      videoUrl: 'https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm',
+      createdAt: new Date().toISOString()
+    },
+    'villa-tahiti-luxe': {
+      id: 'villa-tahiti-luxe',
+      clientName: 'Villa Tahiti Prestige',
+      comboTitle: 'Combo 03: Imobiliário & IA',
+      status: '100% Livré & Approuvé',
+      headline: 'Visite Cinématographique & Projections Architecturales',
+      description: 'Film immobilier haut de gamme avec prises de vue aériennes par drone 4K et projections architecturales assistées par IA.',
+      videoUrl: 'https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm',
+      createdAt: new Date(Date.now() - 86400000 * 5).toISOString()
+    }
+  };
+
+  function getPages() {
+    try {
+      var s = localStorage.getItem(STORAGE_KEY);
+      if (!s) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultPages));
+        return defaultPages;
+      }
+      return JSON.parse(s);
+    } catch(e) {
+      return defaultPages;
+    }
+  }
+
+  function savePages(pages) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(pages));
+    } catch(e) {}
+  }
+
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.hidden = false;
+    setTimeout(function() { t.hidden = true; }, 3500);
+  }
+
+  function slugify(text) {
+    return text.toString().toLowerCase().trim()
+      .replace(/[\s\W-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  var searchQuery = '';
+  var searchInput = document.getElementById('client-search');
+  if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+      searchQuery = e.target.value.trim().toLowerCase();
+      renderGrid();
+    });
+  }
+
+  function renderGrid() {
+    var pages = getPages();
+    var grid = document.getElementById('clients-grid');
+    var allKeys = Object.keys(pages);
+    document.getElementById('admin-nav-clients-count').textContent = allKeys.length;
+
+    var keys = allKeys.filter(function(k) {
+      if (!searchQuery) return true;
+      var p = pages[k];
+      var hay = [p.clientName, p.comboTitle, p.status, p.headline, p.description].join(' ').toLowerCase();
+      var tokens = searchQuery.split(/\s+/).filter(Boolean);
+      for (var i = 0; i < tokens.length; i++) {
+        if (hay.indexOf(tokens[i]) < 0) return false;
+      }
+      return true;
+    });
+
+    var badgeEl = document.getElementById('client-count-badge');
+    if (badgeEl) {
+      badgeEl.textContent = 'Exibindo ' + keys.length + ' de ' + allKeys.length + ' clientes';
+    }
+
+    if (keys.length === 0) {
+      grid.innerHTML = '<p class="small" style="grid-column:1/-1;text-align:center;padding:var(--space-6);">Aucun client trouvé pour cette recherche. Essayez un autre terme ou créez un nouvel espace ci-dessus.</p>';
+      return;
+    }
+
+    var html = '';
+    keys.forEach(function(k) {
+      var p = pages[k];
+      var isDone = (p.status || '').toLowerCase().indexOf('entregue') >= 0;
+      var statusClass = isDone ? 'client-status-pill is-done' : 'client-status-pill is-prod';
+      var cinemaUrl = '../entrega-cinema.html?id=' + encodeURIComponent(p.id) + '&cliente=' + encodeURIComponent(p.clientName || '');
+      var reelsUrl = '../entrega-reels.html?id=' + encodeURIComponent(p.id) + '&cliente=' + encodeURIComponent(p.clientName || '');
+      var generalUrl = '../cliente.html?id=' + encodeURIComponent(p.id);
+
+      html += '<div class="client-card">' +
+        '<div class="client-card-head">' +
+          '<div>' +
+            '<div class="client-card-title">' + (p.clientName || 'Cliente') + '</div>' +
+            '<span class="client-combo-tag">' + (p.comboTitle || 'Combo') + '</span>' +
+          '</div>' +
+          '<span class="' + statusClass + '">' + (p.status || 'Em Produção') + '</span>' +
+        '</div>' +
+        '<p class="client-card-meta">' + (p.description || 'Página de projeto criada para o cliente.') + '</p>' +
+        '<div style="display:flex; flex-wrap:wrap; gap:6px; margin: 6px 0 10px;">' +
+          '<a class="btn btn-secondary btn-small" style="font-size:11px;padding:4px 10px;" href="' + cinemaUrl + '" target="_blank" rel="noopener">🎬 Rota Cinema 4K ↗</a>' +
+          '<a class="btn btn-secondary btn-small" style="font-size:11px;padding:4px 10px;" href="' + reelsUrl + '" target="_blank" rel="noopener">📱 Rota 12x Reels ↗</a>' +
+          '<a class="btn btn-outline btn-small" style="font-size:11px;padding:4px 10px;" href="' + generalUrl + '" target="_blank" rel="noopener">🌐 Portal Geral ↗</a>' +
+        '</div>' +
+        '<div class="client-card-actions">' +
+          '<button type="button" class="btn btn-outline btn-small" style="font-size:11px;" onclick="window.copyCinemaLink(\'' + p.id + '\',\'' + encodeURIComponent(p.clientName || '') + '\')">Copier Lien Cinéma</button>' +
+          '<button type="button" class="btn btn-outline btn-small" style="font-size:11px;" onclick="window.copyReelsLink(\'' + p.id + '\',\'' + encodeURIComponent(p.clientName || '') + '\')">Copier Lien Reels</button>' +
+          '<button type="button" class="btn btn-outline btn-small" style="margin-left:auto;color:#DC2626;border-color:#FCA5A5;padding:2px 8px;" onclick="window.deleteClientPage(\'' + p.id + '\')" title="Remover">✕</button>' +
+        '</div>' +
+      '</div>';
+    });
+    grid.innerHTML = html;
+  }
+
+  window.copyCinemaLink = function(id, clientName) {
+    var url = window.location.origin + '/entrega-cinema.html?id=' + encodeURIComponent(id) + '&cliente=' + clientName;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(function() {
+        toast('Lien de livraison Cinéma 4K copié dans le presse-papiers !');
+      });
+    } else {
+      prompt('Link Cinema 4K:', url);
+    }
+  };
+
+  window.copyReelsLink = function(id, clientName) {
+    var url = window.location.origin + '/entrega-reels.html?id=' + encodeURIComponent(id) + '&cliente=' + clientName;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(function() {
+        toast('Lien de livraison 12x Reels copié dans le presse-papiers !');
+      });
+    } else {
+      prompt('Link 12x Reels:', url);
+    }
+  };
+
+  window.deleteClientPage = function(id) {
+    if (!confirm('Voulez-vous vraiment supprimer cet espace client ?')) return;
+    var pages = getPages();
+    delete pages[id];
+    savePages(pages);
+    renderGrid();
+    toast('Espace client supprimé.');
+  };
+
+  // Modal
+  var modal = document.getElementById('modal-client');
+  var form = document.getElementById('form-client');
+  document.getElementById('btn-open-create-client').addEventListener('click', function() {
+    form.reset();
+    document.getElementById('fc-id').value = '';
+    modal.showModal();
+  });
+  document.getElementById('btn-close-modal-client').addEventListener('click', function() { modal.close(); });
+  document.getElementById('btn-cancel-modal-client').addEventListener('click', function() { modal.close(); });
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var name = document.getElementById('fc-name').value.trim();
+    if (!name) return;
+
+    var id = document.getElementById('fc-id').value || (slugify(name) + '-' + Math.floor(Math.random() * 1000));
+    var pages = getPages();
+
+    pages[id] = {
+      id: id,
+      clientName: name,
+      comboTitle: document.getElementById('fc-combo').value,
+      status: document.getElementById('fc-status').value,
+      headline: document.getElementById('fc-headline').value || ('Projeto Entregue · ' + name),
+      videoUrl: document.getElementById('fc-video').value || 'https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm',
+      description: document.getElementById('fc-desc').value || 'Espace exclusif créé lors de la souscription avec Soft Communication.',
+      updatedAt: new Date().toISOString()
+    };
+
+    savePages(pages);
+    modal.close();
+    renderGrid();
+    toast('Espace client créé avec succès !');
+  });
+
+  // Logout
+  document.getElementById('btn-side-logout').addEventListener('click', function() {
+    try {
+      sessionStorage.removeItem('soft_admin_session_auth_v1');
+    } catch(e) {}
+    window.location.reload();
+  });
+
+  renderGrid();
+})();
+</script>
+</body>
+</html>

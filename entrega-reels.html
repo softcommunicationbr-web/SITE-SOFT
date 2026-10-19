@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="fr" data-root="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title id="page-title">Livraison Formule 02 : Présence &amp; 12x Reels Mensuels · Soft Communication</title>
+<meta name="description" content="Espace privé de livraison des 12 vidéos verticales 9:16 mensuelles avec calendrier éditorial, accroches de rétention, légendes prêtes à publier et téléchargement direct.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://softcommunicaiton.com/entrega-reels.html">
+<link rel="icon" type="image/svg+xml" href="assets/brand/soft-simbolo-tiki-chocolate.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+  :root {
+    --client-accent: #E6C280;
+    --client-accent-rgb: 230, 194, 128;
+    --client-dark: #120D0A;
+  }
+  body {
+    background: var(--client-dark);
+    color: var(--creme);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+  .reels-header {
+    background: rgba(18, 13, 10, 0.94);
+    border-bottom: 1px solid rgba(216, 200, 176, 0.16);
+    backdrop-filter: blur(16px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .reels-header-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .reels-brand-combo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .reels-client-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 12px 4px 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(216, 200, 176, 0.2);
+    border-radius: 9999px;
+  }
+  .reels-client-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--client-accent);
+    color: #1A120D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .reels-client-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--creme);
+  }
+  .reels-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(230, 194, 128, 0.12);
+    border: 1px solid var(--client-accent);
+    color: var(--client-accent);
+    padding: 5px 14px;
+    border-radius: 9999px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .reels-status-pill::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--client-accent);
+    box-shadow: 0 0 8px var(--client-accent);
+  }
+  .reels-main {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 36px 20px 80px;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+  }
+  .reels-hero-meta {
+    margin-bottom: 28px;
+  }
+  .reels-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--client-accent);
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  .reels-title {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 4.5vw, 46px);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--creme);
+    margin: 0 0 12px;
+  }
+  .reels-subtitle {
+    font-size: 15px;
+    color: var(--areia);
+    max-width: 760px;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .reels-overview-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: rgba(26, 18, 14, 0.7);
+    border: 1px solid rgba(216, 200, 176, 0.18);
+    border-radius: 16px;
+    padding: 22px 28px;
+    margin-bottom: 40px;
+  }
+  .reels-stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 32px;
+  }
+  .reels-stat-box p {
+    margin: 0;
+  }
+  .reels-stat-num {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--client-accent);
+    line-height: 1.2;
+  }
+  .reels-stat-lbl {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--areia);
+  }
+  .week-section {
+    margin-bottom: 44px;
+  }
+  .week-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(216, 200, 176, 0.15);
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+  }
+  .week-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    color: var(--creme);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .week-badge {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    background: rgba(230, 194, 128, 0.15);
+    color: var(--client-accent);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+  .reels-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 900px) {
+    .reels-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+  }
+  @media (max-width: 580px) {
+    .reels-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .reel-card {
+    background: #0E0907;
+    border: 1px solid rgba(216, 200, 176, 0.16);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .reel-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--client-accent);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  }
+  .reel-video-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    background: #000;
+    overflow: hidden;
+  }
+  .reel-video-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .reel-badge-time {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(18, 13, 10, 0.75);
+    border: 1px solid rgba(216, 200, 176, 0.25);
+    backdrop-filter: blur(8px);
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--client-accent);
+    z-index: 2;
+  }
+  .reel-badge-status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(34, 197, 94, 0.2);
+    border: 1px solid #22C55E;
+    color: #4ADE80;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    z-index: 2;
+  }
+  .reel-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+  .reel-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--creme);
+    line-height: 1.3;
+    margin: 0;
+  }
+  .reel-card-hook {
+    font-size: 12px;
+    color: var(--areia);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+  }
+  .reel-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid rgba(216, 200, 176, 0.1);
+  }
+  .btn-reel-dl {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: var(--client-accent);
+    color: #140E0A;
+    border: none;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+  .btn-reel-dl:hover {
+    opacity: 0.9;
+  }
+  .btn-reel-details {
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid rgba(216, 200, 176, 0.25);
+    color: var(--creme);
+    border-radius: 8px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .btn-reel-details:hover {
+    border-color: var(--client-accent);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .reels-footer {
+    border-top: 1px solid rgba(216, 200, 176, 0.12);
+    padding: 32px 20px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--areia);
+    background: #0C0806;
+  }
+  .reels-footer a {
+    color: var(--client-accent);
+    text-decoration: none;
+  }
+  /* Modal de detalhes do Reel */
+  dialog.modal-reel {
+    background: #140E0A;
+    border: 1px solid rgba(216, 200, 176, 0.25);
+    border-radius: 16px;
+    color: var(--creme);
+    max-width: 580px;
+    width: 90vw;
+    padding: 24px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
+  }
+  dialog.modal-reel::backdrop {
+    background: rgba(10, 6, 4, 0.8);
+    backdrop-filter: blur(6px);
+  }
+  .modal-section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--client-accent);
+    margin: 16px 0 6px;
+    font-weight: 600;
+  }
+  .modal-copy-box {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(216, 200, 176, 0.15);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--creme);
+    white-space: pre-line;
+    position: relative;
+  }
+  .toast-alert {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--client-accent);
+    color: #140E0A;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    z-index: 999;
+  }
+</style>
+</head>
+<body>
+<a class="skip-link btn" href="#main-reels">Aller au contenu</a>
+
+<header class="reels-header">
+  <div class="reels-header-inner">
+    <div class="reels-brand-combo">
+      <a href="index.html" aria-label="Soft Communication Accueil" style="display:flex;align-items:center;">
+        <img src="assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="96" height="30">
+      </a>
+      <span style="color:rgba(216,200,176,0.3);font-size:18px;">/</span>
+      <div class="reels-client-badge">
+        <div class="reels-client-avatar" id="avatar-monogram">C</div>
+        <span class="reels-client-name" id="header-client-name">Client Exclusif</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="reels-status-pill" id="badge-combo">Formule 02 : Présence &amp; 12x Reels</span>
+      <a href="admin/clientes.html" class="btn btn-outline btn-small" style="font-size:11px;border-color:rgba(216,200,176,0.3);color:var(--creme);">Panneau Admin ↗</a>
+    </div>
+  </div>
+</header>
+
+<main class="reels-main" id="main-reels">
+  <div class="reels-hero-meta">
+    <p class="reels-eyebrow">Ciclo Mensal de Conteúdo Vertical · 9:16 Ultra-HD</p>
+    <h1 class="reels-title" id="page-headline">Livraison Officielle : 12x Vidéos Verticales avec Calendrier Éditorial</h1>
+    <p class="reels-subtitle" id="page-desc">
+      Contenus captés et montés avec des techniques de haute rétention pour Instagram Reels, TikTok et YouTube Shorts. Inclut des accroches dans les 3 premières secondes, légendes prêtes à publier et bandes sonores recommandées.
+    </p>
+  </div>
+
+  <!-- Painel de Resumo do Ciclo -->
+  <div class="reels-overview-banner">
+    <div class="reels-stats-row">
+      <div class="reels-stat-box">
+        <p class="reels-stat-num">12</p>
+        <p class="reels-stat-lbl">Vidéos Prêtes (9:16)</p>
+      </div>
+      <div class="reels-stat-box">
+        <p class="reels-stat-num">4</p>
+        <p class="reels-stat-lbl">Semaines Programmées</p>
+      </div>
+      <div class="reels-stat-box">
+        <p class="reels-stat-num" id="approved-count" style="color:#4ADE80;">12/12</p>
+        <p class="reels-stat-lbl">Status de Aprovação</p>
+      </div>
+      <div class="reels-stat-box">
+        <p class="reels-stat-num">1080×1920</p>
+        <p class="reels-stat-lbl">Master Vertical 60fps</p>
+      </div>
+    </div>
+    <div>
+      <button type="button" class="btn btn-primary" id="btn-download-all" style="background:var(--client-accent);color:#140E0A;font-weight:600;padding:12px 22px;">
+        📥 Télécharger les 12 Vidéos (.ZIP)
+      </button>
+    </div>
+  </div>
+
+  <!-- SEMANA 1 -->
+  <section class="week-section">
+    <div class="week-header">
+      <h2 class="week-title">Semaine 1 · Lancement &amp; Découverte <span class="week-badge">Dias 01 a 07</span></h2>
+      <span class="small" style="color:var(--areia);">3 publicações sugeridas</span>
+    </div>
+    <div class="reels-grid">
+      <!-- Reel 01 -->
+      <article class="reel-card">
+        <div class="reel-video-box">
+          <span class="reel-badge-time">01 · 22s</span>
+          <span class="reel-badge-status">✓ Aprovado</span>
+          <video controls playsinline preload="metadata" muted loop poster="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/posters/preview-30fps-1.jpg">
+            <source src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" type="video/webm">
+          </video>
+        </div>
+        <div class="reel-body">
+          <h3 class="reel-card-title">Reel 01: O Despertar na Polinésia</h3>
+          <p class="reel-card-hook"><strong>Hook:</strong> "Você teria coragem de acordar num lugar como esse todos os dias?"</p>
+          <div class="reel-actions">
+            <button type="button" class="btn-reel-dl" onclick="downloadReel(1, 'Reel_01_O_Despertar_Polinesia.mp4')">Télécharger MP4</button>
+            <button type="button" class="btn-reel-details" onclick="openDetails(1)">Légende &amp; Hook</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Reel 02 -->
+      <article class="reel-card">
+        <div class="reel-video-box">
+          <span class="reel-badge-time">02 · 18s</span>
+          <span class="reel-badge-status">✓ Aprovado</span>
+          <video controls playsinline preload="metadata" muted loop poster="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/posters/preview-30fps-1.jpg">
+            <source src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" type="video/webm">
+          </video>
+        </div>
+        <div class="reel-body">
+          <h3 class="reel-card-title">Reel 02: Café da Manhã Flutuante</h3>
+          <p class="reel-card-hook"><strong>Hook:</strong> "Esse não é um café da manhã comum. É uma experiência privativa na lagoa."</p>
+          <div class="reel-actions">
+            <button type="button" class="btn-reel-dl" onclick="downloadReel(2, 'Reel_02_Cafe_Flutuante.mp4')">Télécharger MP4</button>
+            <button type="button" class="btn-reel-details" onclick="openDetails(2)">Légende &amp; Hook</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Reel 03 -->
+      <article class="reel-card">
+        <div class="reel-video-box">
+          <span class="reel-badge-time">03 · 26s</span>
+          <span class="reel-badge-status">✓ Aprovado</span>
+          <video controls playsinline preload="metadata" muted loop poster="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/posters/preview-30fps-1.jpg">
+            <source src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" type="video/webm">
+          </video>
+        </div>
+        <div class="reel-body">
+          <h3 class="reel-card-title">Reel 03: Detalhes da Arquitetura &amp; Design</h3>
+          <p class="reel-card-hook"><strong>Hook:</strong> "Repare no acabamento em madeira nativa e luz natural. Isso é alta hospitalidade."</p>
+          <div class="reel-actions">
+            <button type="button" class="btn-reel-dl" onclick="downloadReel(3, 'Reel_03_Design_Arquitetura.mp4')">Télécharger MP4</button>
+            <button type="button" class="btn-reel-details" onclick="openDetails(3)">Légende &amp; Hook</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SEMANA 2 -->
+  <section class="week-section">
+    <div class="week-header">
+      <h2 class="week-title">Semaine 2 · Immersion &amp; Expérience Sensorielle <span class="week-badge">Dias 08 a 14</span></h2>
+      <span class="small" style="color:var(--areia);">3 publicações sugeridas</span>
+    </div>
+    <div class="reels-grid">
+      <!-- Reel 04 -->
+      <article class="reel-card">
+        <div class="reel-video-box">
+          <span class="reel-badge-time">04 · 19s</span>
+          <span class="reel-badge-status">✓ Aprovado</span>
+          <video controls playsinline preload="metadata" muted loop poster="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/posters/preview-30fps-1.jpg">
+            <source src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" type="video/webm">
+          </video>
+        </div>
+        <div class="reel-body">
+          <h3 class="reel-card-title">Reel 04: Mergulho nas Águas Cristalinas</h3>
+          <p class="reel-card-hook"><strong>Hook:</strong> "A água é tão transparente que o barco parece estar flutuando no ar."</p>
+          <div class="reel-actions">
+            <button type="button" class="btn-reel-dl" onclick="downloadReel(4, 'Reel_04_Mergulho_Lagoon.mp4')">Télécharger MP4</button>
+            <button type="button" class="btn-reel-details" onclick="openDetails(4)">Légende &amp; Hook</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Reel 05 -->
+      <article class="reel-card">
+        <div class="reel-video-box">
+          <span class="reel-badge-time">05 · 24s</span>
+          <span class="reel-badge-status">✓ Aprovado</span>
+          <video controls playsinline preload="metadata" muted loop poster="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/posters/preview-30fps-1.jpg">
+            <source src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" type="video/webm">
+          </video>
+        </div>
+        <div class="reel-body">
+          <h3 class="reel-card-title">Reel 05: Gastronomia de Autor &amp; Drinks</h3>
+          <p class="reel-card-hook"><strong>Hook:</strong> "O segredo por trás do drink mais pedido do sunset bar."</p>
+          <div class="reel-actions">
+            <button type="button" class="btn-reel-dl" onclick="downloadReel(5, 'Reel_05_Gastronomia_Sunset.mp4')">Télécharger MP4</button>
+            <button type="button" class="btn-reel-details" onclick="openDetails(5)">Légende &amp; Hook</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Reel 06 -->
+      <article class="reel-card">
+        <div class="reel-video-box">
+          <span class="reel-badge-time">06 · 21s</span>
+          <span class="reel-badge-status">✓ Aprovado</span>
+          <video controls playsinline preload="metadata" muted loop poster="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/posters/preview-30fps-1.jpg">
+            <source src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" type="video/webm">
+          </video>
+        </div>
+        <div class="reel-body">
+          <h3 class="reel-card-title">Reel 06: Ritual de Boas-Vindas Tiaré</h3>
+          <p class="reel-card-hook"><strong>Hook:</strong> "A tradição polinésia que faz cada hóspede se sentir em casa desde o 1º minuto."</p>
+          <div class="reel-actions">
+            <button type="button" class="btn-reel-dl" onclick="downloadReel(6, 'Reel_06_Ritual_Tiare.mp4')">Télécharger MP4</button>
+            <button type="button" class="btn-reel-details" onclick="openDetails(6)">Légende &amp; Hook</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SEMANA 3 -->
+  <section class="week-section">
+    <div class="week-header">
+      <h2 class="week-title">Semana 3 · Pôr do Sol &amp; Vida Noturna <span class="week-badge">Dias 15 a 21</span></h2>
+      <span class="small" style="color:var(--areia);">3 publicações sugeridas</span>
+    </div>
+    <div class="reels-grid">
+      <!-- Reel 07 -->
+      <article class="reel-card">
+        <div class="reel-video-box">
+          <span class="reel-badge-time">07 · 28s</span>
+          <span class="reel-badge-status">✓ Aprovado</span>
+          <video controls playsinline preload="metadata" muted loop poster="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/posters/preview-30fps-1.jpg">
+            <source src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" type="video/webm">
+          </video>
+        </div>
+        <div class="reel-body">
+          <h3 class="reel-card-title">Reel 07: Sunset Dourado no Pacífico</h3>
+          <p class="reel-card-hook"><strong>Hook:</strong> "Sem filtros. Apenas o pôr do sol real gravado em luz pura no Pacífico Sul."</p>
+          <div class="reel-actions">
+            <button type="button" class="btn-reel-dl" onclick="downloadReel(7, 'Reel_07_Sunset_Pacifico.mp4')">Télécharger MP4</button>
+            <button type="button" class="btn-reel-details" onclick="openDetails(7)">Légende &amp; Hook</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Reel 08 -->
+      <article class="reel-card">
+        <div class="reel-video-box">
+          <span class="reel-badge-time">08 · 20s</span>
+          <span class="reel-badge-status">✓ Aprovado</span>
+          <video controls playsinline preload="metadata" muted loop poster="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/posters/preview-30fps-1.jpg">
+            <source src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" type="video/webm">
+          </video>
+        </div>
+        <div class="reel-body">
+          <h3 class="reel-card-title">Reel 08: Jantar à Luz de Velas Sobre as Águas</h3>
+          <p class="reel-card-hook"><strong>Hook:</strong> "Se você tivesse que escolher apenas uma noite inesquecível, seria essa."</p>
+          <div class="reel-actions">
+            <button type="button" class="btn-reel-dl" onclick="downloadReel(8, 'Reel_08_Jantar_Sobre_Aguas.mp4')">Télécharger MP4</button>
+            <button type="button" class="btn-reel-details" onclick="openDetails(8)">Légende &amp; Hook</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Reel 09 -->
+      <article class="reel-card">
+        <div class="reel-video-box">
+          <span class="reel-badge-time">09 · 17s</span>
+          <span class="reel-badge-status">✓ Aprovado</span>
+          <video controls playsinline preload="metadata" muted loop poster="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/posters/preview-30fps-1.jpg">
+            <source src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" type="video/webm">
+          </video>
+        </div>
+        <div class="reel-body">
+          <h3 class="reel-card-title">Reel 09: Som das Ondas &amp; Paz Noturna</h3>
+          <p class="reel-card-hook"><strong>Hook:</strong> "Aumente o som e sinta a tranquilidade desse refúgio."</p>
+          <div class="reel-actions">
+            <button type="button" class="btn-reel-dl" onclick="downloadReel(9, 'Reel_09_Som_Das_Ondas.mp4')">Télécharger MP4</button>
+            <button type="button" class="btn-reel-details" onclick="openDetails(9)">Légende &amp; Hook</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SEMANA 4 -->
+  <section class="week-section">
+    <div class="week-header">
+      <h2 class="week-title">Semana 4 · Exclusividade &amp; Conversão <span class="week-badge">Dias 22 a 30</span></h2>
+      <span class="small" style="color:var(--areia);">3 publicações sugeridas</span>
+    </div>
+    <div class="reels-grid">
+      <!-- Reel 10 -->
+      <article class="reel-card">
+        <div class="reel-video-box">
+          <span class="reel-badge-time">10 · 23s</span>
+          <span class="reel-badge-status">✓ Aprovado</span>
+          <video controls playsinline preload="metadata" muted loop poster="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/posters/preview-30fps-1.jpg">
+            <source src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" type="video/webm">
+          </video>
+        </div>
+        <div class="reel-body">
+          <h3 class="reel-card-title">Reel 10: O Passeio de Barco Privativo</h3>
+          <p class="reel-card-hook"><strong>Hook:</strong> "Três lugares na ilha que você só consegue acessar navegando com guia local."</p>
+          <div class="reel-actions">
+            <button type="button" class="btn-reel-dl" onclick="downloadReel(10, 'Reel_10_Passeio_Privativo.mp4')">Télécharger MP4</button>
+            <button type="button" class="btn-reel-details" onclick="openDetails(10)">Légende &amp; Hook</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Reel 11 -->
+      <article class="reel-card">
+        <div class="reel-video-box">
+          <span class="reel-badge-time">11 · 25s</span>
+          <span class="reel-badge-status">✓ Aprovado</span>
+          <video controls playsinline preload="metadata" muted loop poster="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/posters/preview-30fps-1.jpg">
+            <source src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" type="video/webm">
+          </video>
+        </div>
+        <div class="reel-body">
+          <h3 class="reel-card-title">Reel 11: Spa &amp; Massagem com Vista Panorâmica</h3>
+          <p class="reel-card-hook"><strong>Hook:</strong> "O momento exato em que você desliga o mundo e reconecta consigo mesmo."</p>
+          <div class="reel-actions">
+            <button type="button" class="btn-reel-dl" onclick="downloadReel(11, 'Reel_11_Spa_Massagem.mp4')">Télécharger MP4</button>
+            <button type="button" class="btn-reel-details" onclick="openDetails(11)">Légende &amp; Hook</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Reel 12 -->
+      <article class="reel-card">
+        <div class="reel-video-box">
+          <span class="reel-badge-time">12 · 30s</span>
+          <span class="reel-badge-status">✓ Aprovado</span>
+          <video controls playsinline preload="metadata" muted loop poster="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/posters/preview-30fps-1.jpg">
+            <source src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm" type="video/webm">
+          </video>
+        </div>
+        <div class="reel-body">
+          <h3 class="reel-card-title">Reel 12: Seu Próximo Destino Está Pronto</h3>
+          <p class="reel-card-hook"><strong>Hook:</strong> "Quando foi a última vez que você viveu dias como esses? As reservas para a temporada estão abertas."</p>
+          <div class="reel-actions">
+            <button type="button" class="btn-reel-dl" onclick="downloadReel(12, 'Reel_12_Chamada_Final.mp4')">Télécharger MP4</button>
+            <button type="button" class="btn-reel-details" onclick="openDetails(12)">Légende &amp; Hook</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="reels-footer">
+  <p>&copy; 2026 Soft Communication &amp; Calebe. Todos os direitos reservados. Entrega de conteúdo vertical para mídias sociais.</p>
+  <p><a href="index.html">softcommunicaiton.com</a> · Gestão e Produção de Conteúdo Audiovisual</p>
+</footer>
+
+<!-- Modal de Detalhes do Reel -->
+<dialog class="modal-reel" id="modal-reel-info">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <h3 class="a-heading" id="modal-r-title" style="margin:0;font-size:18px;">Detalhes do Reel</h3>
+    <button type="button" class="btn btn-outline btn-small" id="btn-close-modal-reel" style="padding:2px 8px;">✕</button>
+  </div>
+  <p class="small" id="modal-r-sub" style="color:var(--areia);margin:0 0 16px;">Semana 1 · Vídeo Vertical 9:16 (1080×1920)</p>
+
+  <p class="modal-section-title">Gancho dos Primeiros 3 Segundos (Hook)</p>
+  <div class="modal-copy-box" id="modal-r-hook">Texto do hook...</div>
+
+  <p class="modal-section-title">Legenda Sugerida (Copy Pronta)</p>
+  <div class="modal-copy-box" id="modal-r-copy">Texto da legenda...</div>
+
+  <p class="modal-section-title">Hashtags Cirúrgicas Recomendadas</p>
+  <div class="modal-copy-box" id="modal-r-tags" style="color:var(--client-accent);">#Tahiti #LuxuryTravel #PacificOcean #BoraBora #ResortLife</div>
+
+  <div style="margin-top:24px;display:flex;justify-content:flex-end;gap:12px;">
+    <button type="button" class="btn btn-outline btn-small" id="btn-copy-caption">Copiar Legenda &amp; Tags</button>
+    <button type="button" class="btn btn-primary btn-small" id="btn-modal-dl" style="background:var(--client-accent);color:#140E0A;">Baixar Arquivo MP4</button>
+  </div>
+</dialog>
+
+<div id="toast" class="toast-alert" hidden></div>
+
+<script>
+(function() {
+  'use strict';
+  var params = new URLSearchParams(window.location.search);
+  var clientParam = params.get('cliente') || params.get('client') || params.get('id') || 'Polynesian Sun Resort';
+  var headlineParam = params.get('projeto') || params.get('project') || 'Livraison Officielle : 12x Vidéos Verticales avec Calendrier Éditorial';
+  var colorParam = params.get('cor') || '';
+
+  if (colorParam) {
+    document.documentElement.style.setProperty('--client-accent', colorParam);
+  }
+
+  document.getElementById('header-client-name').textContent = clientParam;
+  document.getElementById('avatar-monogram').textContent = clientParam.charAt(0).toUpperCase();
+  document.getElementById('page-headline').textContent = headlineParam;
+  document.getElementById('page-title').textContent = clientParam + ' · Entrega 12x Reels Mensais · Soft Communication';
+
+  // Se houver dados no storage local
+  try {
+    var savedPages = JSON.parse(localStorage.getItem('soft_client_pages') || '{}');
+    var id = params.get('id');
+    if (id && savedPages[id]) {
+      var d = savedPages[id];
+      document.getElementById('header-client-name').textContent = d.clientName || clientParam;
+      document.getElementById('page-headline').textContent = d.headline || headlineParam;
+      if (d.description) document.getElementById('page-desc').textContent = d.description;
+    }
+  } catch(e) {}
+
+  var toastEl = document.getElementById('toast');
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.hidden = false;
+    setTimeout(function() { toastEl.hidden = true; }, 3600);
+  }
+
+  var reelDetails = {
+    1: {
+      title: 'Reel 01: O Despertar na Polinésia',
+      sub: 'Semana 1 · Terça-feira (Horário nobre: 19h00)',
+      hook: '“Você teria coragem de acordar num lugar como esse todos os dias?”',
+      copy: 'Acordar onde a única pressa é contemplar as cores da lagoa ao nascer do sol. Viva a experiência de exclusividade absoluta na Polinésia Francesa.\n\nComente "RESERVA" para receber o catálogo privativo da temporada.',
+      tags: '#FrenchPolynesia #TahitiResort #LuxuryHospitality #Wanderlust #ParadiseFound'
+    },
+    2: {
+      title: 'Reel 02: Café da Manhã Flutuante',
+      sub: 'Semana 1 · Quinta-feira (Horário nobre: 12h30)',
+      hook: '“Esse não é um café da manhã comum. É uma experiência privativa na lagoa.”',
+      copy: 'Servido em canoa polinésia artesanal diretamente na sua piscina privativa sobre as águas. Detalhes que tornam cada manhã única e inesquecível.\n\nConheça nossas vilas sobre as águas.',
+      tags: '#FloatingBreakfast #BoraBora #LuxuryVillas #TravelGoals #PacificIslands'
+    },
+    3: {
+      title: 'Reel 03: Detalhes da Arquitetura & Design',
+      sub: 'Semana 1 · Sábado (Horário nobre: 18h00)',
+      hook: '“Repare no acabamento em madeira nativa e luz natural. Isso é alta hospitalidade.”',
+      copy: 'Materiais orgânicos, design bioclimático e a união entre a arquitetura contemporânea e as raízes da cultura polinésia.',
+      tags: '#ResortArchitecture #InteriorDesign #SustainableLuxury #TahitiLife'
+    }
+  };
+
+  var modal = document.getElementById('modal-reel-info');
+  var activeReelId = 1;
+
+  window.openDetails = function(num) {
+    activeReelId = num;
+    var info = reelDetails[num] || {
+      title: 'Reel ' + (num < 10 ? '0' + num : num) + ': Conteúdo Editorial Programado',
+      sub: 'Semana ' + Math.ceil(num / 3) + ' · 1080×1920 (9:16 Vertical)',
+      hook: '“Hook de alta retenção nos primeiros 3 segundos para engajamento instantâneo.”',
+      copy: 'Legenda personalizada produzida com gatilhos de conexão e chamada de ação clara para o público de alto padrão.',
+      tags: '#PolynesianSun #LuxuryLiving #PacificResort #HighEndHospitality'
+    };
+
+    document.getElementById('modal-r-title').textContent = info.title;
+    document.getElementById('modal-r-sub').textContent = info.sub;
+    document.getElementById('modal-r-hook').textContent = info.hook;
+    document.getElementById('modal-r-copy').textContent = info.copy;
+    document.getElementById('modal-r-tags').textContent = info.tags;
+    modal.showModal();
+  };
+
+  document.getElementById('btn-close-modal-reel').addEventListener('click', function() {
+    modal.close();
+  });
+
+  document.getElementById('btn-copy-caption').addEventListener('click', function() {
+    var c = document.getElementById('modal-r-copy').textContent + '\n\n' + document.getElementById('modal-r-tags').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(c).then(function() {
+        toast('Legenda e hashtags copiadas com sucesso!');
+      });
+    } else {
+      prompt('Copie o texto:', c);
+    }
+  });
+
+  window.downloadReel = function(num, filename) {
+    var sampleUrl = 'https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/preview-30fps-1.webm';
+    var a = document.createElement('a');
+    a.href = sampleUrl;
+    a.download = filename || ('Reel_' + num + '.mp4');
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    toast('Download de ' + (filename || 'Reel ' + num) + ' iniciado.');
+  };
+
+  document.getElementById('btn-modal-dl').addEventListener('click', function() {
+    downloadReel(activeReelId, 'Reel_' + activeReelId + '.mp4');
+    modal.close();
+  });
+
+  document.getElementById('btn-download-all').addEventListener('click', function() {
+    toast('Gerando pacote ZIP com todos os 12 vídeos verticais em alta resolução...');
+    setTimeout(function() {
+      downloadReel(1, 'Pacote_12_Reels_Mensal_Outubro2026.zip');
+    }, 1200);
+  });
+})();
+</script>
+</body>
+</html>

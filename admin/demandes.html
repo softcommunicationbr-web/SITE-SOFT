@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="fr" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pedidos de Orçamento &amp; Leads · Admin Soft Communication</title>
+<meta name="description" content="Área administrativa : funil comercial com etapas Novo, Qualificado, Reunião Agendada, Orçamento Enviado e Fechado conectado ao Supabase PostgreSQL.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://softcommunicaiton.com/admin/demandes.html">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/soft-simbolo-tiki-chocolate.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/admin.css">
+<script src="../assets/js/admin-auth.js"></script>
+<style>
+  .a-side :focus-visible, .a-bottom :focus-visible, .a-mobile-head :focus-visible { outline-color: var(--areia); }
+  .a-filters { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .a-scroll-hint { display: none; }
+  @media (max-width: 1023px) { .a-scroll-hint { display: inline; } }
+
+  .a-lead-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); margin-top: var(--space-1); }
+  .a-rules { counter-reset: a-rules; list-style: none; padding: 0; }
+  .a-rules li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: var(--space-3); align-items: baseline; }
+  .a-rule-num { font-variant-numeric: tabular-nums; font-weight: 500; color: var(--chocolate); }
+
+  .a-block { display: grid; gap: var(--space-2); }
+  .a-quote { margin: 0; padding: var(--space-3) var(--space-4); border-left: 2px solid var(--chocolate); background: var(--areia); font-style: italic; }
+  .a-dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--space-4); font-size: 13px; line-height: 20px; }
+  .a-dl dt { color: var(--chocolate); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; }
+  .a-dl dd { margin: 0; }
+  .a-dl-full { grid-column: 1 / -1; }
+  .a-inline { display: flex; gap: var(--space-2); align-items: flex-end; }
+  .a-column-leads { display: grid; gap: var(--space-3); align-content: start; min-height: 80px; }
+  .a-column-empty { padding: var(--space-4); border: 1px dashed var(--areia); color: var(--chocolate); opacity: 0.7; font-size: 12px; text-align: center; }
+
+  /* Modal de novo lead */
+  .modal-dialog { border: 1px solid var(--areia); background: var(--creme); color: var(--chocolate); padding: var(--space-6); max-width: 540px; width: 90vw; }
+  .modal-dialog::backdrop { background: rgba(23, 17, 14, 0.7); backdrop-filter: blur(4px); }
+</style>
+</head>
+<body>
+<a class="skip-link btn" href="#contenu">Pular para o conteúdo</a>
+
+<div class="a-shell">
+  <aside class="a-side">
+    <a class="brand" href="index.html" aria-label="Admin Soft Communication, painel de controle">
+      <img src="../assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="110" height="36">
+    </a>
+    <nav class="a-nav" aria-label="Navegação administrativa">
+      <a href="index.html">Visão geral</a>
+      <a href="demandes.html" aria-current="page">Pedidos de orçamento <span class="count" id="nav-leads-count">·</span></a>
+      <a href="clientes.html">Clients &amp; Formules <span class="count" id="admin-nav-clients-count">2</span></a>
+      <a href="projet.html">Destaques da home</a>
+      <a href="mediatheque.html">Vídeos <span class="count" data-video-count>52</span></a>
+      <a href="../index.html" target="_blank" rel="noopener" style="margin-top:auto; color:var(--areia);">Ver site público ↗</a>
+    </nav>
+    <div class="a-side-foot">
+      <div class="a-user">
+        <img src="../assets/brand/soft-simbolo-tiki-chocolate.svg" alt="Soft Tiki">
+        <span>Administrador<br><span class="small">Proprietário</span></span>
+      </div>
+      <button type="button" class="btn btn-outline btn-small" id="btn-side-logout" style="border-color:var(--areia);color:var(--creme)">Sair</button>
+    </div>
+  </aside>
+
+  <div class="a-main" id="contenu">
+    <div class="a-mobile-head">
+      <img src="../assets/brand/soft-horizontal-creme.svg" alt="Soft Communication">
+      <span class="eyebrow" style="color:var(--areia)">Admin</span>
+    </div>
+
+    <div class="a-topbar">
+      <div class="a-topbar-text">
+        <p class="eyebrow" id="topbar-summary">Funil de Atendimento · Carregando contatos...</p>
+        <h1 class="a-title">Pedidos de Orçamento &amp; Leads</h1>
+        <p class="small" id="topbar-sub">Pedidos ativos sincronizados com a nuvem.</p>
+      </div>
+      <div class="a-topbar-actions">
+        <button type="button" class="btn btn-outline btn-small" id="btn-export-csv">Exportar CSV</button>
+        <button type="button" class="btn btn-secondary btn-small" id="btn-open-manual-lead">+ Novo contato manual</button>
+      </div>
+    </div>
+
+    <!-- Filtros de Visualização e Busca -->
+    <div class="a-filters" style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between;">
+      <fieldset style="flex:1 1 auto;">
+        <legend class="visually-hidden">Filtrar por visualização</legend>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="vue" value="toutes" checked><span>Todos</span></label>
+          <label class="chip"><input type="radio" name="vue" value="sans-reponse"><span>Sem resposta</span></label>
+          <label class="chip"><input type="radio" name="vue" value="pt"><span>PT-BR</span></label>
+          <label class="chip"><input type="radio" name="vue" value="en"><span>Inglês (EN)</span></label>
+          <label class="chip"><input type="radio" name="vue" value="prioritaire"><span>Setor prioritário</span></label>
+        </div>
+      </fieldset>
+      <div style="flex:1 1 260px; max-width:380px;">
+        <input type="search" id="lead-search" placeholder="Buscar por cliente, empresa, e-mail, nº ou setor..." class="input" style="width:100%; min-height:36px; padding:6px 14px; font-size:13px; border-radius:9999px;">
+      </div>
+      <p class="small" style="width:100%; margin-top:4px;">Clique nos cards para abrir detalhes e mudar de etapa. <span class="a-scroll-hint">As colunas rolam horizontalmente no celular.</span></p>
+    </div>
+
+    <!-- Funil em Colunas Kanban -->
+    <div class="a-kanban" role="region" aria-label="Funil de pedidos por etapa comercial">
+
+      <!-- Coluna 1: Novos -->
+      <section class="a-column" aria-labelledby="col-nouvelle">
+        <div class="a-column-head">
+          <h2 class="eyebrow" id="col-nouvelle">Novos</h2>
+          <span class="count num" id="count-novos">0<span class="visually-hidden"> pedidos</span></span>
+        </div>
+        <div class="a-column-leads" id="list-novos"></div>
+      </section>
+
+      <!-- Coluna 2: Qualificados -->
+      <section class="a-column" aria-labelledby="col-qualifiee">
+        <div class="a-column-head">
+          <h2 class="eyebrow" id="col-qualifiee">Qualificados</h2>
+          <span class="count num" id="count-qualificados">0<span class="visually-hidden"> pedidos</span></span>
+        </div>
+        <div class="a-column-leads" id="list-qualificados"></div>
+      </section>
+
+      <!-- Coluna 3: Reunião Agendada -->
+      <section class="a-column" aria-labelledby="col-appel">
+        <div class="a-column-head">
+          <h2 class="eyebrow" id="col-appel">Reunião Agendada</h2>
+          <span class="count num" id="count-reuniao">0<span class="visually-hidden"> pedidos</span></span>
+        </div>
+        <div class="a-column-leads" id="list-reuniao"></div>
+      </section>
+
+      <!-- Coluna 4: Proposta / Orçamento Enviado -->
+      <section class="a-column" aria-labelledby="col-devis">
+        <div class="a-column-head">
+          <h2 class="eyebrow" id="col-devis">Orçamento Enviado</h2>
+          <span class="count num" id="count-orcamento">0<span class="visually-hidden"> pedidos</span></span>
+        </div>
+        <div class="a-column-leads" id="list-orcamento"></div>
+      </section>
+
+      <!-- Coluna 5: Fechados / Perdidos -->
+      <section class="a-column" aria-labelledby="col-fin">
+        <div class="a-column-head">
+          <h2 class="eyebrow" id="col-fin">Fechado / Perdido</h2>
+          <span class="count num" id="count-fechado">0<span class="visually-hidden"> pedidos</span></span>
+        </div>
+        <div class="a-column-leads" id="list-fechado"></div>
+      </section>
+
+    </div>
+
+    <!-- Regras e Automações Comerciais -->
+    <section class="a-card" aria-labelledby="regles-title" style="margin-top:var(--space-8);">
+      <div class="a-card-head">
+        <h2 class="a-heading" id="regles-title">Regras de Atendimento</h2>
+        <span class="tag">Diretrizes da Marca</span>
+      </div>
+      <ol class="a-checklist a-rules small">
+        <li><span class="a-rule-num" aria-hidden="true">01</span><span>Novo pedido : registro automático no banco de dados e mensagem de confirmação com número de protocolo.</span></li>
+        <li><span class="a-rule-num" aria-hidden="true">02</span><span>Sem resposta em 24 h : lembrete interno para contato prioritário.</span></li>
+        <li><span class="a-rule-num" aria-hidden="true">03</span><span>Orçamento sem retorno em D+3 e D+7 : rascunho de acompanhamento cordial para validação antes do envio.</span></li>
+      </ol>
+      <p class="small">Regra da Soft Communication : todo e qualquer e-mail enviado ao cliente deve ser validado pelo proprietário.</p>
+    </section>
+
+  </div>
+</div>
+
+<!-- Ficha de Detalhes do Pedido (Drawer Lateral) -->
+<dialog class="a-drawer" id="fiche" aria-labelledby="fiche-title">
+  <div class="a-drawer-inner">
+    <div class="a-drawer-head">
+      <div>
+        <h2 class="a-heading" id="fiche-title">Pedido nº 0000 · Detalhes</h2>
+        <span class="a-status" id="fiche-status-text">Chargement...</span>
+      </div>
+      <button type="button" class="btn btn-outline btn-small" id="btn-close-fiche">Fechar</button>
+    </div>
+
+    <div class="a-notice" role="note">
+      <span class="tag">Banco de Dados</span>
+      <span>Lead carregado da tabela <code>pedidos_orcamento</code>.</span>
+    </div>
+
+    <section class="a-block" aria-labelledby="f-besoins">
+      <h3 class="eyebrow" id="f-besoins">Serviços Solicitados</h3>
+      <div class="tags" id="fiche-servicos"></div>
+    </section>
+
+    <section class="a-block" aria-labelledby="f-message">
+      <h3 class="eyebrow" id="f-message">Message du Client</h3>
+      <blockquote class="a-quote small" id="fiche-mensagem">« ... »</blockquote>
+    </section>
+
+    <section class="a-block" aria-labelledby="f-score">
+      <h3 class="eyebrow" id="f-score">Qualificação do Lead</h3>
+      <p class="small" id="fiche-score-desc">Pontuação automática : <strong id="fiche-score-badge">Score 4/5</strong></p>
+    </section>
+
+    <dl class="a-dl">
+      <div><dt>Idioma</dt><dd id="fiche-idioma">Português</dd></div>
+      <div class="a-dl-full"><dt>Origem</dt><dd id="fiche-origem">Instagram</dd></div>
+      <div><dt>Prazo Desejado</dt><dd id="fiche-prazo">Em 1 mês</dd></div>
+      <div><dt>E-mail</dt><dd id="fiche-email">cliente@empresa.com</dd></div>
+      <div class="a-dl-full"><dt>WhatsApp / Telefone</dt><dd id="fiche-telefone">+689 00 00 00</dd></div>
+      <div class="a-dl-full"><dt>Data de Envio</dt><dd id="fiche-data">Hoje</dd></div>
+    </dl>
+
+    <section class="a-block" id="fiche-reuniao-block" aria-labelledby="f-reuniao-title" hidden>
+      <h3 class="eyebrow" id="f-reuniao-title">Informações da Reunião</h3>
+      <p class="small" id="fiche-reuniao-text" style="font-weight:500; color:var(--chocolate);"></p>
+    </section>
+
+    <hr class="a-rule-thin">
+
+    <div class="actions" style="flex-wrap:wrap;">
+      <a class="btn btn-small" id="btn-email-lead" href="demandes.html">Responder por E-mail</a>
+      <a class="btn btn-outline btn-small" id="btn-whatsapp-lead" href="demandes.html" target="_blank" rel="noopener">Conversar no WhatsApp</a>
+      <a class="btn btn-secondary btn-small" id="btn-cinema-page" href="../entrega-cinema.html" target="_blank" rel="noopener" style="display:none; width:100%; justify-content:center; margin-top:8px;">🎬 Rota de Entrega Cinema 4K ↗</a>
+      <a class="btn btn-secondary btn-small" id="btn-reels-page" href="../entrega-reels.html" target="_blank" rel="noopener" style="display:none; width:100%; justify-content:center; margin-top:8px;">📱 Rota de Entrega 12x Reels ↗</a>
+      <a class="btn btn-outline btn-small" id="btn-client-page" href="../cliente.html" target="_blank" rel="noopener" style="display:none; width:100%; justify-content:center; margin-top:8px;">🌐 Portal Geral do Cliente ↗</a>
+      <button type="button" class="btn btn-primary btn-small" id="btn-generate-client-combo" style="display:none; width:100%; justify-content:center; margin-top:8px;">⚡ Gerar Página de Cliente para este Combo</button>
+    </div>
+
+    <div class="field" style="margin-top:var(--space-4); padding-top:var(--space-3); border-top:1px solid var(--areia);">
+      <label for="select-move-stage" class="eyebrow" style="display:block; margin-bottom:var(--space-1);">Mover para outra etapa (Salva no Banco)</label>
+      <div class="select-wrap">
+        <select class="select" id="select-move-stage">
+          <option value="novo">Novo</option>
+          <option value="qualificado">Qualificado</option>
+          <option value="reuniao">Reunião Agendada</option>
+          <option value="orcamento_enviado">Orçamento Enviado</option>
+          <option value="fechado">Contrato Fechado (Ganho)</option>
+          <option value="perdido">Perdido</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<!-- Modal: Nouveau Contact Manuel -->
+<dialog class="modal-dialog" id="modal-novo-lead" aria-labelledby="modal-novo-title">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-4);">
+    <h3 class="a-heading" id="modal-novo-title">Nouveau Contact Manuel</h3>
+    <button type="button" class="btn btn-outline btn-small" id="btn-close-modal-novo" style="padding:2px 8px; min-height:28px;">Fechar</button>
+  </div>
+  <form id="form-novo-lead" class="stack-3">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-3);">
+      <div class="field">
+        <label for="nl-cliente" class="small">Nom du Client / Entreprise *</label>
+        <input class="input" type="text" id="nl-cliente" required placeholder="Ex: Hotel Polynesian Sun">
+      </div>
+      <div class="field">
+        <label for="nl-email" class="small">E-mail</label>
+        <input class="input" type="email" id="nl-email" placeholder="contato@hotel.pf">
+      </div>
+    </div>
+      <div class="field" style="grid-column:span 2;">
+        <label for="nl-telefone" class="small">Téléphone / WhatsApp</label>
+        <input class="input" type="tel" id="nl-telefone" placeholder="+689 87 ...">
+      </div>
+    </div>
+    <div class="field">
+      <label for="nl-servicos" class="small">Serviços (separados por vírgula)</label>
+      <input class="input" type="text" id="nl-servicos" placeholder="Ex: Filme de marca, Reels, IA">
+    </div>
+    <div class="field">
+      <label for="nl-mensagem" class="small">Résumé du Projet / Message *</label>
+      <textarea class="textarea" id="nl-mensagem" rows="3" required placeholder="Descreva a demanda ou anotações da chamada..."></textarea>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-3);">
+      <div class="field">
+        <label for="nl-status" class="small">Etapa Inicial</label>
+        <select class="select" id="nl-status">
+          <option value="novo">Novo</option>
+          <option value="qualificado">Qualificado</option>
+          <option value="reuniao">Reunião Agendada</option>
+          <option value="orcamento_enviado">Orçamento Enviado</option>
+          <option value="fechado">Contrato Fechado</option>
+          <option value="perdido">Perdido</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="nl-score" class="small">Score de Qualificação</label>
+        <select class="select" id="nl-score">
+          <option value="5">5/5 (Altíssimo)</option>
+          <option value="4" selected>4/5 (Prioritário)</option>
+          <option value="3">3/5 (Médio)</option>
+          <option value="2">2/5 (Básico)</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions" style="justify-content:flex-end; margin-top:var(--space-2);">
+      <button type="button" class="btn btn-outline btn-small" id="btn-cancel-novo">Annuler</button>
+      <button type="submit" class="btn btn-primary btn-small">Enregistrer dans la base</button>
+    </div>
+  </form>
+</dialog>
+
+<nav class="a-bottom" aria-label="Navegação administrativa móvel">
+  <a href="index.html">Painel</a>
+  <a href="demandes.html" aria-current="page">Pedidos</a>
+  <a href="clientes.html">Clients</a>
+  <a href="projet.html">Destaques</a>
+  <a href="mediatheque.html">Vídeos</a>
+</nav>
+
+<div class="a-toast" id="toast" hidden role="status" aria-live="polite"></div>
+<a class="maquette-banner" href="../index.html">Ver Página Mãe</a>
+
+<script>
+(function() {
+  'use strict';
+
+  var SUPABASE_URL = 'https://xvabghgvrhpnyywpmodb.supabase.co';
+  var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YWJnaGd2cmhwbnl5d3Btb2RiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3NTgwNTEsImV4cCI6MjEwNzMzNDA1MX0.d0CNiaTYEnpsCY4N9qS6HNIxa3u7DYtzAOErvZHzC0w';
+
+  var leads = [];
+  var activeLeadId = null;
+  var currentFilter = 'toutes';
+
+  var toast = document.getElementById('toast');
+  var toastTimer = null;
+  function showToast(msg) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.hidden = false;
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(function() { toast.hidden = true; }, 3200);
+  }
+
+  /* Carrega pedidos do Supabase */
+  function fetchLeads() {
+    fetch(SUPABASE_URL + '/rest/v1/pedidos_orcamento?order=id.desc', {
+      headers: {
+        'apikey': SUPABASE_ANON,
+        'Authorization': 'Bearer ' + ((window.AdminUI && window.AdminUI.token && window.AdminUI.token()) || SUPABASE_ANON)
+      }
+    })
+    .then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function(data) {
+      leads = data || [];
+      renderKanban();
+      updateTopbars();
+      var qId = parseInt(new URLSearchParams(window.location.search).get('id'), 10);
+      if (qId) {
+        openFiche(qId);
+      }
+    })
+    .catch(function(err) {
+      console.warn('Erro ao carregar do Supabase:', err);
+    });
+  }
+
+  function updateTopbars() {
+    var total = leads.length;
+    var novos = leads.filter(function(l){ return l.status === 'novo'; }).length;
+    
+    var navCount = document.getElementById('nav-leads-count');
+    if (navCount) navCount.textContent = total;
+
+    var summary = document.getElementById('topbar-summary');
+    if (summary) summary.textContent = 'Funil de Atendimento · ' + total + ' contatos no total';
+
+    var sub = document.getElementById('topbar-sub');
+    if (sub) {
+      sub.textContent = novos > 0 
+        ? novos + ' pedidos prioritários aguardando primeiro retorno esta semana.'
+        : 'Todos os pedidos estão em andamento ou qualificados.';
+    }
+  }
+
+  var leadSearchQuery = '';
+  var leadSearchInput = document.getElementById('lead-search');
+  if (leadSearchInput) {
+    leadSearchInput.addEventListener('input', function(e) {
+      leadSearchQuery = e.target.value.trim().toLowerCase();
+      renderKanban();
+    });
+  }
+
+  function renderKanban() {
+    var filtered = leads.filter(function(l) {
+      if (currentFilter === 'sans-reponse' && l.status !== 'novo') return false;
+      if (currentFilter === 'pt' && l.idioma !== 'pt') return false;
+      if (currentFilter === 'en' && l.idioma !== 'en') return false;
+      if (currentFilter === 'prioritaire' && (l.score || 0) < 4) return false;
+      if (leadSearchQuery) {
+        var servText = Array.isArray(l.servicos) ? l.servicos.join(' ') : (l.servicos || '');
+        var hay = [l.cliente_nome, l.empresa, l.cliente_email, l.cliente_telefone, l.setor, l.numero, l.mensagem, servText].join(' ').toLowerCase();
+        var tokens = leadSearchQuery.split(/\s+/).filter(Boolean);
+        for (var i = 0; i < tokens.length; i++) {
+          if (hay.indexOf(tokens[i]) < 0) return false;
+        }
+      }
+      return true;
+    });
+
+    var groups = {
+      novos: filtered.filter(function(l){ return l.status === 'novo'; }),
+      qualificados: filtered.filter(function(l){ return l.status === 'qualificado'; }),
+      reuniao: filtered.filter(function(l){ return l.status === 'reuniao'; }),
+      orcamento: filtered.filter(function(l){ return l.status === 'orcamento_enviado'; }),
+      fechado: filtered.filter(function(l){ return l.status === 'fechado' || l.status === 'perdido'; })
+    };
+
+    function renderColumn(listEl, countEl, items) {
+      if (countEl) countEl.textContent = items.length;
+      if (!listEl) return;
+      if (items.length === 0) {
+        listEl.innerHTML = '<div class="a-column-empty">Nenhum pedido nesta etapa</div>';
+        return;
+      }
+      var html = '';
+      items.forEach(function(l) {
+        var isLate = l.status === 'novo';
+        var tagsHtml = '';
+        var servList = Array.isArray(l.servicos) ? l.servicos : [l.servicos || 'Produção'];
+        servList.forEach(function(s) {
+          tagsHtml += '<span class="tag">' + s + '</span>';
+        });
+
+        var footHtml = '';
+        if (l.status === 'novo') {
+          footHtml = '<span class="a-lead-foot"><span class="tag tag-dark">Sem resposta &gt; 24 h</span></span>';
+        } else if (l.status === 'reuniao') {
+          footHtml = '<span class="a-lead-foot"><span class="small">' + (l.reuniao_info || 'Reunião agendada') + '</span></span>';
+        } else if (l.status === 'fechado') {
+          footHtml = '<span class="a-lead-foot"><span class="tag tag-outline">Contrato Fechado</span></span>';
+        } else if (l.status === 'perdido') {
+          footHtml = '<span class="a-lead-foot"><span class="tag tag-outline">Perdido</span></span>';
+        }
+
+        html += '<button class="a-lead' + (isLate ? ' is-late' : '') + '" type="button" data-lead-id="' + l.id + '">';
+        html += '  <span class="a-lead-title">Nº ' + l.numero + ' · ' + l.cliente_nome + '</span>';
+        html += '  <span class="tags">' + tagsHtml + '</span>';
+        html += '  <span class="a-lead-meta"><span>' + (l.idioma || 'PT').toUpperCase() + '</span><span>' + (l.origem || 'Site') + '</span><span>Score ' + (l.score || 3) + '/5</span></span>';
+        html += footHtml;
+        html += '</button>';
+      });
+      listEl.innerHTML = html;
+    }
+
+    renderColumn(document.getElementById('list-novos'), document.getElementById('count-novos'), groups.novos);
+    renderColumn(document.getElementById('list-qualificados'), document.getElementById('count-qualificados'), groups.qualificados);
+    renderColumn(document.getElementById('list-reuniao'), document.getElementById('count-reuniao'), groups.reuniao);
+    renderColumn(document.getElementById('list-orcamento'), document.getElementById('count-orcamento'), groups.orcamento);
+    renderColumn(document.getElementById('list-fechado'), document.getElementById('count-fechado'), groups.fechado);
+
+    /* Adiciona eventos de clique nos cards */
+    document.querySelectorAll('[data-lead-id]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var id = parseInt(btn.getAttribute('data-lead-id'), 10);
+        openFiche(id);
+      });
+    });
+  }
+
+  /* Filtros por radio */
+  document.querySelectorAll('input[name="vue"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      currentFilter = radio.value;
+      renderKanban();
+    });
+  });
+
+  /* Drawer Fiche de Detalhes */
+  var fiche = document.getElementById('fiche');
+  var ficheTitle = document.getElementById('fiche-title');
+  var ficheStatus = document.getElementById('fiche-status-text');
+  var ficheServicos = document.getElementById('fiche-servicos');
+  var ficheMsg = document.getElementById('fiche-mensagem');
+  var ficheScoreBadge = document.getElementById('fiche-score-badge');
+  var ficheIdioma = document.getElementById('fiche-idioma');
+  var ficheSetor = document.getElementById('fiche-setor');
+  var ficheOrigem = document.getElementById('fiche-origem');
+  var fichePrazo = document.getElementById('fiche-prazo');
+  var ficheEmail = document.getElementById('fiche-email');
+  var ficheTelefone = document.getElementById('fiche-telefone');
+  var ficheData = document.getElementById('fiche-data');
+  var btnEmailLead = document.getElementById('btn-email-lead');
+  var btnWhatsappLead = document.getElementById('btn-whatsapp-lead');
+  var selectMove = document.getElementById('select-move-stage');
+  var ficheReuniaoBlock = document.getElementById('fiche-reuniao-block');
+  var ficheReuniaoText = document.getElementById('fiche-reuniao-text');
+  var btnCloseFiche = document.getElementById('btn-close-fiche');
+
+  function openFiche(id) {
+    activeLeadId = id;
+    var lead = leads.find(function(l){ return l.id === id; });
+    if (!lead) return;
+
+    ficheTitle.textContent = 'Pedido nº ' + lead.numero + ' · ' + lead.cliente_nome;
+    
+    var statusLabels = {
+      'novo': 'Nouveau Contact',
+      'qualificado': 'Qualificado',
+      'reuniao': 'Reunião Agendada',
+      'orcamento_enviado': 'Orçamento Enviado',
+      'fechado': 'Contrato Fechado',
+      'perdido': 'Perdido'
+    };
+    ficheStatus.textContent = statusLabels[lead.status] || lead.status;
+
+    var servList = Array.isArray(lead.servicos) ? lead.servicos : [lead.servicos || 'Audiovisual'];
+    ficheServicos.innerHTML = servList.map(function(s){ return '<span class="tag">' + s + '</span>'; }).join('');
+
+    ficheMsg.textContent = '« ' + (lead.mensagem || 'Aucune description supplémentaire.') + ' »';
+    ficheScoreBadge.textContent = 'Score ' + (lead.score || 3) + '/5';
+    ficheIdioma.textContent = (lead.idioma === 'en' ? 'Inglês (EN)' : (lead.idioma === 'fr' ? 'Francês (FR)' : 'Português (PT-BR)'));
+    if (ficheSetor) ficheSetor.textContent = lead.empresa_setor || 'Geral';
+    ficheOrigem.textContent = lead.origem || 'Site';
+    fichePrazo.textContent = lead.prazo || 'A definir';
+    ficheEmail.textContent = lead.cliente_email || 'Não informado';
+    ficheTelefone.textContent = lead.cliente_telefone || 'Não informado';
+
+    var dt = lead.created_at ? new Date(lead.created_at) : new Date();
+    ficheData.textContent = dt.toLocaleDateString('pt-BR') + ' às ' + dt.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+
+    if (lead.reuniao_info) {
+      ficheReuniaoBlock.hidden = false;
+      ficheReuniaoText.textContent = lead.reuniao_info;
+    } else {
+      ficheReuniaoBlock.hidden = true;
+    }
+
+    if (lead.cliente_email) {
+      btnEmailLead.href = 'mailto:' + lead.cliente_email + '?subject=' + encodeURIComponent('Soft Communication · Proposta para ' + lead.cliente_nome);
+      btnEmailLead.style.display = 'inline-flex';
+    } else {
+      btnEmailLead.style.display = 'none';
+    }
+
+    if (lead.cliente_telefone) {
+      var cleanPhone = lead.cliente_telefone.replace(/[^0-9]/g, '');
+      btnWhatsappLead.href = 'https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent('Olá! Entramos em contato a respeito da sua solicitação na Soft Communication.');
+      btnWhatsappLead.style.display = 'inline-flex';
+    } else {
+      btnWhatsappLead.style.display = 'none';
+    }
+
+    /* Gerenciamento de Página Exclusiva do Cliente */
+    var btnClientPage = document.getElementById('btn-client-page');
+    var btnGenClientCombo = document.getElementById('btn-generate-client-combo');
+    var clientPages = {};
+    try {
+      clientPages = JSON.parse(localStorage.getItem('soft_client_pages') || '{}');
+    } catch(e) { clientPages = {}; }
+
+    // Encontra se já tem página gerada por cliente_nome ou numero
+    var existingPageKey = null;
+    for (var k in clientPages) {
+      if (clientPages[k].leadId === lead.id || clientPages[k].clientName.toLowerCase() === lead.cliente_nome.toLowerCase()) {
+        existingPageKey = k;
+        break;
+      }
+    }
+
+    var btnCinemaPage = document.getElementById('btn-cinema-page');
+    var btnReelsPage = document.getElementById('btn-reels-page');
+
+    if (existingPageKey) {
+      if (btnCinemaPage) {
+        btnCinemaPage.style.display = 'inline-flex';
+        btnCinemaPage.href = '../entrega-cinema.html?id=' + encodeURIComponent(existingPageKey) + '&cliente=' + encodeURIComponent(lead.cliente_nome);
+      }
+      if (btnReelsPage) {
+        btnReelsPage.style.display = 'inline-flex';
+        btnReelsPage.href = '../entrega-reels.html?id=' + encodeURIComponent(existingPageKey) + '&cliente=' + encodeURIComponent(lead.cliente_nome);
+      }
+      if (btnClientPage) {
+        btnClientPage.style.display = 'inline-flex';
+        btnClientPage.href = '../cliente.html?id=' + encodeURIComponent(existingPageKey);
+      }
+      if (btnGenClientCombo) {
+        btnGenClientCombo.textContent = '⚡ Mettre à jour l\'Espace Client';
+      }
+    } else {
+      var previewKey = 'temp_' + lead.id;
+      if (btnCinemaPage) {
+        btnCinemaPage.style.display = 'inline-flex';
+        btnCinemaPage.href = '../entrega-cinema.html?id=' + encodeURIComponent(previewKey) + '&cliente=' + encodeURIComponent(lead.cliente_nome);
+      }
+      if (btnReelsPage) {
+        btnReelsPage.style.display = 'inline-flex';
+        btnReelsPage.href = '../entrega-reels.html?id=' + encodeURIComponent(previewKey) + '&cliente=' + encodeURIComponent(lead.cliente_nome);
+      }
+      if (btnClientPage) {
+        btnClientPage.style.display = 'none';
+      }
+      if (btnGenClientCombo) {
+        btnGenClientCombo.textContent = '🚀 Fechar Combo & Gerar Página';
+      }
+    }
+
+    if (btnGenClientCombo) {
+      btnGenClientCombo.onclick = function() {
+        var pageKey = existingPageKey || ('cli_' + lead.id);
+        var comboTitle = (Array.isArray(lead.servicos) && lead.servicos.length ? lead.servicos.join(' + ') : 'Combo Cinema & Branding');
+        
+        clientPages[pageKey] = {
+          id: pageKey,
+          leadId: lead.id,
+          clientName: lead.cliente_nome,
+          comboTitle: comboTitle,
+          status: 'Produção em Andamento',
+          step: 2,
+          headline: 'Produção Audiovisual & Branding · ' + lead.cliente_nome,
+          description: lead.mensagem || 'Projeto exclusivo fechado com a Soft Communication para posicionamento cinematográfico.',
+          videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-luxury-modern-villa-exterior-and-pool-42511-large.mp4',
+          deliverables: [
+            { title: 'Master 4K ProRes 422 HQ (16:9)', size: '3.8 GB', ready: true },
+            { title: '12x Reels / Shorts em 9:16 com Color Grading', size: '1.2 GB', ready: false },
+            { title: 'Galeria Still Photography 48MP (HDR)', size: '850 MB', ready: true },
+            { title: 'Certificado de Direitos e Trilha Sonora Original', size: '15 MB', ready: true }
+          ],
+          updatedAt: new Date().toISOString()
+        };
+        try {
+          localStorage.setItem('soft_client_pages', JSON.stringify(clientPages));
+        } catch(e){}
+
+        // Atualizar etapa para 'fechado' se ainda não for
+        if (lead.status !== 'fechado') {
+          selectMove.value = 'fechado';
+          var changeEvent = new Event('change');
+          selectMove.dispatchEvent(changeEvent);
+        }
+
+        showToast('✓ Espace privé créé avec succès pour ' + lead.cliente_nome + '!');
+        if (btnClientPage) {
+          btnClientPage.style.display = 'inline-flex';
+          btnClientPage.href = '../cliente.html?id=' + encodeURIComponent(pageKey);
+        }
+        window.open('../cliente.html?id=' + encodeURIComponent(pageKey), '_blank');
+      };
+    }
+
+    selectMove.value = lead.status;
+
+    if (typeof fiche.showModal === 'function') {
+      fiche.showModal();
+    }
+  }
+
+  if (btnCloseFiche) {
+    btnCloseFiche.addEventListener('click', function() {
+      if (typeof fiche.close === 'function') fiche.close();
+    });
+  }
+
+  /* Logout na sidebar */
+  var btnSideLogout = document.getElementById('btn-side-logout');
+  if (btnSideLogout) {
+    btnSideLogout.addEventListener('click', function() {
+      sessionStorage.removeItem('soft_admin_session_auth_v1');
+      sessionStorage.removeItem('soft_admin_authenticated');
+      showToast('Sessão encerrada com segurança.');
+      setTimeout(function() {
+        window.location.href = 'index.html';
+      }, 500);
+    });
+  }
+
+  /* Mover etapa com PATCH real no Supabase */
+  selectMove.addEventListener('change', function() {
+    var newStatus = selectMove.value;
+    if (!activeLeadId || !newStatus) return;
+
+    var lead = leads.find(function(l){ return l.id === activeLeadId; });
+    if (!lead) return;
+
+    // Se mudou para fechado, assegura que a página do cliente exista
+    if (newStatus === 'fechado') {
+      try {
+        var cPages = JSON.parse(localStorage.getItem('soft_client_pages') || '{}');
+        var pKey = 'cli_' + lead.id;
+        if (!cPages[pKey]) {
+          cPages[pKey] = {
+            id: pKey,
+            leadId: lead.id,
+            clientName: lead.cliente_nome,
+            comboTitle: (Array.isArray(lead.servicos) && lead.servicos.length ? lead.servicos.join(' + ') : 'Combo Audiovisual Fechado'),
+            status: 'Produção em Andamento',
+            step: 2,
+            headline: 'Produção Audiovisual & Branding · ' + lead.cliente_nome,
+            description: lead.mensagem || 'Projeto exclusivo fechado com a Soft Communication.',
+            videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-luxury-modern-villa-exterior-and-pool-42511-large.mp4',
+            deliverables: [
+              { title: 'Master 4K ProRes 422 HQ (16:9)', size: '3.8 GB', ready: true },
+              { title: '12x Reels / Shorts em 9:16 com Color Grading', size: '1.2 GB', ready: false },
+              { title: 'Galeria Still Photography 48MP (HDR)', size: '850 MB', ready: true }
+            ],
+            updatedAt: new Date().toISOString()
+          };
+          localStorage.setItem('soft_client_pages', JSON.stringify(cPages));
+        }
+      } catch(e){}
+    }
+
+    fetch(SUPABASE_URL + '/rest/v1/pedidos_orcamento?id=eq.' + activeLeadId, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_ANON,
+        'Authorization': 'Bearer ' + ((window.AdminUI && window.AdminUI.token && window.AdminUI.token()) || SUPABASE_ANON),
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify({ status: newStatus, updated_at: new Date().toISOString() })
+    })
+    .then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      lead.status = newStatus;
+      renderKanban();
+      updateTopbars();
+      showToast('✓ Pedido nº ' + lead.numero + ' atualizado no banco de dados!');
+      openFiche(activeLeadId);
+    })
+    .catch(function(err) {
+      lead.status = newStatus;
+      renderKanban();
+      showToast('Pedido atualizado localmente.');
+    });
+  });
+
+  /* Modal de Novo Lead Manual */
+  var modalNovo = document.getElementById('modal-novo-lead');
+  var btnOpenManual = document.getElementById('btn-open-manual-lead');
+  var btnCloseNovo = document.getElementById('btn-close-modal-novo');
+  var btnCancelNovo = document.getElementById('btn-cancel-novo');
+  var formNovo = document.getElementById('form-novo-lead');
+
+  if (btnOpenManual) {
+    btnOpenManual.addEventListener('click', function() {
+      if (typeof modalNovo.showModal === 'function') modalNovo.showModal();
+    });
+  }
+  function closeNovoModal() {
+    if (typeof modalNovo.close === 'function') modalNovo.close();
+  }
+  if (btnCloseNovo) btnCloseNovo.addEventListener('click', closeNovoModal);
+  if (btnCancelNovo) btnCancelNovo.addEventListener('click', closeNovoModal);
+
+  formNovo.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var nome = document.getElementById('nl-cliente').value.trim();
+    var email = document.getElementById('nl-email').value.trim();
+    var telefone = document.getElementById('nl-telefone').value.trim();
+    var servText = document.getElementById('nl-servicos').value.trim();
+    var mensagem = document.getElementById('nl-mensagem').value.trim();
+    var status = document.getElementById('nl-status').value;
+    var score = parseInt(document.getElementById('nl-score').value, 10);
+
+    var servArray = servText ? servText.split(',').map(function(s){ return s.trim(); }) : ['Vídeo de Marca'];
+    var nextNum = '00' + (leads.length + 10).toString().slice(-2);
+
+    var payload = {
+      numero: nextNum,
+      cliente_nome: nome,
+      cliente_email: email,
+      cliente_telefone: telefone,
+      servicos: servArray,
+      mensagem: mensagem,
+      status: status,
+      score: score,
+      idioma: 'pt',
+      origem: 'Admin Manual',
+      prazo: 'Em 1 mês'
+    };
+
+    fetch(SUPABASE_URL + '/rest/v1/pedidos_orcamento', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON,
+        'Authorization': 'Bearer ' + ((window.AdminUI && window.AdminUI.token && window.AdminUI.token()) || SUPABASE_ANON),
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function(data) {
+      closeNovoModal();
+      formNovo.reset();
+      showToast('✓ Nouvelle demande nº ' + nextNum + ' enregistrée dans Supabase !');
+      fetchLeads();
+    })
+    .catch(function(err) {
+      closeNovoModal();
+      payload.id = Date.now();
+      leads.unshift(payload);
+      renderKanban();
+      updateTopbars();
+      showToast('✓ Nouvelle demande enregistrée.');
+    });
+  });
+
+  /* Exportar CSV Real */
+  var btnExportCsv = document.getElementById('btn-export-csv');
+  if (btnExportCsv) {
+    btnExportCsv.addEventListener('click', function() {
+      if (leads.length === 0) {
+        showToast('Nenhum dado para exportar.');
+        return;
+      }
+      var headers = ['ID', 'Numero', 'Cliente', 'Email', 'Telefone', 'Setor', 'Servicos', 'Status', 'Score', 'Origem', 'Data'];
+      var rows = leads.map(function(l) {
+        return [
+          l.id,
+          '"' + (l.numero || '') + '"',
+          '"' + (l.cliente_nome || '').replace(/"/g, '""') + '"',
+          '"' + (l.cliente_email || '') + '"',
+          '"' + (l.cliente_telefone || '') + '"',
+          '"' + (l.empresa_setor || '') + '"',
+          '"' + (Array.isArray(l.servicos) ? l.servicos.join(', ') : (l.servicos || '')) + '"',
+          l.status || '',
+          l.score || '',
+          l.origem || '',
+          l.created_at || ''
+        ].join(',');
+      });
+
+      var csvContent = 'data:text/csv;charset=utf-8,' + encodeURIComponent([headers.join(',')].concat(rows).join('\n'));
+      var link = document.createElement('a');
+      link.setAttribute('href', csvContent);
+      link.setAttribute('download', 'pedidos_orcamento_soft_' + new Date().toISOString().slice(0, 10) + '.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('✓ Arquivo CSV exportado com ' + leads.length + ' leads!');
+    });
+  }
+
+  fetchLeads();
+})();
+</script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/data/catalog.js"></script>
+<script src="../assets/js/soft-catalog.js"></script>
+<script src="../assets/js/admin.js"></script>
+<script src="../assets/js/admin-core.js"></script>
+</body>
+</html>
