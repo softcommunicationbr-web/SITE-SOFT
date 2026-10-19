@@ -436,13 +436,13 @@ html.has-preloader .pl3-svg { transform: rotateX(82deg) translateY(58%); opacity
   opacity: 0.92;
   text-shadow: none !important;
 }
-/* Hero CTA Group: Botão e Prova Social lado a lado */
+/* Hero CTA Group: Botão acima e Prova Social centralizada abaixo */
 .hero-cta-group {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 16px;
+  gap: 14px;
   margin-top: var(--space-3);
 }
 
