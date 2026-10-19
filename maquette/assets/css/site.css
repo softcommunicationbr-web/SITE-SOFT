@@ -419,21 +419,21 @@ html.has-preloader .pl3-svg { transform: rotateX(82deg) translateY(58%); opacity
 .hero .display-hero {
   color: var(--creme);
   text-align: center;
-  font-size: clamp(2.1rem, 4.5vw, 3.6rem);
+  font-size: clamp(24px, 3.2vw, 42px);
   line-height: 1.15;
   text-shadow: none !important;
-  max-width: 22ch;
+  max-width: 18ch;
   margin-inline: auto;
 }
 .hero-lead {
-  max-width: 50ch;
+  max-width: 44ch;
   margin-inline: auto;
   text-align: center;
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-size: clamp(14px, 1.25vw, 16px);
   line-height: 1.5;
   font-weight: 400;
   color: var(--creme);
-  opacity: 0.94;
+  opacity: 0.92;
   text-shadow: none !important;
 }
 /* Hero CTA Group: Botão e Prova Social lado a lado */
@@ -632,17 +632,18 @@ html.has-preloader .pl3-svg { transform: rotateX(82deg) translateY(58%); opacity
     max-width: 100%;
   }
   .hero .display-hero {
-    font-size: clamp(28px, 7.5vw, 42px) !important;
-    line-height: 1.15 !important;
-    letter-spacing: -0.015em;
+    font-size: clamp(20px, 5.5vw, 28px) !important;
+    line-height: 1.18 !important;
+    letter-spacing: -0.01em;
     max-width: 100%;
     text-wrap: balance;
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.75) !important;
   }
   .hero-lead {
-    font-size: 15.5px !important;
-    line-height: 1.55 !important;
-    max-width: 100%;
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+    max-width: 320px;
+    margin-inline: auto;
     color: var(--creme);
     text-wrap: pretty;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7) !important;

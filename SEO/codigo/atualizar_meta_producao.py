@@ -14,7 +14,7 @@ Executa cirurgicamente:
 7. Twitter Cards (summary_large_image)
 8. Injeção de JSON-LD Schema.org completo (Organization, WebSite, WebPage, ProfessionalService, OfferCatalog)
 9. Injeção de Bloco-Resposta direto de 50-60 palavras para AEO (Google AI Overviews, Bing Copilot)
-10. Otimização semântica das seções de serviços e sobre (Calebe Barbarotti)
+10. Otimização semântica das seções de serviços e sobre (Calebe)
 11. Geração de sitemap.xml recíproco e sincronização com robots.txt e llms.txt
 """
 
@@ -336,27 +336,16 @@ for rel_path, meta in PAGES.items():
         flags=re.IGNORECASE
     )
 
-    # 4. Injeção cirúrgica de Bloco-Resposta de AEO e palavras-chave no corpo das páginas home
+    # 4. Limpeza de hero-aeo-summary, remoção de Barbarotti e refinamento cirúrgico de serviços
     if rel_path in ("fr/index.html", "en/index.html", "pt/index.html", "index.html"):
-        # AEO direct answer blocks
-        aeo_fr = "Soft & Co est un studio de production audiovisuelle haut de gamme basé en Polynésie française (Tahiti, Moorea, Bora Bora). Nous concevons des films de marque cinématographiques en lumière naturelle, des packs mensuels de formats verticaux 9:16 (Reels/TikTok) et des visuels architecturaux assistés par IA pour l'hôtellerie de luxe, les resorts et l'immobilier d'exception."
-        aeo_en = "Soft & Co is a boutique cinematography and audiovisual production studio founded in French Polynesia (Tahiti, Moorea, Bora Bora). We specialize in luxury cinematic brand films shot in natural Pacific light, high-retention 9:16 vertical video packages (Reels & TikTok), and AI-assisted architectural projections for luxury hospitality, resorts, and high-end real estate developers worldwide."
-        aeo_pt = "A Soft & Co é um estúdio boutique de produção audiovisual e cinema de marca baseado na Polinésia Francesa (Tahiti, Moorea, Bora Bora). Produzimos filmes cinematográficos em luz natural, pacotes mensais de vídeos verticais 9:16 (Reels e TikTok) e projeções imobiliárias assistidas por inteligência artificial para marcas de luxo, hotelaria e incorporações imobiliárias exclusivas."
-        
-        target_aeo = aeo_fr if ("fr" in rel_path or rel_path == "index.html") else (aeo_en if "en" in rel_path else aeo_pt)
-        
-        # Verificar se já existe hero-aeo-summary
-        if '<p class="hero-aeo-summary"' not in content:
-            aeo_html = f'\n        <p class="hero-aeo-summary" style="max-width:680px; font-size:var(--fs-small); line-height:var(--lh-body); color:var(--areia); opacity:0.92; margin-top:var(--space-3); margin-bottom:var(--space-4);">{target_aeo}</p>'
-            content = re.sub(r'(<p class="hero-lead">.*?</p>)', r'\1' + aeo_html, content, count=1, flags=re.DOTALL)
+        # Garantir que o hero permaneça leve e limpo (remover qualquer hero-aeo-summary do DOM visível)
+        content = re.sub(r'\s*<p class="hero-aeo-summary"[^>]*>.*?</p>', '', content, flags=re.DOTALL)
 
-        # Atualização de Nome do Fundador na seção Sobre
-        content = re.sub(r'Calebe\s*·\s*Fondateur', 'Calebe Barbarotti · Fondateur', content)
-        content = re.sub(r'Calebe\s*·\s*Founder', 'Calebe Barbarotti · Founder', content)
-        content = re.sub(r'Calebe\s*·\s*Fundador', 'Calebe Barbarotti · Fundador', content)
+        # Garantir que o fundador seja sempre estritamente "Calebe" (remover qualquer menção a Barbarotti)
+        content = re.sub(r'Calebe\s+Barbarotti', 'Calebe', content)
 
-        # Atualização cirúrgica dos serviços com palavras-chave prioritárias
-        if "fr" in rel_path:
+        # Atualização cirúrgica dos serviços
+        if "fr" in rel_path or rel_path == "index.html":
             content = re.sub(
                 r'<span class="service-desc">Film média branding, film cinématographique, vidéo commerciale\.</span>',
                 '<span class="service-desc">Films de marque &amp; vidéo d\'entreprise en Polynésie. Master 4K, narration documentaire, étalonnage lumière naturelle et droits commerciaux pour resorts et marques.</span>',
@@ -368,8 +357,8 @@ for rel_path, meta in PAGES.items():
                 content
             )
             content = re.sub(
-                r'<span class="service-desc">Visuels assistés par IA, réel et projection toujours distingués\.</span>',
-                '<span class="service-desc">Immobilier IA &amp; visuels de projection en Polynésie. Home staging virtuel, plans drone et rendus photoréalistes pour villas de luxe. Visuels non contractuels dûment étiquetés.</span>',
+                r'<span class="service-desc">(?:Visuels assistés par IA, réel et projection toujours distingués\.|Immobilier IA &amp; visuels de projection en Polynésie\..*?|Montrez vos espaces.*?)</span>',
+                '<span class="service-desc">Montrez vos espaces sans avoir besoin de louer un décor. Projections artistiques et visuels d\'architecture assistés par IA.</span>',
                 content
             )
         elif "en" in rel_path:
@@ -384,8 +373,8 @@ for rel_path, meta in PAGES.items():
                 content
             )
             content = re.sub(
-                r'<span class="service-desc">AI-assisted visuals, real and projected always told apart\.</span>',
-                '<span class="service-desc">AI real estate &amp; architectural visual projections. Virtual staging, drone cinematography, and concept visualization for private villas and island developments. Non-binding artistic visuals.</span>',
+                r'<span class="service-desc">(?:AI-assisted visuals, real and projected always told apart\.|AI real estate &amp; architectural visual projections\..*?|Showcase your spaces.*?)</span>',
+                '<span class="service-desc">Showcase your spaces without needing to rent a set. AI-assisted architectural and visual projections.</span>',
                 content
             )
         else: # PT
@@ -400,8 +389,8 @@ for rel_path, meta in PAGES.items():
                 content
             )
             content = re.sub(
-                r'<span class="service-desc">Visuais assistidos por IA\. Real e projeção artística sempre distinguidos\.</span>',
-                '<span class="service-desc">Imobiliário IA e projeções visuais na Polinésia Francesa. Home staging virtual, sobrevoo de drone e representação estética para vilas e lançamentos.</span>',
+                r'<span class="service-desc">(?:Visuais assistidos por IA\. Real e projeção artística sempre distinguidos\.|Imobiliário IA e projeções visuais na Polinésia Francesa\..*?|Mostre os seus espaços.*?)</span>',
+                '<span class="service-desc">Mostre os seus espaços sem precisar alugar um cenário. Projeções visuais e arquitetura assistidas por IA.</span>',
                 content
             )
 
