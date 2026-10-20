@@ -36,6 +36,8 @@
       <a class="nh-nav-link" href="#etudes">Études de cas</a>
       <a class="nh-nav-link" href="#chiffres">Résultats</a>
       <a class="nh-nav-link" href="#methode">Méthode</a>
+      <a class="nh-nav-link" href="#avis">Avis</a>
+      <a class="nh-nav-link" href="#diferenciais">Différentiels</a>
       <a class="nh-nav-link" href="#offre">Offre</a>
       <a class="nh-nav-link" href="#faq">FAQ</a>
     </nav>
@@ -57,6 +59,8 @@
     <a href="#etudes" data-drawer-link>Études de Cas & Résultats</a>
     <a href="#chiffres" data-drawer-link>Métrique de Confiance</a>
     <a href="#methode" data-drawer-link>La Méthode en 9 Étapes</a>
+    <a href="#avis" data-drawer-link>Témoignages & Avis</a>
+    <a href="#diferenciais" data-drawer-link>Nos Différentiels (Bento)</a>
     <a href="#offre" data-drawer-link>Pack 10 Vidéos</a>
     <a href="#faq" data-drawer-link>Questions Fréquentes</a>
     <a href="#contact" data-drawer-link style="color: var(--nh-accent); font-weight: 600;">Réserver un Appel Découverte →</a>
@@ -117,7 +121,9 @@
         </video>
         <div class="nh-hero-video-controls">
           <button class="nh-video-ctrl-btn" id="nhHeroSoundBtn" type="button" aria-label="Activer le son">
-            <span id="nhHeroSoundIcon">🔇</span>
+            <span id="nhHeroSoundIcon" style="display:inline-flex; align-items:center;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+            </span>
             <span id="nhHeroSoundText">Activer le son</span>
           </button>
         </div>
@@ -512,7 +518,7 @@
     </div>
   </section>
 
-  <!-- 8. Método em 9 Etapas (The Method Behind the Numbers) -->
+  <!-- 8. Método em 9 Etapas (The Method Behind the Numbers - Alternating Timeline) -->
   <section class="nh-method-section" id="methode">
     <div class="nh-container">
       
@@ -521,86 +527,164 @@
         <p>Un flux de travail rigoureux, transparent et rodé pour livrer des pièces d'exception en 14 jours chrono.</p>
       </div>
 
-      <div class="nh-method-grid">
+      <div class="timeline">
+        <div class="rail"><div class="rail-fill"></div></div>
+        <div class="dot"></div>
+
+        <div class="step">
+          <h3><span class="num">01</span> Stratégie & Angles</h3>
+          <div class="step-card">Verrouillage des objectifs de conversion, de l'audience cible et des angles narratifs porteurs.</div>
+        </div>
+
+        <div class="step">
+          <h3><span class="num">02</span> Concepts Clés</h3>
+          <div class="step-card">Nous concevons 20 concepts et hooks différenciants conçus pour captiver le regard dès les 3 premières secondes.</div>
+        </div>
+
+        <div class="step">
+          <h3><span class="num">03</span> Scripts Mot à Mot</h3>
+          <div class="step-card">Chaque mot, chaque réplique et chaque mention à l'écran sont écrits pour retenir l'attention et convertir.</div>
+        </div>
+
+        <div class="step">
+          <h3><span class="num">04</span> Casting & Décors</h3>
+          <div class="step-card">Sélection des visages et décors naturels en Polynésie (lagons, villas privées, ateliers) en accord parfait avec votre marque.</div>
+        </div>
+
+        <div class="step">
+          <h3><span class="num">05</span> Tournage Cinéma</h3>
+          <div class="step-card">Nous opérons l'intégralité du tournage en interne : optiques cinéma, lumière naturelle et aucune sous-traitance.</div>
+        </div>
+
+        <div class="step">
+          <h3><span class="num">06</span> Montage & Sound Design</h3>
+          <div class="step-card">Montage dynamique, étalonnage colorimétrique soigné, sound design immersif et sous-titrage rythmé.</div>
+        </div>
+
+        <div class="step">
+          <h3><span class="num">07</span> Livraison Multi-formats</h3>
+          <div class="step-card">Vous recevez vos vidéos prêtes à l'emploi en haute définition, optimisées pour 9:16 vertical et 16:9 cinéma.</div>
+        </div>
+
+        <div class="step">
+          <h3><span class="num">08</span> Révisions Illimitées</h3>
+          <div class="step-card">Votre entière satisfaction est notre priorité absolue : nous ajustons chaque détail jusqu'à la perfection.</div>
+        </div>
+
+        <div class="step">
+          <h3><span class="num">09</span> Analyse & Bilan</h3>
+          <div class="step-card">Nous analysons les retours et les performances de vos vidéos pour préparer vos prochaines vagues de production.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 9. Depoimentos em Faixas Contínuas (Dual Marquee Testimonials) -->
+  <section class="nh-testimonials-section" id="avis">
+    <div class="nh-container">
+      
+      <div class="nh-section-title-wrap">
+        <h2>La satisfaction de nos clients, <span class="nh-gradient-text">en toute transparence</span></h2>
+        <p>Un seul objectif : 100% de nos partenaires conquis par la qualité visuelle et l'impact commercial de leurs vidéos.</p>
+      </div>
+
+    </div>
+
+    <div class="reviews-shell" aria-label="Avis de nos clients">
+      <div class="review-lane">
+        <div class="review-track" id="trackA"></div>
+      </div>
+      <div class="review-lane reverse">
+        <div class="review-track" id="trackB"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Diferenciais (Bento Grid 12 Colunas) -->
+  <section class="nh-bento-section" id="diferenciais">
+    <div class="nh-container">
+      
+      <div class="nh-section-title-wrap">
+        <h2>Pourquoi Soft Communication <span class="nh-gradient-text">est différent</span></h2>
+        <p>Une approche éditoriale et cinématographique pensée pour transformer l'attention en désir d'achat immédiat.</p>
+      </div>
+
+      <div class="bento">
         
-        <div class="nh-step-card">
-          <div class="nh-step-head">
-            <span class="nh-step-num">01</span>
-            <h3 class="nh-step-title">Stratégie & Angles</h3>
+        <article class="tile concepts">
+          <span class="tag">EXPÉRIMENTATION CONTINUE</span>
+          <div class="pill-stack">
+            <span class="concept-pill"><span class="check">✓</span> Concept 01 · Accroche Sensorielle</span>
+            <span class="concept-pill"><span class="check">✓</span> Concept 02 · Immersion Lagon 4K</span>
+            <span class="concept-pill"><span class="check">✓</span> Concept 03 · Villa & Art de Vivre</span>
+            <span class="concept-pill"><span class="check">✓</span> Concept 04 · Storytelling Marque</span>
+            <span class="concept-pill"><span class="check">✓</span> Concept 05 · Rétention 3s</span>
           </div>
-          <p class="nh-step-desc">Verrouillage des objectifs, de l'audience cible et des angles narratifs porteurs.</p>
-        </div>
+          <div>
+            <h3>Nous testons de nouveaux angles et hooks chaque semaine.</h3>
+          </div>
+        </article>
 
-        <div class="nh-step-card">
-          <div class="nh-step-head">
-            <span class="nh-step-num">02</span>
-            <h3 class="nh-step-title">Concepts Clés</h3>
+        <article class="tile script">
+          <div class="script-copy">
+            <span class="tag">SCRIPTING & SCÉNARISATION</span>
+            <h3>Chaque mot est écrit pour retenir et convertir.</h3>
           </div>
-          <p class="nh-step-desc">Création de 20 concepts et hooks différenciants conçus pour capter le regard.</p>
-        </div>
+          <div class="paper">
+            <b>Script 01 · Accroche Sensorielle</b>
+            <i></i><i></i><i></i>
+            <b>Script 02 · Appel à l'Action & Clôture</b>
+            <i></i><i></i><i></i>
+          </div>
+        </article>
 
-        <div class="nh-step-card">
-          <div class="nh-step-head">
-            <span class="nh-step-num">03</span>
-            <h3 class="nh-step-title">Scripts Mot à Mot</h3>
-          </div>
-          <p class="nh-step-desc">Écriture précise des voix et textes à l'écran, calibrés sur le temps de rétention.</p>
-        </div>
+        <article class="tile metric">
+          <span class="tag">ENGAGEMENT TOTAL</span>
+          <strong>300%</strong>
+          <h3>L'exigence que nous mettons dans chaque plan et chaque étalonnage.</h3>
+        </article>
 
-        <div class="nh-step-card">
-          <div class="nh-step-head">
-            <span class="nh-step-num">04</span>
-            <h3 class="nh-step-title">Direction Artistique</h3>
+        <article class="tile talents">
+          <span class="tag">DIRECTION ARTISTIQUE & CASTING</span>
+          <div class="faces">
+            <div class="face"><span>Manatea</span><small>Hôte & Guide</small></div>
+            <div class="face"><span>Vaitea</span><small>Artisanat Perlier</small></div>
+            <div class="face"><span>Lucas</span><small>Hospitalité Luxe</small></div>
+            <div class="face"><span>Kahaia</span><small>Créatrice Polynésie</small></div>
+            <div class="face"><span>Teiki</span><small>Skipper & Aventure</small></div>
           </div>
-          <p class="nh-step-desc">Choix des visages, voix et décors naturels en parfaite adéquation avec la marque.</p>
-        </div>
+          <h3>Des visages naturels et charismatiques pour incarner votre marque.</h3>
+        </article>
 
-        <div class="nh-step-card">
-          <div class="nh-step-head">
-            <span class="nh-step-num">05</span>
-            <h3 class="nh-step-title">Tournage Cinéma</h3>
+        <article class="tile pick">
+          <span class="tag">VALIDATION CLIENT</span>
+          <div class="pick-art">
+            <span class="option">Option B<br>?</span>
+            <span class="option selected">Option A<br>✓ Validé</span>
+            <span class="option">Option C<br>?</span>
           </div>
-          <p class="nh-step-desc">Lumière naturelle du Pacifique, optiques de cinéma et prises de vue d'une clarté absolue.</p>
-        </div>
+          <h3>Vous choisissez vos concepts favoris avant chaque tournage.</h3>
+        </article>
 
-        <div class="nh-step-card">
-          <div class="nh-step-head">
-            <span class="nh-step-num">06</span>
-            <h3 class="nh-step-title">Montage & Sound Design</h3>
+        <article class="tile expert">
+          <div>
+            <span class="tag">SPÉCIALISATION</span>
+            <div class="expert-word">Expert.</div>
+            <p>100% spécialisés dans les formats verticaux 9:16 et le cinéma de marque en Polynésie.</p>
           </div>
-          <p class="nh-step-desc">Rythme précis, sound design immersif, transitions fluides et sous-titres dynamiques.</p>
-        </div>
-
-        <div class="nh-step-card">
-          <div class="nh-step-head">
-            <span class="nh-step-num">07</span>
-            <h3 class="nh-step-title">Multi-formats 9:16 & 16:9</h3>
+          <div class="clip-stack">
+            <div class="clip"></div>
+            <div class="clip"></div>
           </div>
-          <p class="nh-step-desc">Exports adaptés : 9:16 vertical pour les Reels/TikTok et 16:9 cinématographique.</p>
-        </div>
-
-        <div class="nh-step-card">
-          <div class="nh-step-head">
-            <span class="nh-step-num">08</span>
-            <h3 class="nh-step-title">Validation & Ajustements</h3>
-          </div>
-          <p class="nh-step-desc">Révisions illimitées : nous affinons chaque détail jusqu'à votre entière satisfaction.</p>
-        </div>
-
-        <div class="nh-step-card">
-          <div class="nh-step-head">
-            <span class="nh-step-num">09</span>
-            <h3 class="nh-step-title">Livraison Garantie</h3>
-          </div>
-          <p class="nh-step-desc">Fichiers finaux prêts à diffuser en haute définition sous 14 jours ouvrés garantis.</p>
-        </div>
+        </article>
 
       </div>
 
     </div>
   </section>
 
-  <!-- 9. Oferta / Pack de Vídeos (Price Container Solo) -->
+  <!-- 11. Oferta / Pack de Viddeos (Price Container Solo) -->
   <section class="nh-offer-section" id="offre">
     <div class="nh-container">
       
@@ -800,23 +884,124 @@
       });
     }
 
-    // Controle de Som do Vídeo Hero
+    // Controle de Som do Vídeo Hero (100% SVG, sem emojis)
     var heroVideo = document.getElementById('nhHeroVideo');
     var soundBtn = document.getElementById('nhHeroSoundBtn');
     var soundIcon = document.getElementById('nhHeroSoundIcon');
     var soundText = document.getElementById('nhHeroSoundText');
+    var soundMutedSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>';
+    var soundHighSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>';
+
     if (heroVideo && soundBtn) {
       soundBtn.addEventListener('click', function () {
         if (heroVideo.muted) {
           heroVideo.muted = false;
-          soundIcon.textContent = '🔊';
-          soundText.textContent = 'Couper le son';
+          if (soundIcon) soundIcon.innerHTML = soundHighSvg;
+          if (soundText) soundText.textContent = 'Couper le son';
         } else {
           heroVideo.muted = true;
-          soundIcon.textContent = '🔇';
-          soundText.textContent = 'Activer le son';
+          if (soundIcon) soundIcon.innerHTML = soundMutedSvg;
+          if (soundText) soundText.textContent = 'Activer le son';
         }
       });
+    }
+
+    // Geração Dinâmica dos Depoimentos em Faixas Contínuas (Dual Marquee)
+    var testimonialsData = [
+      [
+        "TB",
+        "Direction Marketing · The Brando",
+        "Soft Communication a su capter la quintessence de notre atoll avec une précision et un respect absolu de notre identité. Les vidéos 9:16 livrées pour les villas privées ont suscité des réservations directes record depuis les États-Unis et l'Europe."
+      ],
+      [
+        "FS",
+        "Responsable Communication · Four Seasons Bora Bora",
+        "La créativité et la réactivité de l'équipe sont irréprochables. Des formats percutants dès les 3 premières secondes, sans jamais dénaturer le positionnement ultra-luxe de notre resort. Nous renouvelons notre collaboration pour toute la saison."
+      ],
+      [
+        "TP",
+        "Directeur Général · Tahiti Pearl Market",
+        "Une vraie compréhension des codes du luxe et de l'artisanat polynésien. Leurs vidéos documentaires et formats courts ont permis de doubler notre taux de transformation sur les collections signature. Des professionnels hors pair."
+      ],
+      [
+        "IC",
+        "Direction Commerciale · InterContinental Resorts",
+        "Plusieurs dizaines de déclinaisons livrées en un temps record avec une qualité optique et un étalonnage sublimes. Le format vertical est devenu notre premier levier d'engagement sur les réseaux sociaux."
+      ],
+      [
+        "MB",
+        "Propriétaire & Fondateur · Manava Beach Resort",
+        "Des vidéos rythmées, un son immersif et un sens du détail qui fait toute la différence. Leur méthode en 9 étapes est d'une fluidité exemplaire : 14 jours chrono du premier échange à la diffusion."
+      ],
+      [
+        "TH",
+        "Direction · Tahiti Homes Luxury Villas",
+        "Nos biens d'exception n'avaient jamais été mis en valeur avec un tel niveau de cinématique. Le retour sur investissement est immédiat : nos demandes de séjour ont bondi dès la mise en ligne des reels."
+      ],
+      [
+        "ME",
+        "Directeur des Opérations · Moorea Explorer",
+        "Des images aériennes et aquatiques à couper le souffle. Le travail de montage et de sound design apporte une dimension sensorielle unique qui déclenche instantanément l'envie de réserver."
+      ],
+      [
+        "PI",
+        "Fondateur · Pacifique Immobilier d'Exception",
+        "L'intégration d'angles différenciants et de visuels novateurs nous a permis de vendre l'intégralité d'un programme d'appartements de prestige sur plan. Bravo à toute l'équipe pour cette rigueur."
+      ]
+    ];
+
+    function renderReviewCard(q) {
+      return '<article class="review">' +
+        '<div>' +
+          '<div class="stars">' +
+            '<span class="star-icon">★</span>' +
+            '<span class="star-icon">★</span>' +
+            '<span class="star-icon">★</span>' +
+            '<span class="star-icon">★</span>' +
+            '<span class="star-icon">★</span>' +
+          '</div>' +
+          '<p class="quote">“' + q[2] + '”</p>' +
+        '</div>' +
+        '<div class="author">' +
+          '<span class="avatar">' + q[0] + '</span>' +
+          '<div class="author-info">' +
+            '<span class="author-name">' + q[1].split(' · ')[0] + '</span>' +
+            '<span class="author-role">' + (q[1].split(' · ')[1] || 'Partenaire Soft') + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</article>';
+    }
+
+    var trackA = document.getElementById('trackA');
+    var trackB = document.getElementById('trackB');
+    if (trackA && trackB) {
+      var setA = testimonialsData.slice(0, 4);
+      var setB = testimonialsData.slice(4);
+      trackA.innerHTML = setA.concat(setA).map(renderReviewCard).join('');
+      trackB.innerHTML = setB.concat(setB).map(renderReviewCard).join('');
+    }
+
+    // Linha do Tempo do Processo com Progressão e Ponto Ativo (Scroll Driven)
+    var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+    var fill = document.querySelector('.rail-fill');
+    var dot = document.querySelector('.timeline .dot');
+    if (steps.length && fill && dot && 'IntersectionObserver' in window) {
+      var activeStep = 0;
+      var stepObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            activeStep = steps.indexOf(e.target);
+            steps.forEach(function (s, i) {
+              if (i === activeStep) s.classList.add('active'); else s.classList.remove('active');
+              if (i < activeStep) s.classList.add('seen'); else s.classList.remove('seen');
+            });
+            var pct = Math.max(4, Math.min(100, (activeStep / (steps.length - 1)) * 100));
+            fill.style.height = pct + '%';
+            dot.style.top = pct + '%';
+          }
+        });
+      }, { rootMargin: '-25% 0px -40% 0px', threshold: 0 });
+      steps.forEach(function (s) { stepObs.observe(s); });
     }
 
     // Carrossel Touch e Lightbox
@@ -887,7 +1072,7 @@
 
     // Animação dos textos surgindo do chão ao passar o scroll
     if ('IntersectionObserver' in window) {
-      var revealEls = document.querySelectorAll('.nh-hero h1, .nh-hero p, .nh-hero-video-wrap, .nh-section-title-wrap, .nh-metric-card, .nh-case-card, .nh-audience-card, .nh-step-card, .price_container_solo, .nh-faq-item');
+      var revealEls = document.querySelectorAll('.nh-hero h1, .nh-hero p, .nh-hero-video-wrap, .nh-section-title-wrap, .nh-metric-card, .nh-case-card, .nh-audience-card, .price_container_solo, .nh-faq-item, .tile');
       var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
           if (en.isIntersecting) {
