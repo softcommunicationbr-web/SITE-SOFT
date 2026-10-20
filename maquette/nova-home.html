@@ -11,51 +11,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/nova-home.css">
-<style>
-  /* Faixa de demonstração no topo */
-  .demo-top-bar {
-    background: linear-gradient(90deg, #3B2A20, #1A1A1A, #3B2A20);
-    color: var(--nh-accent);
-    padding: 8px 16px;
-    font-size: 12px;
-    text-align: center;
-    border-bottom: 1px solid rgba(216, 200, 176, 0.25);
-    position: relative;
-    z-index: 105;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-  }
-  .demo-top-bar a {
-    color: #fff;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    font-weight: 500;
-  }
-  .demo-top-bar a:hover { color: var(--nh-accent); }
-</style>
 </head>
 <body class="nova-home-body">
 
 <div class="demo-top-bar">
-  <span>✨ <strong>Aperçu du Nouveau Layout (Haute Conversion)</strong> pour Soft Communication</span>
+  <span>Aperçu Mobile-First du Nouveau Layout</span>
   <span>·</span>
-  <a href="index.html">← Retour au site classique</a>
+  <a href="index.html">Retour au site classique</a>
   <span>·</span>
   <a href="admin/index.html">Espace Admin</a>
 </div>
 
 <div class="nh-ambient-bg" aria-hidden="true"></div>
 
-<!-- 1. Cabeçalho Flutuante em Cápsula -->
+<!-- 1. Cabeçalho Flutuante Mobile-First -->
 <header class="nh-header">
   <div class="nh-nav-capsule">
     <a class="nh-brand-logo" href="#" aria-label="Soft Communication, accueil">
-      <img src="assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="130" height="36">
+      <img src="assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="125" height="32">
     </a>
 
-    <nav class="nh-nav-menu" aria-label="Navigation">
+    <nav class="nh-nav-menu" aria-label="Navigation principale">
       <a class="nh-nav-link" href="#showcase">Vidéos</a>
       <a class="nh-nav-link" href="#etudes">Études de cas</a>
       <a class="nh-nav-link" href="#chiffres">Résultats</a>
@@ -66,16 +42,30 @@
 
     <div class="nh-nav-actions">
       <span class="nh-lang-pill">FR</span>
-      <a class="nh-btn-demo" href="#contact">
+      <a class="nh-btn-header-cta" href="#contact">
         <span>Réserver un appel</span>
       </a>
+      <button class="nh-menu-toggle" id="nhMenuToggle" type="button" aria-label="Menu" aria-expanded="false">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
     </div>
+  </div>
+
+  <!-- Drawer Menu Mobile -->
+  <div class="nh-mobile-drawer" id="nhMobileDrawer">
+    <a href="#showcase" data-drawer-link>Vidéos du Portfolio</a>
+    <a href="#etudes" data-drawer-link>Études de Cas & Résultats</a>
+    <a href="#chiffres" data-drawer-link>Métrique de Confiance</a>
+    <a href="#methode" data-drawer-link>La Méthode en 9 Étapes</a>
+    <a href="#offre" data-drawer-link>Pack 10 Vidéos</a>
+    <a href="#faq" data-drawer-link>Questions Fréquentes</a>
+    <a href="#contact" data-drawer-link style="color: var(--nh-accent); font-weight: 600;">Réserver un Appel Découverte →</a>
   </div>
 </header>
 
 <main>
 
-  <!-- 2. Hero Section -->
+  <!-- 2. Hero Section Mobile-First -->
   <section class="nh-hero">
     <div class="nh-container">
       
@@ -105,26 +95,32 @@
       <div class="nh-hero-benefits">
         <div class="nh-benefit-item">
           <div class="nh-bullet-dot"></div>
-          <span>Sans engagement long terme.</span>
+          <span>Sans engagement long terme</span>
         </div>
         <div class="nh-benefit-item">
           <div class="nh-bullet-dot"></div>
-          <span>Révisions illimitées.</span>
+          <span>Révisions illimitées</span>
         </div>
         <div class="nh-benefit-item">
           <div class="nh-bullet-dot"></div>
-          <span>Formats 4K & Réseaux Sociaux (9:16).</span>
+          <span>Formats 4K & Réseaux Sociaux (9:16)</span>
         </div>
       </div>
 
-      <!-- Vídeo principal de apresentação -->
+      <!-- Vídeo principal oficial do nosso banco de dados -->
       <div class="nh-hero-video-wrap">
-        <iframe 
-          src="https://player.vimeo.com/video/1132793034?autoplay=1&muted=1&loop=1&autopause=0&badge=0" 
-          frameborder="0" 
-          allow="autoplay; fullscreen; picture-in-picture" 
-          title="Soft Communication Showreel">
-        </iframe>
+        <video 
+          id="nhHeroVideo"
+          src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/calebe-versao-final.webm"
+          poster="assets/posters/calebe-versao-final.jpg"
+          autoplay muted loop playsinline preload="metadata">
+        </video>
+        <div class="nh-hero-video-controls">
+          <button class="nh-video-ctrl-btn" id="nhHeroSoundBtn" type="button" aria-label="Activer le son">
+            <span id="nhHeroSoundIcon">🔇</span>
+            <span id="nhHeroSoundText">Activer le son</span>
+          </button>
+        </div>
       </div>
 
     </div>
@@ -146,7 +142,7 @@
       <div class="nh-ticker-item">TAHITI HOMES LUXURY</div>
       <div class="nh-ticker-item">PACIFIQUE IMMOBILIER</div>
       <div class="nh-ticker-item">MOOREA EXPLORER</div>
-      <!-- Repetição contínua para o loop perfeito -->
+      <!-- Repetição para loop contínuo -->
       <div class="nh-ticker-item">THE BRANDO RESORT</div>
       <div class="nh-ticker-item">FOUR SEASONS BORA BORA</div>
       <div class="nh-ticker-item">INTERCONTINENTAL TAHITI</div>
@@ -160,135 +156,135 @@
     </div>
   </section>
 
-  <!-- 4. Vitrine de Vídeos Verticais (Showcase Carrossel) -->
+  <!-- 4. Vitrine de Vídeos Verticais do NOSSO Catálogo (Carrossel Touch) -->
   <section class="nh-showcase-section" id="showcase">
     <div class="nh-container">
       
       <div class="nh-section-title-wrap">
-        <h2>Le partenariat vidéo <span class="nh-gradient-text">le plus percutant de 2026</span> 🥇</h2>
-        <p>Qu’ont toutes ces vidéos en commun ? Elles captent l’attention en 3 secondes, élèvent la désirabilité de la marque et maximisent l'engagement en organique et en paid.</p>
+        <h2>Le partenariat vidéo <span class="nh-gradient-text">le plus percutant de 2026</span></h2>
+        <p>Formats courts 9:16 créés pour capter l’attention en 3 secondes, élever la désirabilité et convertir en Polynésie et à l’international.</p>
       </div>
 
       <div class="nh-video-carousel-container">
         <div class="nh-video-track" id="nhVideoTrack">
           
-          <!-- Vídeo 1 -->
-          <div class="nh-video-card" data-video="https://pub-d4e71810f07749f4b46c68e6d8067175.r2.dev/free.mp4" data-title="Campagne Réseau & Performance">
-            <video src="https://pub-d4e71810f07749f4b46c68e6d8067175.r2.dev/free.mp4" muted loop playsinline></video>
+          <!-- Vídeo 1: Hotel na Lagoa -->
+          <div class="nh-video-card" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/mkt.webm" data-title="Hôtel de Lagon · Écrin Préservé">
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/mkt.webm" poster="assets/posters/mkt.jpg" muted loop playsinline preload="none"></video>
             <div class="nh-video-overlay">
-              <span class="nh-video-badge">Cinéma & Ads</span>
+              <span class="nh-video-badge">Hôtellerie</span>
               <div class="nh-play-circle">▶</div>
-              <span class="nh-video-caption">Campagne Télécom & Offre</span>
+              <span class="nh-video-caption">Hôtel de Lagon · Écrin Préservé</span>
             </div>
           </div>
 
-          <!-- Vídeo 2 -->
-          <div class="nh-video-card" data-video="https://pub-9bb9f434b2dd487f84ff2e5b667a79e9.r2.dev/humble.mp4" data-title="Branding Produit & Lifestyle">
-            <video src="https://pub-9bb9f434b2dd487f84ff2e5b667a79e9.r2.dev/humble.mp4" muted loop playsinline></video>
+          <!-- Vídeo 2: Villa Sunset IA -->
+          <div class="nh-video-card" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/generation-1.webm" data-title="Villa Sunset · Architecture IA">
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/generation-1.webm" poster="assets/posters/generation-1.jpg" muted loop playsinline preload="none"></video>
             <div class="nh-video-overlay">
-              <span class="nh-video-badge">Lifestyle</span>
+              <span class="nh-video-badge">Immobilier IA</span>
               <div class="nh-play-circle">▶</div>
-              <span class="nh-video-caption">Humble · Nutrition & Énergie</span>
+              <span class="nh-video-caption">Villa Sunset · Architecture IA</span>
             </div>
           </div>
 
-          <!-- Vídeo 3 -->
-          <div class="nh-video-card" data-video="https://pub-65d5cf29a59547f89a78a6dfe2700c5c.r2.dev/binance-01%20(720p).mp4" data-title="Fintech & Application">
-            <video src="https://pub-65d5cf29a59547f89a78a6dfe2700c5c.r2.dev/binance-01%20(720p).mp4" muted loop playsinline></video>
-            <div class="nh-video-overlay">
-              <span class="nh-video-badge">Tech & Finance</span>
-              <div class="nh-play-circle">▶</div>
-              <span class="nh-video-caption">Plateforme & Acquisition</span>
-            </div>
-          </div>
-
-          <!-- Vídeo 4 -->
-          <div class="nh-video-card" data-video="https://pub-65d5cf29a59547f89a78a6dfe2700c5c.r2.dev/eatsalad-btob-3.mp4" data-title="Hospitalité & Restauration">
-            <video src="https://pub-65d5cf29a59547f89a78a6dfe2700c5c.r2.dev/eatsalad-btob-3.mp4" muted loop playsinline></video>
+          <!-- Vídeo 3: Gastronomie & Lifestyle -->
+          <div class="nh-video-card" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/generation.webm" data-title="Bord de Mer · Gastronomie & Art de Vivre">
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/generation.webm" poster="assets/posters/generation.jpg" muted loop playsinline preload="none"></video>
             <div class="nh-video-overlay">
               <span class="nh-video-badge">Restauration</span>
               <div class="nh-play-circle">▶</div>
-              <span class="nh-video-caption">Franchise & Concept Food</span>
+              <span class="nh-video-caption">Bord de Mer · Gastronomie</span>
             </div>
           </div>
 
-          <!-- Vídeo 5 -->
-          <div class="nh-video-card" data-video="https://pub-0cff6c739cac4d088b9baebdf5a2d31b.r2.dev/charbon.mp4" data-title="E-commerce & Rétention">
-            <video src="https://pub-0cff6c739cac4d088b9baebdf5a2d31b.r2.dev/charbon.mp4" muted loop playsinline></video>
+          <!-- Vídeo 4: Miria Project -->
+          <div class="nh-video-card" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/miria-s-project-final-v01-1-2.webm" data-title="Miria Project · Campagne de Marque">
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/miria-s-project-final-v01-1-2.webm" poster="assets/posters/miria-s-project-final-v01-1-2.jpg" muted loop playsinline preload="none"></video>
             <div class="nh-video-overlay">
-              <span class="nh-video-badge">E-commerce</span>
+              <span class="nh-video-badge">Mode & Beauté</span>
               <div class="nh-play-circle">▶</div>
-              <span class="nh-video-caption">Charbon · Cosmétique Active</span>
+              <span class="nh-video-caption">Miria · Campagne de Marque</span>
             </div>
           </div>
 
-          <!-- Vídeo 6 -->
-          <div class="nh-video-card" data-video="https://pub-d4e71810f07749f4b46c68e6d8067175.r2.dev/pacha.mp4" data-title="Hospitalité & Expérience">
-            <video src="https://pub-d4e71810f07749f4b46c68e6d8067175.r2.dev/pacha.mp4" muted loop playsinline></video>
+          <!-- Vídeo 5: Cinématographie Polynésie 01 -->
+          <div class="nh-video-card" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-4465.webm" data-title="Îles & Lumière Naturelle">
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-4465.webm" poster="assets/posters/img-4465.jpg" muted loop playsinline preload="none"></video>
             <div class="nh-video-overlay">
-              <span class="nh-video-badge">Luxe & Nuit</span>
+              <span class="nh-video-badge">Lumière Naturelle</span>
               <div class="nh-play-circle">▶</div>
-              <span class="nh-video-caption">Pacha Club & Resort</span>
+              <span class="nh-video-caption">Îles · Lumière Naturelle</span>
             </div>
           </div>
 
-          <!-- Vídeo 7 -->
-          <div class="nh-video-card" data-video="https://pub-d4e71810f07749f4b46c68e6d8067175.r2.dev/short.mp4" data-title="Format Court Dynamique">
-            <video src="https://pub-d4e71810f07749f4b46c68e6d8067175.r2.dev/short.mp4" muted loop playsinline></video>
+          <!-- Vídeo 6: Lumière du Pacifique -->
+          <div class="nh-video-card" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-4501.webm" data-title="Lumière du Pacifique · Océan">
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-4501.webm" poster="assets/posters/img-4501.jpg" muted loop playsinline preload="none"></video>
             <div class="nh-video-overlay">
-              <span class="nh-video-badge">Storytelling</span>
+              <span class="nh-video-badge">Océan</span>
               <div class="nh-play-circle">▶</div>
-              <span class="nh-video-caption">Impact & Engagement</span>
+              <span class="nh-video-caption">Lumière du Pacifique</span>
             </div>
           </div>
 
-          <!-- Vídeo 8 -->
-          <div class="nh-video-card" data-video="https://pub-d4e71810f07749f4b46c68e6d8067175.r2.dev/free2.mp4" data-title="Offre Mobile 5G">
-            <video src="https://pub-d4e71810f07749f4b46c68e6d8067175.r2.dev/free2.mp4" muted loop playsinline></video>
+          <!-- Vídeo 7: Culture & Paysages -->
+          <div class="nh-video-card" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-4879.webm" data-title="Culture Vivante & Paysages">
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-4879.webm" poster="assets/posters/img-4879.jpg" muted loop playsinline preload="none"></video>
             <div class="nh-video-overlay">
-              <span class="nh-video-badge">Télécom</span>
+              <span class="nh-video-badge">Culture</span>
               <div class="nh-play-circle">▶</div>
-              <span class="nh-video-caption">Offre Nomade & Forfait</span>
+              <span class="nh-video-caption">Culture Vivante · Polynésie</span>
             </div>
           </div>
 
-          <!-- Vídeo 9 -->
-          <div class="nh-video-card" data-video="https://pub-0cff6c739cac4d088b9baebdf5a2d31b.r2.dev/paradox.mp4" data-title="Formation & Coaching">
-            <video src="https://pub-0cff6c739cac4d088b9baebdf5a2d31b.r2.dev/paradox.mp4" muted loop playsinline></video>
+          <!-- Vídeo 8: Portrait & Regard -->
+          <div class="nh-video-card" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-4903.webm" data-title="Lumière Naturelle & Portrait">
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-4903.webm" poster="assets/posters/img-4903.jpg" muted loop playsinline preload="none"></video>
             <div class="nh-video-overlay">
-              <span class="nh-video-badge">Personal Brand</span>
+              <span class="nh-video-badge">Portrait</span>
               <div class="nh-play-circle">▶</div>
-              <span class="nh-video-caption">Paradox Group</span>
+              <span class="nh-video-caption">Portrait Cinématographique</span>
             </div>
           </div>
 
-          <!-- Vídeo 10 -->
-          <div class="nh-video-card" data-video="https://pub-9bb9f434b2dd487f84ff2e5b667a79e9.r2.dev/bloon%20paris.mp4" data-title="Design & Mobilier Haut de Gamme">
-            <video src="https://pub-9bb9f434b2dd487f84ff2e5b667a79e9.r2.dev/bloon%20paris.mp4" muted loop playsinline></video>
+          <!-- Vídeo 9: Architecture Tropicale -->
+          <div class="nh-video-card" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-4983.webm" data-title="Architecture Tropicale de Prestige">
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-4983.webm" poster="assets/posters/img-4983.jpg" muted loop playsinline preload="none"></video>
             <div class="nh-video-overlay">
-              <span class="nh-video-badge">Design</span>
+              <span class="nh-video-badge">Architecture</span>
               <div class="nh-play-circle">▶</div>
-              <span class="nh-video-caption">Bloon Paris · Ergonomie</span>
+              <span class="nh-video-caption">Architecture Tropicale</span>
             </div>
           </div>
 
-          <!-- Vídeo 11 -->
-          <div class="nh-video-card" data-video="https://pub-0cff6c739cac4d088b9baebdf5a2d31b.r2.dev/mentorshow.mp4" data-title="Masterclass & Savoir">
-            <video src="https://pub-0cff6c739cac4d088b9baebdf5a2d31b.r2.dev/mentorshow.mp4" muted loop playsinline></video>
+          <!-- Vídeo 10: Sunset Vibes -->
+          <div class="nh-video-card" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-5168.webm" data-title="Sunset & Textures Océan">
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-5168.webm" poster="assets/posters/img-5168.jpg" muted loop playsinline preload="none"></video>
             <div class="nh-video-overlay">
-              <span class="nh-video-badge">Masterclass</span>
+              <span class="nh-video-badge">Textures</span>
               <div class="nh-play-circle">▶</div>
-              <span class="nh-video-caption">Mentorshow · Cours d'élite</span>
+              <span class="nh-video-caption">Sunset Vibes · Lagon</span>
             </div>
           </div>
 
-          <!-- Vídeo 12 -->
-          <div class="nh-video-card" data-video="https://pub-0cff6c739cac4d088b9baebdf5a2d31b.r2.dev/pomade.mp4" data-title="Beauté & Soin Premium">
-            <video src="https://pub-0cff6c739cac4d088b9baebdf5a2d31b.r2.dev/pomade.mp4" muted loop playsinline></video>
+          <!-- Vídeo 11: Ambiance & Mer -->
+          <div class="nh-video-card" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-5389.webm" data-title="Ambiance & Mer Pacifique">
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-5389.webm" poster="assets/posters/img-5389.jpg" muted loop playsinline preload="none"></video>
             <div class="nh-video-overlay">
-              <span class="nh-video-badge">Cosmétique</span>
+              <span class="nh-video-badge">Atmosphère</span>
               <div class="nh-play-circle">▶</div>
-              <span class="nh-video-caption">Pommade de Beauté</span>
+              <span class="nh-video-caption">Ambiance & Mer</span>
+            </div>
+          </div>
+
+          <!-- Vídeo 12: Soft Motion Reel 60fps -->
+          <div class="nh-video-card" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/soft-motion-fr-9x16-60fps-1.webm" data-title="Soft Motion Reel · 60fps">
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/soft-motion-fr-9x16-60fps-1.webm" poster="assets/posters/soft-motion-fr-9x16-60fps-1.jpg" muted loop playsinline preload="none"></video>
+            <div class="nh-video-overlay">
+              <span class="nh-video-badge">Reel 60fps</span>
+              <div class="nh-play-circle">▶</div>
+              <span class="nh-video-caption">Soft Motion Reel 60fps</span>
             </div>
           </div>
 
@@ -300,7 +296,7 @@
         </div>
       </div>
 
-      <div style="text-align: center; margin-top: 36px;">
+      <div style="text-align: center; margin-top: 24px;">
         <a class="nh-btn-glow" href="#contact">
           <span>Obtenir mes vidéos</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -359,7 +355,7 @@
     <div class="nh-container">
       
       <div class="nh-section-title-wrap">
-        <h2>Est-ce que ça fonctionne <span class="nh-gradient-text">vraiment</span> ? 🧐</h2>
+        <h2>Est-ce que ça fonctionne <span class="nh-gradient-text">vraiment</span> ?</h2>
         <p>Des résultats concrets observés auprès de marques, resorts et acteurs de référence.</p>
       </div>
 
@@ -463,7 +459,7 @@
 
       </div>
 
-      <div style="text-align: center; margin-top: 36px;">
+      <div style="text-align: center; margin-top: 32px;">
         <a class="nh-btn-glow" href="#contact">
           <span>Démarrer mon projet</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -488,26 +484,26 @@
       <div class="nh-audience-grid">
         
         <div class="nh-audience-card">
-          <div class="nh-audience-icon">💼</div>
+          <span class="nh-audience-tag">Situation I</span>
           <h3 class="nh-audience-title">Vous travaillez avec des agences généralistes</h3>
           <p class="nh-audience-desc">
-            <strong>Résultat :</strong> Vous payez des fortunes pour des formats longs qui ne génèrent que quelques centaines de vues. Rien n'est calibré pour retenir l'attention dès les 3 premières secondes, et votre budget ne s'amortit jamais.
+            <strong>Constat :</strong> Des factures astronomiques pour des formats longs qui ne génèrent que quelques centaines de vues. Rien n'est calibré pour retenir l'attention dès les 3 premières secondes, et votre budget ne s'amortit jamais.
           </p>
         </div>
 
         <div class="nh-audience-card">
-          <div class="nh-audience-icon">✍️</div>
+          <span class="nh-audience-tag">Situation II</span>
           <h3 class="nh-audience-title">Vous essayez de tout produire en interne</h3>
           <p class="nh-audience-desc">
-            <strong>Résultat :</strong> Un processus épuisant et chronophage pour vos équipes. Le matériel est limité, le temps manque et le rendu final ne reflète pas le niveau d'excellence et de désirabilité de votre établissement.
+            <strong>Constat :</strong> Un processus épuisant et chronophage pour vos équipes. Le matériel est limité, le temps manque et le rendu final ne reflète pas le niveau d'excellence et de désirabilité de votre établissement.
           </p>
         </div>
 
         <div class="nh-audience-card">
-          <div class="nh-audience-icon">🤳</div>
+          <span class="nh-audience-tag">Situation III</span>
           <h3 class="nh-audience-title">Vous faites appel à des créateurs UGC amateurs</h3>
           <p class="nh-audience-desc">
-            <strong>Résultat :</strong> La même vidéo que des centaines d'autres comptes sur les réseaux. Qualité d'image aléatoire, zéro direction artistique soignée et aucune valeur patrimoniale pour l'image de marque de votre entreprise.
+            <strong>Constat :</strong> La même vidéo que des centaines d'autres comptes sur les réseaux. Qualité d'image aléatoire, zéro direction artistique soignée et aucune valeur patrimoniale pour l'image de marque de votre entreprise.
           </p>
         </div>
 
@@ -521,7 +517,7 @@
     <div class="nh-container">
       
       <div class="nh-section-title-wrap">
-        <h2>La méthode derrière <span class="nh-gradient-text">chaque production</span> ⚙️</h2>
+        <h2>La méthode derrière <span class="nh-gradient-text">chaque production</span></h2>
         <p>Un flux de travail rigoureux, transparent et rodé pour livrer des pièces d'exception en 14 jours chrono.</p>
       </div>
 
@@ -530,7 +526,7 @@
         <div class="nh-step-card">
           <div class="nh-step-head">
             <span class="nh-step-num">01</span>
-            <h3 class="nh-step-title">Stratégie 🎯</h3>
+            <h3 class="nh-step-title">Stratégie & Angles</h3>
           </div>
           <p class="nh-step-desc">Verrouillage des objectifs, de l'audience cible et des angles narratifs porteurs.</p>
         </div>
@@ -538,7 +534,7 @@
         <div class="nh-step-card">
           <div class="nh-step-head">
             <span class="nh-step-num">02</span>
-            <h3 class="nh-step-title">Concepts 💡</h3>
+            <h3 class="nh-step-title">Concepts Clés</h3>
           </div>
           <p class="nh-step-desc">Création de 20 concepts et hooks différenciants conçus pour capter le regard.</p>
         </div>
@@ -546,15 +542,15 @@
         <div class="nh-step-card">
           <div class="nh-step-head">
             <span class="nh-step-num">03</span>
-            <h3 class="nh-step-title">Scripts ✍️</h3>
+            <h3 class="nh-step-title">Scripts Mot à Mot</h3>
           </div>
-          <p class="nh-step-desc">Écriture mot à mot des voix et textes à l'écran, calibrés sur le temps de rétention.</p>
+          <p class="nh-step-desc">Écriture précise des voix et textes à l'écran, calibrés sur le temps de rétention.</p>
         </div>
 
         <div class="nh-step-card">
           <div class="nh-step-head">
             <span class="nh-step-num">04</span>
-            <h3 class="nh-step-title">Direction & Casting 🎭</h3>
+            <h3 class="nh-step-title">Direction Artistique</h3>
           </div>
           <p class="nh-step-desc">Choix des visages, voix et décors naturels en parfaite adéquation avec la marque.</p>
         </div>
@@ -562,7 +558,7 @@
         <div class="nh-step-card">
           <div class="nh-step-head">
             <span class="nh-step-num">05</span>
-            <h3 class="nh-step-title">Tournage Cinéma 🎥</h3>
+            <h3 class="nh-step-title">Tournage Cinéma</h3>
           </div>
           <p class="nh-step-desc">Lumière naturelle du Pacifique, optiques de cinéma et prises de vue d'une clarté absolue.</p>
         </div>
@@ -570,7 +566,7 @@
         <div class="nh-step-card">
           <div class="nh-step-head">
             <span class="nh-step-num">06</span>
-            <h3 class="nh-step-title">Montage & Sound ✂️</h3>
+            <h3 class="nh-step-title">Montage & Sound Design</h3>
           </div>
           <p class="nh-step-desc">Rythme précis, sound design immersif, transitions fluides et sous-titres dynamiques.</p>
         </div>
@@ -578,7 +574,7 @@
         <div class="nh-step-card">
           <div class="nh-step-head">
             <span class="nh-step-num">07</span>
-            <h3 class="nh-step-title">Multi-formats 📦</h3>
+            <h3 class="nh-step-title">Multi-formats 9:16 & 16:9</h3>
           </div>
           <p class="nh-step-desc">Exports adaptés : 9:16 vertical pour les Reels/TikTok et 16:9 cinématographique.</p>
         </div>
@@ -586,7 +582,7 @@
         <div class="nh-step-card">
           <div class="nh-step-head">
             <span class="nh-step-num">08</span>
-            <h3 class="nh-step-title">Validation 🔍</h3>
+            <h3 class="nh-step-title">Validation & Ajustements</h3>
           </div>
           <p class="nh-step-desc">Révisions illimitées : nous affinons chaque détail jusqu'à votre entière satisfaction.</p>
         </div>
@@ -594,7 +590,7 @@
         <div class="nh-step-card">
           <div class="nh-step-head">
             <span class="nh-step-num">09</span>
-            <h3 class="nh-step-title">Livraison 🚀</h3>
+            <h3 class="nh-step-title">Livraison Garantie</h3>
           </div>
           <p class="nh-step-desc">Fichiers finaux prêts à diffuser en haute définition sous 14 jours ouvrés garantis.</p>
         </div>
@@ -610,7 +606,7 @@
       
       <div class="price_container_solo">
         <div class="price_content_inner">
-          <span class="nh-offer-badge">Formule Recommandée</span>
+          <span class="nh-offer-badge">Formule Signature</span>
           <h2 class="nh-offer-title">Pack 10 Vidéos Haute Performance</h2>
           <p class="nh-offer-desc">
             L'équivalent d'un département de production interne dédié, sans charges fixes ni engagement long terme.
@@ -647,7 +643,7 @@
     <div class="nh-container">
       
       <div class="nh-section-title-wrap">
-        <h2>Questions <span class="nh-gradient-text">fréquentes</span> 💬</h2>
+        <h2>Questions <span class="nh-gradient-text">fréquentes</span></h2>
         <p>Tout ce que vous devez savoir avant de démarrer notre collaboration.</p>
       </div>
 
@@ -723,16 +719,16 @@
     <div class="nh-container">
       
       <div class="nh-booking-card">
-        <h2 style="font-size: 32px; margin: 0 0 12px 0; color: #fff;">
-          Parlons de votre <span class="nh-gradient-text">prochain projet</span> 🚀
+        <h2 style="font-size: clamp(26px, 5vw, 36px); margin: 0 0 12px 0; color: #fff;">
+          Parlons de votre <span class="nh-gradient-text">prochain projet</span>
         </h2>
-        <p style="color: var(--nh-text-secondary); font-size: 16px; margin: 0 auto 30px auto; max-width: 520px; line-height: 1.5;">
+        <p style="color: var(--nh-text-secondary); font-size: 15.5px; margin: 0 auto 28px auto; max-width: 520px; line-height: 1.55;">
           Un premier appel direct de 15 minutes pour évaluer votre besoin, définir vos formats prioritaires et recevoir une proposition claire sous 24h.
         </p>
 
         <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
           <a class="nh-btn-glow" href="https://wa.me/68987043112?text=Bonjour%20%21%20Je%20souhaite%20r%C3%A9server%20un%20appel%20pour%20parler%20de%20nos%20vid%C3%A9os%20avec%20Soft%20Communication." target="_blank" rel="noopener">
-            <span>Discuter sur WhatsApp (+689 87 04 31 12)</span>
+            <span>WhatsApp (+689 87 04 31 12)</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
@@ -740,7 +736,7 @@
           </a>
         </div>
 
-        <div style="margin-top: 24px; font-size: 13px; color: var(--nh-text-secondary);">
+        <div style="margin-top: 22px; font-size: 13px; color: var(--nh-text-secondary);">
           Ou par e-mail : <a href="mailto:soft.communicationbr@gmail.com" style="color: var(--nh-accent); text-decoration: underline;">soft.communicationbr@gmail.com</a>
         </div>
       </div>
@@ -750,7 +746,17 @@
 
 </main>
 
-<!-- Lightbox pour visionnage vidéo plein écran -->
+<!-- Barra Fixa Flutuante de Conversão no Mobile (Bottom Bar) -->
+<div class="nh-mobile-bottom-bar" id="nhMobileBottomBar">
+  <a class="nh-bottom-btn-wa" href="https://wa.me/68987043112?text=Bonjour%20%21%20Je%20souhaite%20r%C3%A9server%20un%20appel%20avec%20Soft%20Communication." target="_blank" rel="noopener">
+    <span>WhatsApp Direct</span>
+  </a>
+  <a class="nh-bottom-btn-cta" href="#contact">
+    <span>Réserver</span>
+  </a>
+</div>
+
+<!-- Lightbox para visionamento vídeo vertical em alta resolução -->
 <div class="nh-lightbox" id="nhLightbox" aria-hidden="true" role="dialog">
   <button class="nh-lightbox-close" id="nhLightboxClose" type="button" aria-label="Fermer">✕</button>
   <div class="nh-lightbox-stage">
@@ -758,11 +764,11 @@
   </div>
 </div>
 
-<!-- Rodapé -->
+<!-- Rodapé Mobile-First -->
 <footer class="nh-footer">
   <div class="nh-container nh-footer-inner">
     <div>
-      <img src="assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="120" height="32" style="display: block; margin-bottom: 8px;">
+      <img src="assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="120" height="32" style="display: block; margin: 0 auto 8px auto;">
       <span class="nh-footer-copy">© 2026 Soft Communication · Tous droits réservés. Polynésie française.</span>
     </div>
 
@@ -776,8 +782,44 @@
 </footer>
 
 <script>
-  /* ---------- Interações do Carrossel e Lightbox de Vídeos ---------- */
   (function () {
+    // Menu Drawer Mobile
+    var toggle = document.getElementById('nhMenuToggle');
+    var drawer = document.getElementById('nhMobileDrawer');
+    var drawerLinks = document.querySelectorAll('[data-drawer-link]');
+    if (toggle && drawer) {
+      toggle.addEventListener('click', function () {
+        var open = drawer.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      drawerLinks.forEach(function (l) {
+        l.addEventListener('click', function () {
+          drawer.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    // Controle de Som do Vídeo Hero
+    var heroVideo = document.getElementById('nhHeroVideo');
+    var soundBtn = document.getElementById('nhHeroSoundBtn');
+    var soundIcon = document.getElementById('nhHeroSoundIcon');
+    var soundText = document.getElementById('nhHeroSoundText');
+    if (heroVideo && soundBtn) {
+      soundBtn.addEventListener('click', function () {
+        if (heroVideo.muted) {
+          heroVideo.muted = false;
+          soundIcon.textContent = '🔊';
+          soundText.textContent = 'Couper le son';
+        } else {
+          heroVideo.muted = true;
+          soundIcon.textContent = '🔇';
+          soundText.textContent = 'Activer le son';
+        }
+      });
+    }
+
+    // Carrossel Touch e Lightbox
     var track = document.getElementById('nhVideoTrack');
     var prev = document.getElementById('nhPrevBtn');
     var next = document.getElementById('nhNextBtn');
@@ -785,18 +827,18 @@
     var lightbox = document.getElementById('nhLightbox');
     var lbVideo = document.getElementById('nhLightboxVideo');
     var lbClose = document.getElementById('nhLightboxClose');
+    var bottomBar = document.getElementById('nhMobileBottomBar');
 
-    // Navegação com setas
     if (prev && next && track) {
       prev.addEventListener('click', function () {
-        track.scrollBy({ left: -280, behavior: 'smooth' });
+        track.scrollBy({ left: -260, behavior: 'smooth' });
       });
       next.addEventListener('click', function () {
-        track.scrollBy({ left: 280, behavior: 'smooth' });
+        track.scrollBy({ left: 260, behavior: 'smooth' });
       });
     }
 
-    // Play no hover nos cards
+    // Hover / Touch nos cards do catálogo
     cards.forEach(function (card) {
       var v = card.querySelector('video');
       card.addEventListener('mouseenter', function () {
@@ -806,7 +848,6 @@
         if (v) { try { v.pause(); } catch (e) {} }
       });
 
-      // Clique para abrir em tela cheia na lightbox
       card.addEventListener('click', function () {
         var src = card.getAttribute('data-video');
         if (!src || !lightbox || !lbVideo) return;
@@ -817,7 +858,6 @@
       });
     });
 
-    // Fechar lightbox
     function closeLb() {
       if (!lightbox || !lbVideo) return;
       lightbox.classList.remove('is-open');
@@ -835,7 +875,17 @@
       if (e.key === 'Escape' && lightbox && lightbox.classList.contains('is-open')) closeLb();
     });
 
-    // Animação de revelação suave ao rolar a página
+    // Exibir barra de conversão móvel após o scroll
+    window.addEventListener('scroll', function () {
+      if (!bottomBar) return;
+      if (window.scrollY > 400) {
+        bottomBar.classList.add('is-visible');
+      } else {
+        bottomBar.classList.remove('is-visible');
+      }
+    }, { passive: true });
+
+    // Animação dos textos surgindo do chão ao passar o scroll
     if ('IntersectionObserver' in window) {
       var revealEls = document.querySelectorAll('.nh-hero h1, .nh-hero p, .nh-hero-video-wrap, .nh-section-title-wrap, .nh-metric-card, .nh-case-card, .nh-audience-card, .nh-step-card, .price_container_solo, .nh-faq-item');
       var observer = new IntersectionObserver(function (entries) {
@@ -846,12 +896,12 @@
             observer.unobserve(en.target);
           }
         });
-      }, { rootMargin: '0px 0px -40px 0px' });
+      }, { rootMargin: '0px 0px -30px 0px' });
 
       revealEls.forEach(function (el) {
         el.style.opacity = '0';
         el.style.transform = 'translateY(28px)';
-        el.style.transition = 'opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
+        el.style.transition = 'opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
         observer.observe(el);
       });
     }

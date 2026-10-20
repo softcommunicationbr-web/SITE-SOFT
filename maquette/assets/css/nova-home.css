@@ -1,5 +1,5 @@
 /* ============================================================
-   Soft Communication · Nova Home (Layout Inspirado em Alta Conversão)
+   Soft Communication · Nova Home (Mobile-First Luxury Layout)
    Paleta: Preto Carvão (#0D0D10, #16161A), Dourado/Areia (#D8C8B0),
    Creme (#F3EDE3), Chocolate (#3B2A20) e Branco (#FFFFFF).
    ============================================================ */
@@ -13,20 +13,27 @@
   --nh-text-primary: #FFFFFF;
   --nh-text-secondary: #9E9EAD;
   --nh-accent: #D8C8B0;
-  --nh-gold-gradient: linear-gradient(135deg, #FFF6EC 0%, #D8C8B0 50%, #9E8569 100%);
+  --nh-accent-dark: #3B2A20;
+  --nh-gold-gradient: linear-gradient(135deg, #FFF6EC 0%, #D8C8B0 50%, #B89C7E 100%);
   --nh-glow-gradient: linear-gradient(90deg, #D8C8B0, #ffffff, #3B2A20, #D8C8B0);
   --nh-font-display: "Cormorant Garamond", Georgia, serif;
   --nh-font-sans: Poppins, "Helvetica Neue", Arial, sans-serif;
+  --nh-radius-card: 20px;
 }
 
-body.nova-home-body {
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
   background-color: var(--nh-bg);
   color: var(--nh-text-primary);
   font-family: var(--nh-font-sans);
-  margin: 0;
-  padding: 0;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Ambient glow background */
@@ -37,65 +44,104 @@ body.nova-home-body {
   transform: translateX(-50%);
   width: 100%;
   max-width: 1200px;
-  height: 800px;
-  background: radial-gradient(circle at 50% 10%, rgba(216, 200, 176, 0.12) 0%, rgba(59, 42, 32, 0.08) 35%, transparent 70%);
+  height: 700px;
+  background: radial-gradient(circle at 50% 12%, rgba(216, 200, 176, 0.12) 0%, rgba(59, 42, 32, 0.06) 40%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* Container */
+/* Container Mobile-First */
 .nh-container {
   width: 100%;
   max-width: 1180px;
   margin: 0 auto;
-  padding: 0 24px;
-  box-sizing: border-box;
+  padding: 0 20px;
   position: relative;
   z-index: 1;
 }
+@media (min-width: 768px) {
+  .nh-container { padding: 0 28px; }
+}
 
-/* ---------- Cabeçalho Flutuante em Cápsula ---------- */
+/* Top demo notice bar */
+.demo-top-bar {
+  background: linear-gradient(90deg, #241A14, #131317, #241A14);
+  color: var(--nh-accent);
+  padding: 8px 14px;
+  font-size: 11.5px;
+  text-align: center;
+  border-bottom: 1px solid rgba(216, 200, 176, 0.2);
+  position: relative;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.demo-top-bar a {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+}
+.demo-top-bar a:hover { color: var(--nh-accent); }
+
+/* ---------- Cabeçalho Flutuante Mobile-First ---------- */
 .nh-header {
   position: fixed;
-  top: 20px;
+  top: 14px;
   left: 0;
   width: 100%;
   z-index: 100;
   pointer-events: none;
+  padding: 0 14px;
 }
+@media (min-width: 768px) {
+  .nh-header { top: 20px; padding: 0 24px; }
+}
+
 .nh-nav-capsule {
   pointer-events: auto;
   max-width: 1060px;
   margin: 0 auto;
-  background: rgba(18, 18, 22, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(18, 18, 22, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border: 1px solid var(--nh-border);
   border-radius: 999px;
-  padding: 10px 20px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
+
 .nh-brand-logo {
   display: flex;
   align-items: center;
   text-decoration: none;
 }
 .nh-brand-logo img {
-  height: 32px;
+  height: 28px;
   width: auto;
   display: block;
 }
+@media (min-width: 768px) {
+  .nh-brand-logo img { height: 32px; }
+}
+
 .nh-nav-menu {
-  display: flex;
-  align-items: center;
-  gap: 22px;
+  display: none;
 }
-@media (max-width: 860px) {
-  .nh-nav-menu { display: none; }
+@media (min-width: 960px) {
+  .nh-nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
 }
+
 .nh-nav-link {
   color: var(--nh-text-secondary);
   font-size: 13.5px;
@@ -106,38 +152,85 @@ body.nova-home-body {
 .nh-nav-link:hover {
   color: var(--nh-text-primary);
 }
+
 .nh-nav-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
-.nh-btn-demo {
+
+.nh-btn-header-cta {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: #ffffff;
   color: #111113;
-  padding: 8px 18px;
+  padding: 7px 16px;
   border-radius: 999px;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.25s ease;
   box-shadow: 0 4px 14px rgba(255, 255, 255, 0.12);
+  white-space: nowrap;
 }
-.nh-btn-demo:hover {
+.nh-btn-header-cta:hover {
   background: var(--nh-accent);
   color: #111113;
   transform: translateY(-1px);
 }
-.nh-lang-pill {
-  font-size: 11px;
-  color: var(--nh-text-secondary);
+
+.nh-menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   border: 1px solid var(--nh-border);
-  padding: 4px 8px;
-  border-radius: 999px;
-  text-decoration: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  cursor: pointer;
 }
+@media (min-width: 960px) {
+  .nh-menu-toggle { display: none; }
+}
+
+/* Mobile Drawer */
+.nh-mobile-drawer {
+  position: fixed;
+  top: 74px;
+  left: 14px;
+  right: 14px;
+  background: rgba(18, 18, 22, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--nh-border-glow);
+  border-radius: 24px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 110;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  transform: translateY(-12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nh-mobile-drawer.is-open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.nh-mobile-drawer a {
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.nh-mobile-drawer a:last-child { border-bottom: none; }
 
 /* ---------- Glow Rotativo no Topo (Efeito Signature) ---------- */
 .head_bar_top {
@@ -173,11 +266,15 @@ body.nova-home-body {
 .head_bar_top > * {
   position: relative;
   z-index: 2;
-  padding: 6px 16px;
-  font-size: 12.5px;
+  padding: 6px 14px;
+  font-size: 11.5px;
   letter-spacing: 0.04em;
   color: var(--nh-accent);
   font-weight: 500;
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .head_bar_top > * { font-size: 12.5px; padding: 6px 18px; }
 }
 @keyframes glow-rot { to { transform: rotate(360deg); } }
 
@@ -189,15 +286,21 @@ body.nova-home-body {
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 32px;
-  font-size: 15px;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  font-size: 14.5px;
   font-weight: 600;
   color: #111113;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 8px 24px rgba(255, 255, 255, 0.16);
+  width: 100%;
+  max-width: 320px;
+}
+@media (min-width: 600px) {
+  .nh-btn-glow { width: auto; font-size: 15px; padding: 14px 34px; }
 }
 .nh-btn-glow:hover {
   background-color: var(--nh-accent);
@@ -213,19 +316,23 @@ body.nova-home-body {
   transform: translateX(3px);
 }
 
-/* ---------- Hero Section ---------- */
+/* ---------- Hero Section (Mobile-First) ---------- */
 .nh-hero {
-  padding-top: 130px;
-  padding-bottom: 60px;
+  padding-top: 115px;
+  padding-bottom: 50px;
   text-align: center;
   position: relative;
 }
+@media (min-width: 768px) {
+  .nh-hero { padding-top: 135px; padding-bottom: 70px; }
+}
+
 .nh-hero h1 {
-  font-size: clamp(34px, 4.8vw, 64px);
+  font-size: clamp(30px, 7.5vw, 64px);
   font-weight: 700;
   line-height: 1.12;
   letter-spacing: -0.02em;
-  margin: 22px auto 18px auto;
+  margin: 20px auto 16px auto;
   max-width: 900px;
 }
 .nh-gradient-text {
@@ -233,18 +340,20 @@ body.nova-home-body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
 .nh-hero-sub {
-  font-size: clamp(15px, 1.7vw, 18px);
+  font-size: clamp(14.5px, 3.8vw, 18px);
   color: var(--nh-text-secondary);
   max-width: 680px;
-  margin: 0 auto 28px auto;
-  line-height: 1.5;
+  margin: 0 auto 26px auto;
+  line-height: 1.55;
 }
+
 .nh-hero-benefits {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 14px 20px;
   margin-top: 24px;
   flex-wrap: wrap;
 }
@@ -252,70 +361,108 @@ body.nova-home-body {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13.5px;
+  font-size: 12.5px;
   color: var(--nh-text-secondary);
 }
+@media (min-width: 768px) {
+  .nh-benefit-item { font-size: 13.5px; }
+}
 .nh-bullet-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--nh-accent);
   box-shadow: 0 0 8px var(--nh-accent);
-}
-.nh-hero-video-wrap {
-  margin: 44px auto 0 auto;
-  max-width: 1020px;
-  border-radius: 20px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
-  background: #000;
-  position: relative;
-}
-.nh-hero-video-wrap iframe,
-.nh-hero-video-wrap video {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  display: block;
-  border: 0;
+  flex-shrink: 0;
 }
 
-/* ---------- Faixa de Prova Social (Ticker) ---------- */
+/* Video Hero Widescreen 16:9 Nativo */
+.nh-hero-video-wrap {
+  margin: 36px auto 0 auto;
+  max-width: 1020px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  background: #000;
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+@media (min-width: 768px) {
+  .nh-hero-video-wrap { border-radius: 22px; margin-top: 48px; }
+}
+.nh-hero-video-wrap video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.nh-hero-video-controls {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+}
+.nh-video-ctrl-btn {
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 11.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s ease;
+}
+.nh-video-ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ---------- Faixa de Prova Social (Ticker Infinito) ---------- */
 .nh-ticker-section {
-  padding: 44px 0;
+  padding: 34px 0;
   border-top: 1px solid var(--nh-border);
   border-bottom: 1px solid var(--nh-border);
-  background: rgba(255, 255, 255, 0.01);
+  background: rgba(255, 255, 255, 0.015);
   overflow: hidden;
   text-align: center;
 }
 .nh-ticker-title {
-  font-size: 12.5px;
+  font-size: 11.5px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--nh-text-secondary);
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 }
+@media (min-width: 768px) {
+  .nh-ticker-title { font-size: 12.5px; margin-bottom: 22px; }
+}
+
 .nh-ticker-track {
   display: flex;
-  gap: 50px;
+  gap: 40px;
   white-space: nowrap;
-  animation: nhTicker 30s linear infinite;
+  animation: nhTicker 32s linear infinite;
+  will-change: transform;
 }
 .nh-ticker-item {
-  font-size: 15.5px;
+  font-size: 14px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.65);
-  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.05em;
   display: flex;
   align-items: center;
-  gap: 12px;
 }
 .nh-ticker-item::after {
   content: "✦";
   color: var(--nh-accent);
-  font-size: 10px;
-  margin-left: 36px;
+  font-size: 9px;
+  margin-left: 28px;
 }
 @keyframes nhTicker {
   0% { transform: translateX(0); }
@@ -324,60 +471,86 @@ body.nova-home-body {
 
 /* ---------- Vitrine de Vídeos Verticais (Showcase Carrossel) ---------- */
 .nh-showcase-section {
-  padding: 90px 0 70px 0;
+  padding: 70px 0 60px 0;
   position: relative;
 }
+@media (min-width: 768px) {
+  .nh-showcase-section { padding: 90px 0 80px 0; }
+}
+
 .nh-section-title-wrap {
   text-align: center;
   max-width: 780px;
-  margin: 0 auto 44px auto;
+  margin: 0 auto 36px auto;
 }
 .nh-section-title-wrap h2 {
-  font-size: clamp(28px, 3.8vw, 44px);
-  margin: 0 0 14px 0;
+  font-size: clamp(26px, 6vw, 44px);
+  margin: 0 0 12px 0;
   line-height: 1.18;
 }
 .nh-section-title-wrap p {
-  font-size: 15.5px;
+  font-size: 14.5px;
   color: var(--nh-text-secondary);
   line-height: 1.6;
   margin: 0;
+}
+@media (min-width: 768px) {
+  .nh-section-title-wrap p { font-size: 16px; }
 }
 
 .nh-video-carousel-container {
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding: 10px 0 20px 0;
+  padding: 10px 0;
 }
+
+/* Carrossel Mobile-First: deslize suave e snap */
 .nh-video-track {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   overflow-x: auto;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
-  padding-bottom: 20px;
+  padding: 10px 4px 20px 4px;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
 .nh-video-track::-webkit-scrollbar { display: none; }
 
 .nh-video-card {
-  flex: 0 0 260px;
-  height: 460px;
+  flex: 0 0 76vw;
+  max-width: 270px;
+  height: 440px;
   border-radius: 18px;
   overflow: hidden;
   position: relative;
   background: var(--nh-bg-card);
   border: 1px solid var(--nh-border);
-  scroll-snap-align: start;
+  scroll-snap-align: center;
   cursor: pointer;
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
 }
-.nh-video-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--nh-border-glow);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+@media (min-width: 600px) {
+  .nh-video-card {
+    flex: 0 0 250px;
+    height: 450px;
+    scroll-snap-align: start;
+  }
 }
+@media (min-width: 1024px) {
+  .nh-video-card {
+    flex: 0 0 260px;
+    height: 460px;
+  }
+  .nh-video-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--nh-border-glow);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+  }
+}
+
 .nh-video-card video {
   width: 100%;
   height: 100%;
@@ -410,15 +583,15 @@ body.nova-home-body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.9);
   color: #111;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 15px;
   transition: transform 0.25s ease, background 0.25s ease;
 }
 .nh-video-card:hover .nh-play-circle {
@@ -426,9 +599,10 @@ body.nova-home-body {
   background: #ffffff;
 }
 .nh-video-caption {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   color: #fff;
+  line-height: 1.35;
 }
 
 /* Controles do carrossel */
@@ -437,11 +611,11 @@ body.nova-home-body {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-top: 24px;
+  margin-top: 18px;
 }
 .nh-carousel-btn {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   border: 1px solid var(--nh-border);
   background: var(--nh-bg-card);
@@ -451,7 +625,7 @@ body.nova-home-body {
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 18px;
+  font-size: 17px;
 }
 .nh-carousel-btn:hover {
   background: #fff;
@@ -460,51 +634,61 @@ body.nova-home-body {
 
 /* ---------- Números de Confiança (Métricas em Blocos) ---------- */
 .nh-metrics-section {
-  padding: 60px 0;
+  padding: 50px 0;
 }
 .nh-metrics-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-bottom: 36px;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 30px;
 }
-@media (max-width: 768px) {
-  .nh-metrics-grid { grid-template-columns: 1fr; }
+@media (min-width: 768px) {
+  .nh-metrics-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 36px;
+  }
 }
+
 .nh-metric-card {
   background: var(--nh-bg-card);
   border: 1px solid var(--nh-border);
-  border-radius: 20px;
-  padding: 34px 28px;
+  border-radius: var(--nh-radius-card);
+  padding: 28px 22px;
   text-align: center;
   position: relative;
   overflow: hidden;
   transition: transform 0.25s ease, border-color 0.25s ease;
 }
-.nh-metric-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--nh-border-glow);
+@media (min-width: 768px) {
+  .nh-metric-card { padding: 34px 28px; }
+  .nh-metric-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--nh-border-glow);
+  }
 }
 .nh-metric-number {
-  font-size: clamp(42px, 4.5vw, 60px);
+  font-size: clamp(38px, 8vw, 56px);
   font-weight: 700;
   line-height: 1;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: #fff;
 }
 .nh-metric-label {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--nh-text-secondary);
+  line-height: 1.5;
 }
+
 .nh-avatar-group {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 16px;
+  margin-top: 14px;
 }
 .nh-avatar-img {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: 2px solid var(--nh-bg-card);
   margin-left: -8px;
@@ -514,36 +698,42 @@ body.nova-home-body {
 
 /* ---------- Estudos de Caso (Case Studies) ---------- */
 .nh-cases-section {
-  padding: 80px 0;
+  padding: 60px 0;
 }
 .nh-cases-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  grid-template-columns: 1fr;
+  gap: 18px;
 }
-@media (max-width: 900px) {
-  .nh-cases-grid { grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 640px) {
+  .nh-cases-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
 }
-@media (max-width: 600px) {
-  .nh-cases-grid { grid-template-columns: 1fr; }
+@media (min-width: 960px) {
+  .nh-cases-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; }
 }
+
 .nh-case-card {
   background: var(--nh-bg-card);
   border: 1px solid var(--nh-border);
-  border-radius: 20px;
+  border-radius: var(--nh-radius-card);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: transform 0.25s ease, border-color 0.25s ease;
 }
-.nh-case-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--nh-border-glow);
+@media (min-width: 960px) {
+  .nh-case-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--nh-border-glow);
+  }
 }
 .nh-case-thumb {
   position: relative;
-  height: 190px;
+  height: 180px;
   overflow: hidden;
+}
+@media (min-width: 768px) {
+  .nh-case-thumb { height: 195px; }
 }
 .nh-case-thumb img {
   width: 100%;
@@ -556,9 +746,9 @@ body.nova-home-body {
 }
 .nh-case-category {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  background: rgba(0, 0, 0, 0.75);
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.78);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 4px 10px;
@@ -568,15 +758,15 @@ body.nova-home-body {
   color: var(--nh-accent);
 }
 .nh-case-body {
-  padding: 22px;
+  padding: 20px;
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 .nh-case-headline {
-  font-size: 15.5px;
+  font-size: 15px;
   font-weight: 600;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   line-height: 1.4;
   color: #fff;
 }
@@ -586,10 +776,10 @@ body.nova-home-body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 8px;
 }
 .nh-case-bullet {
-  font-size: 13px;
+  font-size: 12.8px;
   color: var(--nh-text-secondary);
   display: flex;
   align-items: baseline;
@@ -603,31 +793,38 @@ body.nova-home-body {
 
 /* ---------- Para quem é (Target Audience Cards) ---------- */
 .nh-audience-section {
-  padding: 80px 0;
+  padding: 60px 0;
 }
 .nh-audience-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: 1fr;
+  gap: 16px;
 }
-@media (max-width: 850px) {
-  .nh-audience-grid { grid-template-columns: 1fr; }
+@media (min-width: 800px) {
+  .nh-audience-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
 }
+
 .nh-audience-card {
   background: var(--nh-bg-card);
   border: 1px solid var(--nh-border);
-  border-radius: 20px;
-  padding: 30px 24px;
+  border-radius: var(--nh-radius-card);
+  padding: 26px 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
-.nh-audience-icon {
-  font-size: 28px;
-  margin-bottom: 4px;
+@media (min-width: 768px) {
+  .nh-audience-card { padding: 30px 24px; gap: 12px; }
+}
+.nh-audience-tag {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nh-accent);
+  font-weight: 600;
 }
 .nh-audience-title {
-  font-size: 17px;
+  font-size: 16.5px;
   font-weight: 600;
   color: #fff;
   margin: 0;
@@ -641,46 +838,48 @@ body.nova-home-body {
 
 /* ---------- Método em 9 Etapas (Timeline) ---------- */
 .nh-method-section {
-  padding: 80px 0;
+  padding: 60px 0;
 }
 .nh-method-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 36px;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 28px;
 }
-@media (max-width: 900px) {
-  .nh-method-grid { grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 600px) {
+  .nh-method-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
 }
-@media (max-width: 580px) {
-  .nh-method-grid { grid-template-columns: 1fr; }
+@media (min-width: 960px) {
+  .nh-method-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
 }
+
 .nh-step-card {
   background: var(--nh-bg-card);
   border: 1px solid var(--nh-border);
   border-radius: 16px;
-  padding: 22px;
+  padding: 18px 20px;
   transition: border-color 0.25s ease;
 }
-.nh-step-card:hover {
-  border-color: var(--nh-border-glow);
+@media (min-width: 960px) {
+  .nh-step-card:hover { border-color: var(--nh-border-glow); }
 }
 .nh-step-head {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .nh-step-num {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--nh-accent);
   border: 1px solid var(--nh-border-glow);
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: 999px;
   font-weight: 600;
+  letter-spacing: 0.05em;
 }
 .nh-step-title {
-  font-size: 15.5px;
+  font-size: 15px;
   font-weight: 600;
   margin: 0;
   color: #fff;
@@ -694,7 +893,7 @@ body.nova-home-body {
 
 /* ---------- Oferta / Pack de Vídeos (Price Container Solo) ---------- */
 .nh-offer-section {
-  padding: 80px 0;
+  padding: 60px 0;
 }
 .price_container_solo {
   position: relative;
@@ -730,48 +929,56 @@ body.nova-home-body {
 .price_content_inner {
   position: relative;
   z-index: 2;
-  padding: 44px;
+  padding: 32px 20px;
   text-align: center;
 }
+@media (min-width: 600px) {
+  .price_content_inner { padding: 44px 36px; }
+}
+
 .nh-offer-badge {
   background: rgba(216, 200, 176, 0.15);
   color: var(--nh-accent);
-  padding: 6px 14px;
+  padding: 5px 12px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 11.5px;
   letter-spacing: 0.08em;
   font-weight: 600;
   text-transform: uppercase;
   display: inline-block;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 .nh-offer-title {
-  font-size: 30px;
+  font-size: clamp(24px, 5vw, 32px);
   font-weight: 700;
   margin: 0 0 10px 0;
   color: #fff;
 }
 .nh-offer-desc {
-  font-size: 15.5px;
+  font-size: 14.5px;
   color: var(--nh-text-secondary);
   line-height: 1.6;
-  margin-bottom: 26px;
+  margin-bottom: 24px;
 }
+
 .nh-offer-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 32px 0;
+  margin: 0 0 28px 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px 18px;
+  grid-template-columns: 1fr;
+  gap: 10px;
   text-align: left;
 }
-@media (max-width: 600px) {
-  .nh-offer-list { grid-template-columns: 1fr; }
-  .price_content_inner { padding: 30px 18px; }
+@media (min-width: 640px) {
+  .nh-offer-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 18px;
+    margin-bottom: 32px;
+  }
 }
 .nh-offer-item {
-  font-size: 14px;
+  font-size: 13.5px;
   color: #e5e5ea;
   display: flex;
   align-items: center;
@@ -784,14 +991,14 @@ body.nova-home-body {
 
 /* ---------- FAQ em Acordeão ---------- */
 .nh-faq-section {
-  padding: 80px 0;
+  padding: 60px 0;
 }
 .nh-faq-list {
   max-width: 780px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 .nh-faq-item {
   background: var(--nh-bg-card);
@@ -804,8 +1011,8 @@ body.nova-home-body {
   border-color: var(--nh-border-glow);
 }
 .nh-faq-question {
-  padding: 18px 22px;
-  font-size: 15.5px;
+  padding: 16px 18px;
+  font-size: 15px;
   font-weight: 600;
   color: #fff;
   cursor: pointer;
@@ -813,25 +1020,35 @@ body.nova-home-body {
   align-items: center;
   justify-content: space-between;
   list-style: none;
+  line-height: 1.4;
+}
+@media (min-width: 768px) {
+  .nh-faq-question { padding: 18px 22px; font-size: 15.5px; }
 }
 .nh-faq-question::-webkit-details-marker { display: none; }
 .nh-faq-arrow {
   transition: transform 0.25s ease;
   color: var(--nh-accent);
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-left: 12px;
 }
 .nh-faq-item[open] .nh-faq-arrow {
   transform: rotate(180deg);
 }
 .nh-faq-answer {
-  padding: 0 22px 20px 22px;
-  font-size: 14px;
+  padding: 0 18px 18px 18px;
+  font-size: 13.5px;
   color: var(--nh-text-secondary);
   line-height: 1.6;
+}
+@media (min-width: 768px) {
+  .nh-faq-answer { padding: 0 22px 20px 22px; font-size: 14px; }
 }
 
 /* ---------- Seção de Agendamento / WhatsApp ---------- */
 .nh-booking-section {
-  padding: 80px 0;
+  padding: 60px 0 80px 0;
   text-align: center;
   background: radial-gradient(circle at 50% 50%, rgba(59, 42, 32, 0.3) 0%, transparent 70%);
 }
@@ -840,16 +1057,67 @@ body.nova-home-body {
   margin: 0 auto;
   background: var(--nh-bg-card);
   border: 1px solid var(--nh-border-glow);
-  border-radius: 24px;
-  padding: 42px 28px;
+  border-radius: var(--nh-radius-card);
+  padding: 32px 20px;
   box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
+@media (min-width: 600px) {
+  .nh-booking-card { padding: 42px 28px; }
+}
 
-/* Lightbox para vídeos verticais */
+/* Barra Fixa de Conversão Mobile (Bottom Bar) */
+.nh-mobile-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(14, 14, 18, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--nh-border-glow);
+  padding: 10px 16px env(safe-area-inset-bottom, 10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 95;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.6);
+  transform: translateY(120%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nh-mobile-bottom-bar.is-visible {
+  transform: translateY(0);
+}
+@media (min-width: 768px) {
+  .nh-mobile-bottom-bar { display: none !important; }
+}
+.nh-mobile-bottom-bar a {
+  flex: 1;
+  text-align: center;
+  padding: 12px 14px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.nh-bottom-btn-wa {
+  background: #25D366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.nh-bottom-btn-cta {
+  background: #fff;
+  color: #111;
+}
+
+/* Lightbox para visionamento vídeo vertical */
 .nh-lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.92);
+  background: rgba(0, 0, 0, 0.94);
   backdrop-filter: blur(12px);
   z-index: 1000;
   display: flex;
@@ -858,20 +1126,22 @@ body.nova-home-body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
+  padding: 16px;
 }
 .nh-lightbox.is-open {
   opacity: 1;
   pointer-events: auto;
 }
 .nh-lightbox-stage {
-  max-width: 420px;
-  width: 90%;
+  max-width: 380px;
+  width: 100%;
   aspect-ratio: 9 / 16;
   max-height: 85vh;
   position: relative;
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  background: #000;
 }
 .nh-lightbox-stage video {
   width: 100%;
@@ -881,16 +1151,16 @@ body.nova-home-body {
 }
 .nh-lightbox-close {
   position: absolute;
-  top: 24px;
-  right: 24px;
-  width: 44px;
-  height: 44px;
+  top: 18px;
+  right: 18px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(8px);
   color: #fff;
   border: 1px solid rgba(255,255,255,0.25);
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -903,30 +1173,39 @@ body.nova-home-body {
   color: #000;
 }
 
-/* ---------- Rodapé ---------- */
+/* ---------- Rodapé Mobile-First ---------- */
 .nh-footer {
-  padding: 50px 0 36px 0;
+  padding: 44px 0 32px 0;
   border-top: 1px solid var(--nh-border);
-  background: #09090b;
+  background: #08080a;
 }
 .nh-footer-inner {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
+  text-align: center;
   gap: 20px;
+}
+@media (min-width: 768px) {
+  .nh-footer-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
 }
 .nh-footer-links {
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
 }
 .nh-footer-link {
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--nh-text-secondary);
   text-decoration: none;
 }
 .nh-footer-link:hover { color: #fff; }
 .nh-footer-copy {
-  font-size: 13px;
+  font-size: 12.5px;
   color: rgba(255,255,255,0.4);
 }
