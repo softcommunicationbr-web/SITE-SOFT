@@ -138,6 +138,12 @@
       // Bento cards e notas
       '.home-bento .bento-card',
       '.home-bands-note',
+      // Cards do catálogo e projetos
+      '.card-project',
+      '.video-tile',
+      '.client-card',
+      '.testimonial-card',
+      '.stat-card',
       // Serviços e pacotes
       '.services .service',
       '.home-services-note',
