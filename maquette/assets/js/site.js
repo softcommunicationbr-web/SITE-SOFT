@@ -230,12 +230,58 @@
         if (entry.isIntersecting) {
           entry.target.classList.add('is-risen');
           io.unobserve(entry.target);
+
+          // Anima contadores numéricos caso existam
+          var nums = entry.target.querySelectorAll ? entry.target.querySelectorAll('[data-counter], .number, .stat-value') : [];
+          if (entry.target.matches && entry.target.matches('[data-counter], .number, .stat-value')) {
+            nums = [entry.target];
+          }
+          if (nums && nums.length) {
+            nums.forEach(function (n) { animateNumber(n, 1800); });
+          }
         }
       });
     }, {
       rootMargin: '0px 0px -40px 0px',
       threshold: 0.05
     });
+
+    function animateNumber(el, duration) {
+      if (el.__counterDone) return;
+      el.__counterDone = true;
+      var text = el.textContent.trim();
+      var match = text.match(/^([^\d]*)(\d+[\.,]?\d*)([^\d]*)$/);
+      if (!match) return;
+      var prefix = match[1] || '';
+      var rawNumStr = match[2];
+      var targetNum = parseFloat(rawNumStr.replace(',', '.'));
+      var suffix = match[3] || '';
+      var isFloat = rawNumStr.indexOf('.') !== -1 || rawNumStr.indexOf(',') !== -1;
+      var startTime = null;
+      duration = duration || 1800;
+
+      function easeOutExpo(x) {
+        return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
+      }
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var elapsed = timestamp - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        var currentVal = easeOutExpo(progress) * targetNum;
+        if (isFloat) {
+          el.textContent = prefix + currentVal.toFixed(1) + suffix;
+        } else {
+          el.textContent = prefix + Math.floor(currentVal) + suffix;
+        }
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          el.textContent = text;
+        }
+      }
+      requestAnimationFrame(step);
+    }
 
     // Separa elementos do topo (como hero) dos elementos abaixo do scroll
     var topElements = [];

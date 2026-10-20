@@ -1151,6 +1151,59 @@
           }, i * 65);
         });
       }, 60);
+
+      // Função ultra-suave de contagem progressiva dos números (Odometer / Counter Roll-up)
+      function animateNumber(el, duration) {
+        if (el.__counterDone) return;
+        el.__counterDone = true;
+        var text = el.textContent.trim();
+        var match = text.match(/^([^\d]*)(\d+[\.,]?\d*)([^\d]*)$/);
+        if (!match) return;
+        var prefix = match[1] || '';
+        var rawNumStr = match[2];
+        var targetNum = parseFloat(rawNumStr.replace(',', '.'));
+        var suffix = match[3] || '';
+        var isFloat = rawNumStr.indexOf('.') !== -1 || rawNumStr.indexOf(',') !== -1;
+        var startTime = null;
+        duration = duration || 1900;
+
+        function easeOutExpo(x) {
+          return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
+        }
+
+        function step(timestamp) {
+          if (!startTime) startTime = timestamp;
+          var elapsed = timestamp - startTime;
+          var progress = Math.min(elapsed / duration, 1);
+          var eased = easeOutExpo(progress);
+          var currentVal = eased * targetNum;
+          if (isFloat) {
+            el.textContent = prefix + currentVal.toFixed(1) + suffix;
+          } else {
+            el.textContent = prefix + Math.floor(currentVal) + suffix;
+          }
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          } else {
+            el.textContent = text; // Fixa com perfeição no valor exato final
+          }
+        }
+        requestAnimationFrame(step);
+      }
+
+      // Observer dedicado para disparar a contagem de números ao entrar na tela
+      var counterEls = document.querySelectorAll('.nh-metric-number, .tile.metric strong, [data-counter]');
+      if (counterEls.length && 'IntersectionObserver' in window) {
+        var counterObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) {
+              animateNumber(en.target, 1900);
+              counterObserver.unobserve(en.target);
+            }
+          });
+        }, { rootMargin: '0px 0px -40px 0px', threshold: 0.15 });
+        counterEls.forEach(function (c) { counterObserver.observe(c); });
+      }
     }
   })();
 </script>

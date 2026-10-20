@@ -1251,18 +1251,21 @@ html.has-preloader .pl3-svg { transform: rotateX(82deg) translateY(58%); opacity
 .will-reveal.is-visible { opacity: 1; transform: none; transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
 @media (prefers-reduced-motion: reduce) { .will-reveal { opacity: 1; transform: none; transition: none; } }
 
-/* ---------- Animação dos textos surgindo do chão ao passar o scroll ---------- */
+/* ---------- Animação dos textos surgindo do chão ao passar o scroll (com Blur Óptico) ---------- */
 .text-rise {
   opacity: 0;
   transform: translateY(32px);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: blur(10px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--rise-delay, 0ms);
-  will-change: opacity, transform;
+  will-change: opacity, transform, filter;
 }
 .text-rise.is-risen {
   opacity: 1;
   transform: none;
+  filter: blur(0);
 }
 .text-rise.is-risen:hover {
   transition-delay: 0ms;
