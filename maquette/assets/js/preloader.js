@@ -17,11 +17,7 @@
     return;
   }
 
-  // Grava na sessão para não cansar o visitante
-  try {
-    w.sessionStorage.setItem('soft-intro', '1');
-  } catch (e) { /* sem armazenamento */ }
-
+  // Permitir execução a cada recarregamento para experiência cinemática consistente
   var scriptEl = d.currentScript || d.querySelector('script[src*="preloader.js"]');
   var scriptSrc = scriptEl ? (scriptEl.getAttribute('src') || '') : '';
   var basePath = (scriptSrc.indexOf('../') === 0) ? '../' : (root.getAttribute('data-root') || '');
@@ -37,27 +33,27 @@
   var spark = el.querySelector('.preloader-beam-spark');
   var shockwave = el.querySelector('.preloader-shockwave');
 
-  // Curvas de aceleração cinematográfica
+  // Curvas de aceleração cinematográfica ultra-suaves (DCI 4K)
   var EASE_SMOOTH = 'cubic-bezier(.22, 1, .36, 1)';
   var EASE_POWER  = 'cubic-bezier(.16, 1, .3, 1)';
-  var EASE_LIFT   = 'cubic-bezier(.85, 0, .15, 1)';
+  var EASE_LIFT   = 'cubic-bezier(.16, 1, .3, 1)';
 
   /* ---------- Linha do tempo (milissegundos) ---------- */
   var T = {
     hud: [0, 450],
-    shaft: [120, 1400],
-    laser: [160, 1100],
-    tiki: [220, 850],
-    sweep: [360, 750],
-    beam: [300, 700],
-    impact: 1250,
-    lift: 2280,
-    liftDur: 720,
+    shaft: [100, 1300],
+    laser: [140, 1050],
+    tiki: [180, 850],
+    sweep: [320, 700],
+    beam: [260, 650],
+    impact: 1100,
+    lift: 1850,
+    liftDur: 850,
     cues: [
-      ['riser', 380, 0.45],
-      ['tapB', 1180, 0.5],
-      ['thud', 1250, 0.85],
-      ['whoosh', 2280, 0.8]
+      ['riser', 350, 0.45],
+      ['tapB', 1050, 0.5],
+      ['thud', 1100, 0.85],
+      ['whoosh', 1850, 0.7]
     ]
   };
 
@@ -143,8 +139,15 @@
       try { a.cancel(); } catch (e) { /* ignora */ }
     });
     anims = [];
-    el.style.clipPath = '';
-    if (stage) stage.style.transform = '';
+    el.classList.remove('is-exiting');
+    el.style.opacity = '';
+    el.style.filter = '';
+    el.style.transform = '';
+    if (stage) {
+      stage.style.transform = '';
+      stage.style.opacity = '';
+      stage.style.filter = '';
+    }
   }
 
   function schedule() {
@@ -232,32 +235,12 @@
       }
     }, T.impact);
 
-    // 7. Saída de cortina cinemática (Lift Outro)
-    A(el, [
-      { clipPath: 'inset(0 0 0% 0)' },
-      { clipPath: 'inset(0 0 100% 0)' }
-    ], { delay: T.lift, duration: T.liftDur, easing: EASE_LIFT });
-
-    if (stage) {
-      A(stage, [
-        { transform: 'translateY(0) scale(1)', opacity: 1 },
-        { transform: 'translateY(-16vh) scale(1.03)', opacity: 0.25 }
-      ], { delay: T.lift, duration: T.liftDur, easing: EASE_LIFT });
-    }
-
-    if (hud) {
-      A(hud, [
-        { opacity: 1 },
-        { opacity: 0 }
-      ], { delay: T.lift, duration: Math.min(300, T.liftDur), easing: 'ease-out' });
-    }
-
-    var last = anims[anims.length - 1];
-    if (last) {
-      last.onfinish = function () {
-        if (!finished) done();
-      };
-    }
+    // 7. Saída Ultra-Suave (Dissolve Cinematográfico)
+    setTimeout(function () {
+      if (!finished && !finishing) {
+        exitSmooth(T.liftDur, false);
+      }
+    }, T.lift);
 
     // Fallback de segurança absoluto
     var id = runId;
@@ -266,11 +249,47 @@
     }, T.lift + T.liftDur + 600);
   }
 
+  function exitSmooth(dur, isUserSkip) {
+    if (finished) return;
+    finishing = true;
+    runId++;
+
+    var exitDuration = dur || (isUserSkip ? 460 : T.liftDur);
+    el.classList.add('is-exiting');
+
+    // 1. O contêiner dissolve suavemente com desfoque e expansão sutis
+    A(el, [
+      { opacity: 1, filter: 'blur(0px)', transform: 'scale(1)' },
+      { opacity: 0, filter: 'blur(12px)', transform: 'scale(1.03)' }
+    ], { duration: exitDuration, easing: EASE_POWER });
+
+    // 2. O palco e o Tiki sobem sutilmente enquanto dissipam com elegância
+    if (stage) {
+      A(stage, [
+        { opacity: 1, filter: 'blur(0px)', transform: 'translateY(0) scale(1)' },
+        { opacity: 0, filter: 'blur(8px)', transform: 'translateY(-16px) scale(1.05)' }
+      ], { duration: exitDuration, easing: EASE_POWER });
+    }
+
+    // 3. O HUD de enquadramento dissolve de forma rápida e discreta
+    if (hud) {
+      A(hud, [
+        { opacity: 1 },
+        { opacity: 0 }
+      ], { duration: Math.min(320, exitDuration), easing: 'ease-out' });
+    }
+
+    setTimeout(function () {
+      done();
+    }, exitDuration + 40);
+  }
+
   function done() {
     if (finished) return;
     finished = true;
     reset();
     el.hidden = true;
+    el.style.display = 'none';
     root.classList.remove('has-preloader');
     d.removeEventListener('keydown', onKey, true);
 
@@ -285,22 +304,7 @@
 
   function skip() {
     if (finished || finishing) return;
-    finishing = true;
-    runId++;
-
-    anims.forEach(function (a) {
-      try { a.finish(); } catch (e) { /* ignora */ }
-    });
-
-    var up = A(el, [
-      { clipPath: 'inset(0 0 0% 0)' },
-      { clipPath: 'inset(0 0 100% 0)' }
-    ], { duration: 320, easing: EASE_LIFT });
-
-    if (up) up.onfinish = done;
-    else done();
-
-    setTimeout(done, 600);
+    exitSmooth(460, true);
   }
 
   function onKey(e) {
