@@ -111,17 +111,23 @@ html, body {
 }
 
 .nh-brand-logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   text-decoration: none;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), filter 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nh-brand-logo:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 12px rgba(243, 237, 227, 0.5));
 }
 .nh-brand-logo img {
-  height: 28px;
+  height: 30px;
   width: auto;
   display: block;
 }
 @media (min-width: 768px) {
-  .nh-brand-logo img { height: 32px; }
+  .nh-brand-logo img { height: 34px; }
 }
 
 .nh-nav-menu {
