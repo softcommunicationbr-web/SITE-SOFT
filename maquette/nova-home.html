@@ -9,43 +9,35 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/tokens.css">
-<link rel="stylesheet" href="assets/css/nova-home.css">
+<link rel="stylesheet" href="assets/css/tokens.css?v=20261026-3">
+<link rel="stylesheet" href="assets/css/nova-home.css?v=20261026-minimalist">
 </head>
 <body class="nova-home-body">
 
-<div class="demo-top-bar">
-  <span>Aperçu Mobile-First du Nouveau Layout</span>
-  <span>·</span>
-  <a href="index.html">Retour au site classique</a>
-  <span>·</span>
-  <a href="admin/index.html">Espace Admin</a>
-</div>
-
 <div class="nh-ambient-bg" aria-hidden="true"></div>
 
-<!-- 1. Cabeçalho Flutuante Mobile-First -->
-<header class="nh-header">
+<!-- 1. Cabeçalho Flutuante Mobile-First (Lapidado) -->
+<header class="nh-header" id="nhHeader">
   <div class="nh-nav-capsule">
     <a class="nh-brand-logo" href="#" aria-label="Soft Communication, accueil">
-      <img src="assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="125" height="32">
+      <img src="assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="128" height="32">
     </a>
 
     <nav class="nh-nav-menu" aria-label="Navigation principale">
-      <a class="nh-nav-link" href="#showcase">Vidéos</a>
+      <a class="nh-nav-link" href="#showcase">Réalisations</a>
       <a class="nh-nav-link" href="#etudes">Études de cas</a>
-      <a class="nh-nav-link" href="#chiffres">Résultats</a>
       <a class="nh-nav-link" href="#methode">Méthode</a>
-      <a class="nh-nav-link" href="#avis">Avis</a>
-      <a class="nh-nav-link" href="#diferenciais">Différentiels</a>
-      <a class="nh-nav-link" href="#offre">Offre</a>
       <a class="nh-nav-link" href="#faq">FAQ</a>
     </nav>
 
     <div class="nh-nav-actions">
-      <span class="nh-lang-pill">FR</span>
+      <div class="nh-lang-switch" aria-label="Langues disponibles">
+        <a class="nh-lang-link is-active" href="nova-home.html" lang="fr">FR</a>
+        <a class="nh-lang-link" href="en/index.html" lang="en">EN</a>
+        <a class="nh-lang-link" href="pt/index.html" lang="pt">PT</a>
+      </div>
       <a class="nh-btn-header-cta" href="#contact">
-        <span>Réserver un appel</span>
+        <span>Prendre contact</span>
       </a>
       <button class="nh-menu-toggle" id="nhMenuToggle" type="button" aria-label="Menu" aria-expanded="false">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
@@ -55,38 +47,41 @@
 
   <!-- Drawer Menu Mobile -->
   <div class="nh-mobile-drawer" id="nhMobileDrawer">
-    <a href="#showcase" data-drawer-link>Vidéos du Portfolio</a>
-    <a href="#etudes" data-drawer-link>Études de Cas & Résultats</a>
-    <a href="#chiffres" data-drawer-link>Métrique de Confiance</a>
+    <a href="#showcase" data-drawer-link>Réalisations &amp; Portfolio</a>
+    <a href="#etudes" data-drawer-link>Études de Cas &amp; Résultats</a>
+    <a href="#chiffres" data-drawer-link>Indicateurs de Confiance</a>
     <a href="#methode" data-drawer-link>La Méthode en 9 Étapes</a>
-    <a href="#avis" data-drawer-link>Témoignages & Avis</a>
-    <a href="#diferenciais" data-drawer-link>Nos Différentiels (Bento)</a>
-    <a href="#offre" data-drawer-link>Pack 10 Vidéos</a>
+    <a href="#avis" data-drawer-link>Témoignages Clients</a>
+    <a href="#diferenciais" data-drawer-link>Nos Différentiels</a>
     <a href="#faq" data-drawer-link>Questions Fréquentes</a>
-    <a href="#contact" data-drawer-link style="color: var(--nh-accent); font-weight: 600;">Réserver un Appel Découverte →</a>
+    <a href="#contact" data-drawer-link style="color: var(--nh-accent); font-weight: 600;">Prendre contact →</a>
   </div>
 </header>
 
 <main>
 
-  <!-- 2. Hero Section Mobile-First -->
-  <section class="nh-hero">
+  <!-- 2. Hero Section · Direção de Arte Soft Communication (Hierarquia em 3 Níveis) -->
+  <section class="nh-hero" aria-labelledby="nh-hero-heading">
     <div class="nh-container">
       
+      <!-- Nível 1 (0,5s): Rótulo de Set + Título Editorial em Cormorant Garamond -->
       <div class="head_bar_top">
-        <span>Studio Audiovisuel & Vidéos Haute Performance · Polynésie</span>
+        <span>
+          <span class="nh-live-dot" aria-hidden="true"></span>
+          Studio Cinématographique · Polynésie Française · 4K &amp; IA
+        </span>
       </div>
 
-      <h1>
-        <span class="nh-gradient-text">Multipliez l’impact de votre marque</span><br>
-        avec des vidéos haute performance
+      <h1 id="nh-hero-heading">
+        Des films de marque et formats courts qui <span class="nh-gradient-text">multiplient votre impact</span>
       </h1>
 
+      <!-- Nível 2 (2s): Subtítulo + Dupla de Ação + Prova Social -->
       <p class="nh-hero-sub">
-        50+ productions livrées. Formats verticaux et films cinématographiques conçus pour capter l’attention dès les 3 premières secondes et générer des résultats concrets.
+        Lumière naturelle, cadrages de cinéma et narration calibrée dès les 3 premières secondes. Pour l’hôtellerie d’exception, l’immobilier et les marques exigeantes.
       </p>
 
-      <div>
+      <div class="nh-hero-cta-row">
         <a class="nh-btn-glow" href="#contact">
           <span>Démarrer mon projet</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -94,38 +89,100 @@
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
         </a>
+        <a class="nh-btn-secondary-hero" href="#showcase">
+          <span>Voir les réalisations ↓</span>
+        </a>
+      </div>
+
+      <div class="nh-hero-proof-bar" aria-label="Preuve sociale : plus de 50 productions livrées">
+        <div class="nh-proof-avatars" aria-hidden="true">
+          <img src="assets/brand/avatars/client-1.jpg" alt="" width="28" height="28">
+          <img src="assets/brand/avatars/client-2.jpg" alt="" width="28" height="28">
+          <img src="assets/brand/avatars/client-3.jpg" alt="" width="28" height="28">
+          <img src="assets/brand/avatars/client-4.jpg" alt="" width="28" height="28">
+        </div>
+        <div class="nh-proof-meta">
+          <span class="nh-proof-stars" aria-hidden="true">★★★★★</span>
+          <span><strong>50+ productions livrées</strong> · Resorts, Immobilier &amp; Marques</span>
+        </div>
       </div>
 
       <div class="nh-hero-benefits">
         <div class="nh-benefit-item">
           <div class="nh-bullet-dot"></div>
-          <span>Sans engagement long terme</span>
+          <span>Masters 4K &amp; déclinaisons 9:16</span>
         </div>
         <div class="nh-benefit-item">
           <div class="nh-bullet-dot"></div>
-          <span>Révisions illimitées</span>
+          <span>Direction artistique sur mesure</span>
         </div>
         <div class="nh-benefit-item">
           <div class="nh-bullet-dot"></div>
-          <span>Formats 4K & Réseaux Sociaux (9:16)</span>
+          <span>Projections immobilières IA sans location de décor</span>
         </div>
       </div>
 
-      <!-- Vídeo principal oficial do nosso banco de dados -->
+      <!-- Nível 3 (Detalhe): Visor de Direção 16:9 Oficial do Catálogo -->
       <div class="nh-hero-video-wrap">
+        <span class="nh-vf-corner nh-vf-tl" aria-hidden="true"></span>
+        <span class="nh-vf-corner nh-vf-tr" aria-hidden="true"></span>
+        <span class="nh-vf-corner nh-vf-bl" aria-hidden="true"></span>
+        <span class="nh-vf-corner nh-vf-br" aria-hidden="true"></span>
+
+        <div class="nh-hero-hud-top" aria-hidden="true">
+          <span class="nh-hud-pill">
+            <span class="nh-rec-dot"></span>
+            <span>REC · 4K MASTER</span>
+          </span>
+          <span class="nh-hud-pill" id="nhHeroTimecode">00:00:00:00</span>
+          <span class="nh-hud-pill nh-hud-hide-mobile">LUMIÈRE NATURELLE · 24 FPS</span>
+        </div>
+
         <video 
           id="nhHeroVideo"
           src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/calebe-versao-final.webm"
           poster="assets/posters/calebe-versao-final.jpg"
           autoplay muted loop playsinline preload="metadata">
         </video>
+
         <div class="nh-hero-video-controls">
-          <button class="nh-video-ctrl-btn" id="nhHeroSoundBtn" type="button" aria-label="Activer le son">
-            <span id="nhHeroSoundIcon" style="display:inline-flex; align-items:center;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-            </span>
-            <span id="nhHeroSoundText">Activer le son</span>
-          </button>
+          <span class="nh-hero-video-caption">Showreel Officiel · Direction Calebe &amp; Studio Soft</span>
+          <div class="nh-hero-ctrl-group">
+            <button class="nh-video-ctrl-btn" id="nhHeroSoundBtn" type="button" aria-label="Activer le son">
+              <span id="nhHeroSoundIcon" style="display:inline-flex; align-items:center;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+              </span>
+              <span id="nhHeroSoundText">Activer le son</span>
+            </button>
+            <button class="nh-video-ctrl-btn" id="nhHeroFsBtn" type="button" aria-label="Plein écran" title="Ouvrir en plein écran">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <polyline points="9 21 3 21 3 15"></polyline>
+                <line x1="21" y1="3" x2="14" y2="10"></line>
+                <line x1="3" y1="21" x2="10" y2="14"></line>
+              </svg>
+              <span class="nh-hud-hide-mobile">Plein écran</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Os 3 Pilares da Soft logo abaixo do Showreel -->
+      <div class="nh-hero-pillars">
+        <div class="nh-pillar-item">
+          <span class="nh-pillar-num">01 / Cinéma</span>
+          <strong class="nh-pillar-title">Films de Marque 4K</strong>
+          <span class="nh-pillar-desc">Storytelling, étalonnage cinéma et sound design immersif pour hôtels et maisons.</span>
+        </div>
+        <div class="nh-pillar-item">
+          <span class="nh-pillar-num">02 / Présence</span>
+          <strong class="nh-pillar-title">Formats Courts 9:16 &amp; UGC</strong>
+          <span class="nh-pillar-desc">Accroches calibrées en 3 secondes pour capter l’attention et convertir chaque mois.</span>
+        </div>
+        <div class="nh-pillar-item">
+          <span class="nh-pillar-num">03 / Projection</span>
+          <strong class="nh-pillar-title">Immobilier &amp; Visuels IA</strong>
+          <span class="nh-pillar-desc">Sublimez vos espaces et projets architecturaux sans avoir besoin de louer un décor.</span>
         </div>
       </div>
 
@@ -356,116 +413,226 @@
     </div>
   </section>
 
-  <!-- 6. Estudos de Caso (Case Studies) -->
+  <!-- 6. Estudos de Caso (Case Studies · UX/UI Visual & KPI-First) -->
   <section class="nh-cases-section" id="etudes">
     <div class="nh-container">
       
       <div class="nh-section-title-wrap">
         <h2>Est-ce que ça fonctionne <span class="nh-gradient-text">vraiment</span> ?</h2>
-        <p>Des résultats concrets observés auprès de marques, resorts et acteurs de référence.</p>
+        <p>Des résultats mesurables et immédiats : survolez ou cliquez sur chaque étude de cas pour visionner la réalisation.</p>
       </div>
 
-      <div class="nh-cases-grid">
+      <!-- Filtros Rápidos de UX para leitura imediata -->
+      <div class="nh-cases-filters" role="tablist" aria-label="Filtrer par secteur">
+        <button class="nh-case-filter-btn is-active" type="button" data-case-filter="all">Tous les cas <span>6</span></button>
+        <button class="nh-case-filter-btn" type="button" data-case-filter="hospitality">Hôtellerie &amp; Art de Vivre</button>
+        <button class="nh-case-filter-btn" type="button" data-case-filter="real-estate">Immobilier &amp; IA</button>
+        <button class="nh-case-filter-btn" type="button" data-case-filter="brand">Marques &amp; E-commerce</button>
+      </div>
+
+      <div class="nh-cases-grid" id="nhCasesGrid">
         
-        <!-- Case 1 -->
-        <div class="nh-case-card">
+        <!-- Case 1: Hôtellerie & Resort -->
+        <article class="nh-case-card" data-case-cat="hospitality" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/miria-s-project-final-v01-1-2.webm">
           <div class="nh-case-thumb">
-            <img src="assets/posters/hf-20260918-032056-188e0b0e-dcc5-45ea-9d7b-752d3.jpg" alt="Resort Bora Bora">
-            <span class="nh-case-category">Hôtellerie de Luxe</span>
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/miria-s-project-final-v01-1-2.webm" poster="assets/posters/miria-s-project-final-v01-1-2.jpg" muted loop playsinline preload="none"></video>
+            <span class="nh-case-category">01 · Hôtellerie &amp; Resort</span>
+            <span class="nh-case-format">4K + 9:16</span>
+            <span class="nh-case-play" aria-hidden="true">▶ Voir le film</span>
           </div>
           <div class="nh-case-body">
-            <div class="nh-case-headline">Campagne internationale de valorisation des suites sur pilotis et villas privées.</div>
-            <ul class="nh-case-bullets">
-              <li class="nh-case-bullet">1.9× de taux de clics (CTR) par rapport aux contenus précédents</li>
-              <li class="nh-case-bullet">-24% sur le coût d'acquisition de réservation directe</li>
-              <li class="nh-case-bullet">+3,8 millions de vues organiques sur les Reels & TikTok</li>
-            </ul>
+            <div class="nh-case-kpis">
+              <div class="nh-case-kpi">
+                <strong>+3,8M</strong>
+                <span>Vues organiques</span>
+              </div>
+              <div class="nh-case-kpi">
+                <strong>-24%</strong>
+                <span>Coût d'acquisition</span>
+              </div>
+              <div class="nh-case-kpi">
+                <strong>1.9×</strong>
+                <span>Taux de clics (CTR)</span>
+              </div>
+            </div>
+            <h3 class="nh-case-headline">Suites sur Pilotis &amp; Villas Privées</h3>
+            <p class="nh-case-summary">Campagne internationale visant à augmenter les réservations directes sans dépendre des plateformes OTA.</p>
+            <div class="nh-case-tags">
+              <span>Film Maître 4K</span>
+              <span>10 Reels 9:16</span>
+              <span>Hooks Ads</span>
+            </div>
           </div>
-        </div>
+        </article>
 
-        <!-- Case 2 -->
-        <div class="nh-case-card">
+        <!-- Case 2: Immobilier & IA -->
+        <article class="nh-case-card" data-case-cat="real-estate" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/calebe-versao-final.webm">
           <div class="nh-case-thumb">
-            <img src="assets/posters/hf-20261011-205447-8e5d6ddd-dc00-49ea-9c0f-811a8.jpg" alt="Immobilier & IA">
-            <span class="nh-case-category">Immobilier & IA</span>
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/calebe-versao-final.webm" poster="assets/posters/calebe-versao-final.jpg" muted loop playsinline preload="none"></video>
+            <span class="nh-case-category">02 · Immobilier &amp; IA</span>
+            <span class="nh-case-format">Projection IA</span>
+            <span class="nh-case-play" aria-hidden="true">▶ Voir le film</span>
           </div>
           <div class="nh-case-body">
-            <div class="nh-case-headline">Lancement d'un programme immobilier d'exception avec projections assistées par IA.</div>
-            <ul class="nh-case-bullets">
-              <li class="nh-case-bullet">100% des lots réservés avant l'achèvement du chantier</li>
-              <li class="nh-case-bullet">Rendus 3D ultra-réalistes sans location de décor physique</li>
-              <li class="nh-case-bullet">ROAS de 4.2 sur les campagnes d'acquisition investisseurs</li>
-            </ul>
+            <div class="nh-case-kpis">
+              <div class="nh-case-kpi">
+                <strong>100%</strong>
+                <span>Lots réservés</span>
+              </div>
+              <div class="nh-case-kpi">
+                <strong>4.2×</strong>
+                <span>ROAS Investisseurs</span>
+              </div>
+              <div class="nh-case-kpi">
+                <strong>0 €</strong>
+                <span>Location de décor</span>
+              </div>
+            </div>
+            <h3 class="nh-case-headline">Programme Immobilier &amp; Rendus IA</h3>
+            <p class="nh-case-summary">Mise en scène cinématographique et projections architecturales ultra-réalistes avant la fin du chantier.</p>
+            <div class="nh-case-tags">
+              <span>Visuels IA 4K</span>
+              <span>Drone Cinéma</span>
+              <span>Acquisition</span>
+            </div>
           </div>
-        </div>
+        </article>
 
-        <!-- Case 3 -->
-        <div class="nh-case-card">
+        <!-- Case 3: Food & Hospitalité -->
+        <article class="nh-case-card" data-case-cat="hospitality" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/mkt.webm">
           <div class="nh-case-thumb">
-            <img src="assets/posters/hf-20260916-202713-c1d6d6c3-5880-472e-8418-e38c1.jpg" alt="Gastronomie">
-            <span class="nh-case-category">Food & Hospitalité</span>
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/mkt.webm" poster="assets/posters/mkt.jpg" muted loop playsinline preload="none"></video>
+            <span class="nh-case-category">03 · Gastronomie &amp; Lifestyle</span>
+            <span class="nh-case-format">9:16 Social</span>
+            <span class="nh-case-play" aria-hidden="true">▶ Voir le film</span>
           </div>
           <div class="nh-case-body">
-            <div class="nh-case-headline">Stratégie vidéo continue pour une table gastronomique renommée à Tahiti.</div>
-            <ul class="nh-case-bullets">
-              <li class="nh-case-bullet">Complet chaque soir avec liste d'attente les week-ends</li>
-              <li class="nh-case-bullet">+45 000 abonnés ciblés et qualifiés gagnés en 4 mois</li>
-              <li class="nh-case-bullet">Format sensoriel et esthétique en lumière naturelle</li>
-            </ul>
+            <div class="nh-case-kpis">
+              <div class="nh-case-kpi">
+                <strong>+45K</strong>
+                <span>Abonnés qualifiés</span>
+              </div>
+              <div class="nh-case-kpi">
+                <strong>100%</strong>
+                <span>Complet week-ends</span>
+              </div>
+              <div class="nh-case-kpi">
+                <strong>4 mois</strong>
+                <span>Croissance continue</span>
+              </div>
+            </div>
+            <h3 class="nh-case-headline">Table Gastronomique &amp; Art de Vivre</h3>
+            <p class="nh-case-summary">Formats sensoriels en lumière naturelle conçus pour transformer les vues locales et touristiques en réservations.</p>
+            <div class="nh-case-tags">
+              <span>Lumière Naturelle</span>
+              <span>Sound Design</span>
+              <span>Reels Hebdo</span>
+            </div>
           </div>
-        </div>
+        </article>
 
-        <!-- Case 4 -->
-        <div class="nh-case-card">
+        <!-- Case 4: Marque & Joaillerie -->
+        <article class="nh-case-card" data-case-cat="brand" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/hf-20260916-205451-ffa9c935-4f6e-41eb-b441-f85c6.webm">
           <div class="nh-case-thumb">
-            <img src="assets/posters/img-4501.jpg" alt="Bijouterie & Perles">
-            <span class="nh-case-category">Marque & Joaillerie</span>
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/hf-20260916-205451-ffa9c935-4f6e-41eb-b441-f85c6.webm" poster="assets/posters/hf-20260916-205451-ffa9c935-4f6e-41eb-b441-f85c6.jpg" muted loop playsinline preload="none"></video>
+            <span class="nh-case-category">04 · Haute Joaillerie</span>
+            <span class="nh-case-format">Macro 4K</span>
+            <span class="nh-case-play" aria-hidden="true">▶ Voir le film</span>
           </div>
           <div class="nh-case-body">
-            <div class="nh-case-headline">Films narratifs autour de la récolte des Perles de culture de Tahiti.</div>
-            <ul class="nh-case-bullets">
-              <li class="nh-case-bullet">Panier moyen international augmenté de +32%</li>
-              <li class="nh-case-bullet">12 400 ventes générées sur les collections signature</li>
-              <li class="nh-case-bullet">Taux de rétention vidéo supérieur à 65% sur 60 secondes</li>
-            </ul>
+            <div class="nh-case-kpis">
+              <div class="nh-case-kpi">
+                <strong>+32%</strong>
+                <span>Panier moyen</span>
+              </div>
+              <div class="nh-case-kpi">
+                <strong>65%</strong>
+                <span>Rétention à 60s</span>
+              </div>
+              <div class="nh-case-kpi">
+                <strong>12,4K</strong>
+                <span>Ventes générées</span>
+              </div>
+            </div>
+            <h3 class="nh-case-headline">Collections Signature &amp; Perles de Tahiti</h3>
+            <p class="nh-case-summary">Storytelling d'exception mettant en valeur l'artisanat et l'éclat des pièces pour la clientèle internationale.</p>
+            <div class="nh-case-tags">
+              <span>Optiques Macro</span>
+              <span>Étalonnage Or</span>
+              <span>E-commerce</span>
+            </div>
           </div>
-        </div>
+        </article>
 
-        <!-- Case 5 -->
-        <div class="nh-case-card">
+        <!-- Case 5: Nautisme & Expérience -->
+        <article class="nh-case-card" data-case-cat="hospitality" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-7032.webm">
           <div class="nh-case-thumb">
-            <img src="assets/posters/hf-20260921-194749-5e8280bb-9362-4fb0-952f-7445a.jpg" alt="Nautisme & Aventure">
-            <span class="nh-case-category">Nautisme & Yachting</span>
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/img-7032.webm" poster="assets/posters/img-7032.jpg" muted loop playsinline preload="none"></video>
+            <span class="nh-case-category">05 · Tourisme &amp; Expérience</span>
+            <span class="nh-case-format">Cinéma + 9:16</span>
+            <span class="nh-case-play" aria-hidden="true">▶ Voir le film</span>
           </div>
           <div class="nh-case-body">
-            <div class="nh-case-headline">Captation aérienne et documentaire pour charters privés aux Tuamotu.</div>
-            <ul class="nh-case-bullets">
-              <li class="nh-case-bullet">+800 demandes de devis qualifiées reçues des USA et d'Europe</li>
-              <li class="nh-case-bullet">Coût par prospect divisé par 2 grâce aux accroches vidéo</li>
-              <li class="nh-case-bullet">Formats maîtres 4K cinéma et déclinaisons 9:16</li>
-            </ul>
+            <div class="nh-case-kpis">
+              <div class="nh-case-kpi">
+                <strong>+800</strong>
+                <span>Devis qualifiés</span>
+              </div>
+              <div class="nh-case-kpi">
+                <strong>÷2</strong>
+                <span>Coût par prospect</span>
+              </div>
+              <div class="nh-case-kpi">
+                <strong>USA · EU</strong>
+                <span>Marchés ciblés</span>
+              </div>
+            </div>
+            <h3 class="nh-case-headline">Séjours Privés &amp; Expériences Insulaires</h3>
+            <p class="nh-case-summary">Captation documentaire et accroches immersives ciblant les voyageurs haut de gamme aux États-Unis et en Europe.</p>
+            <div class="nh-case-tags">
+              <span>Captation 4K</span>
+              <span>Déclinaisons 9:16</span>
+              <span>Lead Gen</span>
+            </div>
           </div>
-        </div>
+        </article>
 
-        <!-- Case 6 -->
-        <div class="nh-case-card">
+        <!-- Case 6: Beauté & E-commerce -->
+        <article class="nh-case-card" data-case-cat="brand" data-video="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/hf-20260916-172714-1af6ca43-fdb5-4844-91c5-2e49e.webm">
           <div class="nh-case-thumb">
-            <img src="assets/posters/img-5389.jpg" alt="Cosmétique Naturelle">
-            <span class="nh-case-category">Beauté & E-commerce</span>
+            <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/hf-20260916-172714-1af6ca43-fdb5-4844-91c5-2e49e.webm" poster="assets/posters/hf-20260916-172714-1af6ca43-fdb5-4844-91c5-2e49e.jpg" muted loop playsinline preload="none"></video>
+            <span class="nh-case-category">06 · Beauté &amp; E-commerce</span>
+            <span class="nh-case-format">12 Hooks Ads</span>
+            <span class="nh-case-play" aria-hidden="true">▶ Voir le film</span>
           </div>
           <div class="nh-case-body">
-            <div class="nh-case-headline">Création de 12 déclinaisons d'accroches pour gamme de soins au Monoï traditionnel.</div>
-            <ul class="nh-case-bullets">
-              <li class="nh-case-bullet">Taux d'accroche (Hook rate) record de 39% sur Meta & TikTok</li>
-              <li class="nh-case-bullet">Budget publicitaire multiplié par 3 à profitabilité constante</li>
-              <li class="nh-case-bullet">+140% de chiffre d'affaires net sur le trimestre</li>
-            </ul>
+            <div class="nh-case-kpis">
+              <div class="nh-case-kpi">
+                <strong>+140%</strong>
+                <span>Chiffre d'affaires</span>
+              </div>
+              <div class="nh-case-kpi">
+                <strong>39%</strong>
+                <span>Hook rate (3s)</span>
+              </div>
+              <div class="nh-case-kpi">
+                <strong>3×</strong>
+                <span>Scale publicitaire</span>
+              </div>
+            </div>
+            <h3 class="nh-case-headline">Gamme Cosmétique &amp; Soins Naturels</h3>
+            <p class="nh-case-summary">Création de 12 variantes d'accroches sensorielles testées scientifiquement pour maximiser la conversion Meta &amp; TikTok.</p>
+            <div class="nh-case-tags">
+              <span>12 Hooks 3s</span>
+              <span>UGC Premium</span>
+              <span>Meta &amp; TikTok</span>
+            </div>
           </div>
-        </div>
+        </article>
 
       </div>
 
-      <div style="text-align: center; margin-top: 32px;">
+      <div style="text-align: center; margin-top: 36px;">
         <a class="nh-btn-glow" href="#contact">
           <span>Démarrer mon projet</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -483,34 +650,98 @@
     <div class="nh-container">
       
       <div class="nh-section-title-wrap">
+        <span class="nh-audience-eyebrow">
+          <span class="nh-audience-eyebrow-dot"></span>
+          DIAGNOSTIC &amp; VALEUR AJOUTÉE
+        </span>
         <h2>Soft Communication <span class="nh-gradient-text">est fait pour vous</span> si…</h2>
         <p>Nous éliminons les frictions habituelles de la production audiovisuelle pour vous offrir une exécution irréprochable.</p>
       </div>
 
       <div class="nh-audience-grid">
         
+        <!-- Card 01: Agences Généralistes -->
         <div class="nh-audience-card">
-          <span class="nh-audience-tag">Situation I</span>
-          <h3 class="nh-audience-title">Vous travaillez avec des agences généralistes</h3>
-          <p class="nh-audience-desc">
-            <strong>Constat :</strong> Des factures astronomiques pour des formats longs qui ne génèrent que quelques centaines de vues. Rien n'est calibré pour retenir l'attention dès les 3 premières secondes, et votre budget ne s'amortit jamais.
-          </p>
+          <div class="nh-ui-card-glow" aria-hidden="true"></div>
+
+          <div class="nh-card-header">
+            <span class="nh-card-number">01</span>
+            <span class="nh-card-category">Agences Généralistes</span>
+          </div>
+
+          <div class="nh-card-body">
+            <h3 class="nh-audience-title">Des vidéos coûteuses qui ne convertissent pas</h3>
+            <p class="nh-audience-desc">
+              Factures lourdes pour des formats longs sans accroche dans les 3 premières secondes.
+            </p>
+          </div>
+
+          <div class="nh-card-solution">
+            <div class="nh-solution-meta">
+              <span class="nh-solution-label">Réponse Soft</span>
+              <span class="nh-solution-divider">/</span>
+              <span class="nh-solution-kpi">ROI dès 14 jours</span>
+            </div>
+            <p class="nh-solution-text">
+              Hooks psychologiques validés &amp; rentabilité mesurable dès 14 jours.
+            </p>
+          </div>
         </div>
 
+        <!-- Card 02: Production Interne -->
         <div class="nh-audience-card">
-          <span class="nh-audience-tag">Situation II</span>
-          <h3 class="nh-audience-title">Vous essayez de tout produire en interne</h3>
-          <p class="nh-audience-desc">
-            <strong>Constat :</strong> Un processus épuisant et chronophage pour vos équipes. Le matériel est limité, le temps manque et le rendu final ne reflète pas le niveau d'excellence et de désirabilité de votre établissement.
-          </p>
+          <div class="nh-ui-card-glow" aria-hidden="true"></div>
+
+          <div class="nh-card-header">
+            <span class="nh-card-number">02</span>
+            <span class="nh-card-category">Production Interne</span>
+          </div>
+
+          <div class="nh-card-body">
+            <h3 class="nh-audience-title">Un processus chronophage pour vos équipes</h3>
+            <p class="nh-audience-desc">
+              Manque de temps, matériel limité et rendu final en décalage avec votre standing.
+            </p>
+          </div>
+
+          <div class="nh-card-solution">
+            <div class="nh-solution-meta">
+              <span class="nh-solution-label">Réponse Soft</span>
+              <span class="nh-solution-divider">/</span>
+              <span class="nh-solution-kpi">100% Clé en main</span>
+            </div>
+            <p class="nh-solution-text">
+              Prise en charge intégrale de A à Z : scénario, tournage &amp; post-production.
+            </p>
+          </div>
         </div>
 
+        <!-- Card 03: Créateurs Amateurs -->
         <div class="nh-audience-card">
-          <span class="nh-audience-tag">Situation III</span>
-          <h3 class="nh-audience-title">Vous faites appel à des créateurs UGC amateurs</h3>
-          <p class="nh-audience-desc">
-            <strong>Constat :</strong> La même vidéo que des centaines d'autres comptes sur les réseaux. Qualité d'image aléatoire, zéro direction artistique soignée et aucune valeur patrimoniale pour l'image de marque de votre entreprise.
-          </p>
+          <div class="nh-ui-card-glow" aria-hidden="true"></div>
+
+          <div class="nh-card-header">
+            <span class="nh-card-number">03</span>
+            <span class="nh-card-category">Créateurs Amateurs</span>
+          </div>
+
+          <div class="nh-card-body">
+            <h3 class="nh-audience-title">Aucun impact durable pour votre marque</h3>
+            <p class="nh-audience-desc">
+              Vidéos génériques sans direction artistique ni esthétique cinématographique.
+            </p>
+          </div>
+
+          <div class="nh-card-solution">
+            <div class="nh-solution-meta">
+              <span class="nh-solution-label">Réponse Soft</span>
+              <span class="nh-solution-divider">/</span>
+              <span class="nh-solution-kpi">4K Cinéma</span>
+            </div>
+            <p class="nh-solution-text">
+              Optiques anamorphiques 4K, casting dédié &amp; étalonnage haute couture.
+            </p>
+          </div>
         </div>
 
       </div>
@@ -615,11 +846,11 @@
         <article class="tile concepts">
           <span class="tag">EXPÉRIMENTATION CONTINUE</span>
           <div class="pill-stack">
-            <span class="concept-pill"><span class="check">✓</span> Concept 01 · Accroche Sensorielle</span>
-            <span class="concept-pill"><span class="check">✓</span> Concept 02 · Immersion Lagon 4K</span>
-            <span class="concept-pill"><span class="check">✓</span> Concept 03 · Villa & Art de Vivre</span>
-            <span class="concept-pill"><span class="check">✓</span> Concept 04 · Storytelling Marque</span>
-            <span class="concept-pill"><span class="check">✓</span> Concept 05 · Rétention 3s</span>
+            <span class="concept-pill" style="--i:0"><span class="check">✓</span> Concept 01 · Accroche Sensorielle <em class="bento-pill-score">98%</em></span>
+            <span class="concept-pill" style="--i:1"><span class="check">✓</span> Concept 02 · Immersion Lagon 4K <em class="bento-pill-score">94%</em></span>
+            <span class="concept-pill" style="--i:2"><span class="check">✓</span> Concept 03 · Villa &amp; Art de Vivre <em class="bento-pill-score">96%</em></span>
+            <span class="concept-pill" style="--i:3"><span class="check">✓</span> Concept 04 · Storytelling Marque <em class="bento-pill-score">92%</em></span>
+            <span class="concept-pill" style="--i:4"><span class="check">✓</span> Concept 05 · Rétention 3s <em class="bento-pill-score">99%</em></span>
           </div>
           <div>
             <h3>Nous testons de nouveaux angles et hooks chaque semaine.</h3>
@@ -628,31 +859,57 @@
 
         <article class="tile script">
           <div class="script-copy">
-            <span class="tag">SCRIPTING & SCÉNARISATION</span>
+            <span class="tag">SCRIPTING &amp; SCÉNARISATION</span>
             <h3>Chaque mot est écrit pour retenir et convertir.</h3>
           </div>
           <div class="paper">
-            <b>Script 01 · Accroche Sensorielle</b>
-            <i></i><i></i><i></i>
-            <b>Script 02 · Appel à l'Action & Clôture</b>
-            <i></i><i></i><i></i>
+            <div class="bento-script-scan" aria-hidden="true"></div>
+            <div class="bento-script-block">
+              <b><span class="bento-tc">00:00–00:03</span> Script 01 · Accroche Sensorielle</b>
+              <p class="bento-type-line line-1">« Plan drone rasant le lagon au lever du soleil… »</p>
+              <i class="bento-bar bar-1"></i>
+              <i class="bento-bar bar-2"></i>
+            </div>
+            <div class="bento-script-block">
+              <b><span class="bento-tc">00:04–00:15</span> Script 02 · Appel à l'Action &amp; Clôture</b>
+              <p class="bento-type-line line-2">« Réservez votre suite sur pilotis dès aujourd'hui. »<span class="bento-cursor">|</span></p>
+              <i class="bento-bar bar-3"></i>
+              <i class="bento-bar bar-4"></i>
+            </div>
           </div>
         </article>
 
         <article class="tile metric">
           <span class="tag">ENGAGEMENT TOTAL</span>
-          <strong>300%</strong>
+          <div class="bento-metric-motion">
+            <strong>300%</strong>
+            <svg class="bento-wave-svg" viewBox="0 0 220 56" fill="none" aria-hidden="true">
+              <path class="bento-wave-bg" d="M4 46 C 45 44, 65 30, 105 26 C 145 22, 175 8, 216 6" stroke="rgba(216,200,176,0.18)" stroke-width="2.5" stroke-linecap="round"/>
+              <path class="bento-wave-line" d="M4 46 C 45 44, 65 30, 105 26 C 145 22, 175 8, 216 6" stroke="#D8C8B0" stroke-width="3" stroke-linecap="round"/>
+              <circle class="bento-wave-dot" cx="216" cy="6" r="5" fill="#F3EDE3"/>
+            </svg>
+          </div>
           <h3>L'exigence que nous mettons dans chaque plan et chaque étalonnage.</h3>
         </article>
 
         <article class="tile talents">
-          <span class="tag">DIRECTION ARTISTIQUE & CASTING</span>
-          <div class="faces">
-            <div class="face"><span>Manatea</span><small>Hôte & Guide</small></div>
-            <div class="face"><span>Vaitea</span><small>Artisanat Perlier</small></div>
-            <div class="face"><span>Lucas</span><small>Hospitalité Luxe</small></div>
-            <div class="face"><span>Kahaia</span><small>Créatrice Polynésie</small></div>
-            <div class="face"><span>Teiki</span><small>Skipper & Aventure</small></div>
+          <span class="tag">DIRECTION ARTISTIQUE &amp; CASTING</span>
+          <div class="faces-viewport">
+            <div class="faces">
+              <div class="face" style="background-image:url('assets/posters/img-4903.jpg')"><span>Manatea</span><small>Hôte &amp; Guide</small></div>
+              <div class="face" style="background-image:url('assets/posters/miria-s-project-final-v01-1-2.jpg')"><span>Vaitea</span><small>Artisanat Perlier</small></div>
+              <div class="face" style="background-image:url('assets/posters/mkt.jpg')"><span>Lucas</span><small>Hospitalité Luxe</small></div>
+              <div class="face" style="background-image:url('assets/posters/img-4879.jpg')"><span>Kahaia</span><small>Créatrice Polynésie</small></div>
+              <div class="face" style="background-image:url('assets/posters/img-4501.jpg')"><span>Teiki</span><small>Skipper &amp; Aventure</small></div>
+              <div class="face" style="background-image:url('assets/posters/img-4465.jpg')"><span>Hina</span><small>Art de Vivre</small></div>
+              <!-- Duplicação para loop contínuo suave -->
+              <div class="face" style="background-image:url('assets/posters/img-4903.jpg')" aria-hidden="true"><span>Manatea</span><small>Hôte &amp; Guide</small></div>
+              <div class="face" style="background-image:url('assets/posters/miria-s-project-final-v01-1-2.jpg')" aria-hidden="true"><span>Vaitea</span><small>Artisanat Perlier</small></div>
+              <div class="face" style="background-image:url('assets/posters/mkt.jpg')" aria-hidden="true"><span>Lucas</span><small>Hospitalité Luxe</small></div>
+              <div class="face" style="background-image:url('assets/posters/img-4879.jpg')" aria-hidden="true"><span>Kahaia</span><small>Créatrice Polynésie</small></div>
+              <div class="face" style="background-image:url('assets/posters/img-4501.jpg')" aria-hidden="true"><span>Teiki</span><small>Skipper &amp; Aventure</small></div>
+              <div class="face" style="background-image:url('assets/posters/img-4465.jpg')" aria-hidden="true"><span>Hina</span><small>Art de Vivre</small></div>
+            </div>
           </div>
           <h3>Des visages naturels et charismatiques pour incarner votre marque.</h3>
         </article>
@@ -660,9 +917,9 @@
         <article class="tile pick">
           <span class="tag">VALIDATION CLIENT</span>
           <div class="pick-art">
-            <span class="option">Option B<br>?</span>
-            <span class="option selected">Option A<br>✓ Validé</span>
-            <span class="option">Option C<br>?</span>
+            <span class="option opt-b">Option B<br><em>En revue</em></span>
+            <span class="option selected opt-a"><span class="opt-pulse-dot"></span>Option A<br><strong>✓ Validé</strong></span>
+            <span class="option opt-c">Option C<br><em>Variante</em></span>
           </div>
           <h3>Vous choisissez vos concepts favoris avant chaque tournage.</h3>
         </article>
@@ -674,8 +931,14 @@
             <p>100% spécialisés dans les formats verticaux 9:16 et le cinéma de marque en Polynésie.</p>
           </div>
           <div class="clip-stack">
-            <div class="clip"></div>
-            <div class="clip"></div>
+            <div class="clip clip-a">
+              <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/soft-motion-fr-9x16-60fps-1.webm" poster="assets/posters/soft-motion-fr-9x16-60fps-1.jpg" autoplay muted loop playsinline preload="metadata"></video>
+              <span class="clip-tag">9:16 · 60FPS</span>
+            </div>
+            <div class="clip clip-b">
+              <video src="https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/miria-s-project-final-v01-1-2.webm" poster="assets/posters/miria-s-project-final-v01-1-2.jpg" autoplay muted loop playsinline preload="metadata"></video>
+              <span class="clip-tag">4K MASTER</span>
+            </div>
           </div>
         </article>
 
@@ -684,43 +947,6 @@
     </div>
   </section>
 
-  <!-- 11. Oferta / Pack de Viddeos (Price Container Solo) -->
-  <section class="nh-offer-section" id="offre">
-    <div class="nh-container">
-      
-      <div class="price_container_solo">
-        <div class="price_content_inner">
-          <span class="nh-offer-badge">Formule Signature</span>
-          <h2 class="nh-offer-title">Pack 10 Vidéos Haute Performance</h2>
-          <p class="nh-offer-desc">
-            L'équivalent d'un département de production interne dédié, sans charges fixes ni engagement long terme.
-          </p>
-
-          <ul class="nh-offer-list">
-            <li class="nh-offer-item"><span class="nh-offer-check">✓</span> 10 vidéos courtes verticales (9:16) montées et étalonnées</li>
-            <li class="nh-offer-item"><span class="nh-offer-check">✓</span> 20 concepts créatifs & accroches testées</li>
-            <li class="nh-offer-item"><span class="nh-offer-check">✓</span> Scripts rédigés mot à mot sur mesure</li>
-            <li class="nh-offer-item"><span class="nh-offer-check">✓</span> Tournage professionnel avec direction artistique</li>
-            <li class="nh-offer-item"><span class="nh-offer-check">✓</span> Sous-titres dynamiques & design sonore complet</li>
-            <li class="nh-offer-item"><span class="nh-offer-check">✓</span> Révisions illimitées jusqu'à validation</li>
-            <li class="nh-offer-item"><span class="nh-offer-check">✓</span> Livraison sous 14 jours ouvrés garantie</li>
-            <li class="nh-offer-item"><span class="nh-offer-check">✓</span> Droits commerciaux mondiaux 100% inclus</li>
-          </ul>
-
-          <div>
-            <a class="nh-btn-glow" href="#contact">
-              <span>Réserver mon pack vidéos</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
 
   <!-- 10. FAQ em Acordeão -->
   <section class="nh-faq-section" id="faq">
@@ -785,11 +1011,11 @@
 
         <details class="nh-faq-item">
           <summary class="nh-faq-question">
-            <span>Comment réserver notre premier échange ?</span>
+            <span>Comment prendre contact pour un premier échange ?</span>
             <span class="nh-faq-arrow">▼</span>
           </summary>
           <div class="nh-faq-answer">
-            Il vous suffit de cliquer sur « Réserver un appel » ou d'envoyer un message via le formulaire ci-dessous. Nous planifions un échange découverte de 15 minutes sans aucun engagement.
+            Il vous suffit de cliquer sur « Prendre contact » ou d'envoyer un message via WhatsApp. Nous répondons sous 24h avec une proposition claire sans aucun engagement.
           </div>
         </details>
 
@@ -807,12 +1033,13 @@
           Parlons de votre <span class="nh-gradient-text">prochain projet</span>
         </h2>
         <p style="color: var(--nh-text-secondary); font-size: 15.5px; margin: 0 auto 28px auto; max-width: 520px; line-height: 1.55;">
-          Un premier appel direct de 15 minutes pour évaluer votre besoin, définir vos formats prioritaires et recevoir une proposition claire sous 24h.
+          Un premier échange direct pour évaluer votre besoin, définir vos formats prioritaires et recevoir une proposition claire sous 24h.
         </p>
 
         <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-          <a class="nh-btn-glow" href="https://wa.me/68987043112?text=Bonjour%20%21%20Je%20souhaite%20r%C3%A9server%20un%20appel%20pour%20parler%20de%20nos%20vid%C3%A9os%20avec%20Soft%20Communication." target="_blank" rel="noopener">
-            <span>WhatsApp (+689 87 04 31 12)</span>
+          <a class="nh-btn-glow" href="https://wa.me/68987043112?text=Bonjour%20%21%20Je%20souhaite%20prendre%20contact%20pour%20parler%20de%20nos%20vid%C3%A9os%20avec%20Soft%20Communication." target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" style="margin-right:8px;"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.28-2.42 5.84a8.188 8.188 0 0 1-5.83 2.41c-1.46 0-2.89-.39-4.14-1.13l-.3-.18-3.09.81.82-3.01-.2-.31a8.16 8.16 0 0 1-1.25-4.43c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.64c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.07-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.28 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.17-.48-.29z"/></svg>
+            <span>Prendre contact via WhatsApp</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
@@ -832,11 +1059,12 @@
 
 <!-- Barra Fixa Flutuante de Conversão no Mobile (Bottom Bar) -->
 <div class="nh-mobile-bottom-bar" id="nhMobileBottomBar">
-  <a class="nh-bottom-btn-wa" href="https://wa.me/68987043112?text=Bonjour%20%21%20Je%20souhaite%20r%C3%A9server%20un%20appel%20avec%20Soft%20Communication." target="_blank" rel="noopener">
-    <span>WhatsApp Direct</span>
+  <a class="nh-bottom-btn-wa" href="https://wa.me/68987043112?text=Bonjour%20%21%20Je%20souhaite%20prendre%20contact%20avec%20Soft%20Communication." target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" style="margin-right:6px;"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.28-2.42 5.84a8.188 8.188 0 0 1-5.83 2.41c-1.46 0-2.89-.39-4.14-1.13l-.3-.18-3.09.81.82-3.01-.2-.31a8.16 8.16 0 0 1-1.25-4.43c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.64c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.07-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.28 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.17-.48-.29z"/></svg>
+    <span>Prendre contact</span>
   </a>
   <a class="nh-bottom-btn-cta" href="#contact">
-    <span>Réserver</span>
+    <span>Contact</span>
   </a>
 </div>
 
@@ -884,13 +1112,22 @@
       });
     }
 
-    // Controle de Som do Vídeo Hero (100% SVG, sem emojis)
+    // Controle de Som, Timecode de Set (24fps) e Tela Cheia do Vídeo Hero
+    var nhHeader = document.getElementById('nhHeader');
     var heroVideo = document.getElementById('nhHeroVideo');
     var soundBtn = document.getElementById('nhHeroSoundBtn');
     var soundIcon = document.getElementById('nhHeroSoundIcon');
     var soundText = document.getElementById('nhHeroSoundText');
+    var fsBtn = document.getElementById('nhHeroFsBtn');
+    var tcEl = document.getElementById('nhHeroTimecode');
     var soundMutedSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>';
     var soundHighSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>';
+
+    if (nhHeader) {
+      window.addEventListener('scroll', function () {
+        nhHeader.classList.toggle('is-scrolled', window.scrollY > 36);
+      }, { passive: true });
+    }
 
     if (heroVideo && soundBtn) {
       soundBtn.addEventListener('click', function () {
@@ -903,6 +1140,27 @@
           if (soundIcon) soundIcon.innerHTML = soundMutedSvg;
           if (soundText) soundText.textContent = 'Activer le son';
         }
+      });
+    }
+
+    if (heroVideo && fsBtn) {
+      fsBtn.addEventListener('click', function () {
+        if (heroVideo.requestFullscreen) {
+          heroVideo.requestFullscreen();
+        } else if (heroVideo.webkitEnterFullscreen) {
+          heroVideo.webkitEnterFullscreen();
+        }
+      });
+    }
+
+    if (heroVideo && tcEl) {
+      function pad2(n) { return n < 10 ? '0' + n : String(n); }
+      heroVideo.addEventListener('timeupdate', function () {
+        var t = heroVideo.currentTime || 0;
+        var mins = Math.floor(t / 60);
+        var secs = Math.floor(t % 60);
+        var frames = Math.floor((t % 1) * 24);
+        tcEl.textContent = '00:' + pad2(mins) + ':' + pad2(secs) + ':' + pad2(frames);
       });
     }
 
@@ -981,27 +1239,66 @@
       trackB.innerHTML = setB.concat(setB).map(renderReviewCard).join('');
     }
 
-    // Linha do Tempo do Processo com Progressão e Ponto Ativo (Scroll Driven)
+    // Linha do Tempo do Processo com Progressão Contínua 60fps (Lerp Suave no Scroll)
+    var timelineEl = document.querySelector('.timeline');
     var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
     var fill = document.querySelector('.rail-fill');
     var dot = document.querySelector('.timeline .dot');
-    if (steps.length && fill && dot && 'IntersectionObserver' in window) {
-      var activeStep = 0;
-      var stepObs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            activeStep = steps.indexOf(e.target);
-            steps.forEach(function (s, i) {
-              if (i === activeStep) s.classList.add('active'); else s.classList.remove('active');
-              if (i < activeStep) s.classList.add('seen'); else s.classList.remove('seen');
-            });
-            var pct = Math.max(4, Math.min(100, (activeStep / (steps.length - 1)) * 100));
-            fill.style.height = pct + '%';
-            dot.style.top = pct + '%';
+    if (timelineEl && steps.length && fill && dot) {
+      var targetPct = 0;
+      var currentPct = 0;
+      var rafId = null;
+
+      function computeTimelineTarget() {
+        var rect = timelineEl.getBoundingClientRect();
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        var triggerY = vh * 0.54;
+        var raw = (triggerY - rect.top) / Math.max(1, rect.height);
+        targetPct = Math.max(0, Math.min(1, raw));
+        if (!rafId) {
+          rafId = requestAnimationFrame(tickTimeline);
+        }
+      }
+
+      function tickTimeline() {
+        currentPct += (targetPct - currentPct) * 0.14;
+        if (Math.abs(targetPct - currentPct) < 0.001) {
+          currentPct = targetPct;
+          rafId = null;
+        } else {
+          rafId = requestAnimationFrame(tickTimeline);
+        }
+
+        var pctStr = (currentPct * 100).toFixed(2) + '%';
+        fill.style.height = pctStr;
+        dot.style.top = pctStr;
+
+        var tlRect = timelineEl.getBoundingClientRect();
+        var dotAbsY = tlRect.top + (tlRect.height * currentPct);
+        var closestIdx = 0;
+        var minDist = Infinity;
+
+        steps.forEach(function (s, i) {
+          var sRect = s.getBoundingClientRect();
+          var sCenter = sRect.top + (sRect.height * 0.45);
+          var dist = Math.abs(dotAbsY - sCenter);
+          if (dist < minDist) {
+            minDist = dist;
+            closestIdx = i;
           }
         });
-      }, { rootMargin: '-25% 0px -40% 0px', threshold: 0 });
-      steps.forEach(function (s) { stepObs.observe(s); });
+
+        steps.forEach(function (s, i) {
+          var sRect = s.getBoundingClientRect();
+          var sTop = sRect.top + (sRect.height * 0.25);
+          s.classList.toggle('active', i === closestIdx);
+          s.classList.toggle('seen', i < closestIdx || dotAbsY >= sTop);
+        });
+      }
+
+      window.addEventListener('scroll', computeTimelineTarget, { passive: true });
+      window.addEventListener('resize', computeTimelineTarget, { passive: true });
+      computeTimelineTarget();
     }
 
     // Carrossel Touch e Lightbox
@@ -1023,8 +1320,9 @@
       });
     }
 
-    // Hover / Touch nos cards do catálogo
-    cards.forEach(function (card) {
+    // Hover / Touch nos cards do catálogo e estudos de caso
+    var interactiveCards = document.querySelectorAll('.nh-video-card, .nh-case-card');
+    interactiveCards.forEach(function (card) {
       var v = card.querySelector('video');
       card.addEventListener('mouseenter', function () {
         if (v) v.play().catch(function () {});
@@ -1042,6 +1340,26 @@
         lbVideo.play().catch(function () {});
       });
     });
+
+    // Filtro rápido por setor nos Estudos de Caso
+    var caseFilterBtns = document.querySelectorAll('.nh-case-filter-btn');
+    var caseCards = document.querySelectorAll('.nh-case-card');
+    if (caseFilterBtns.length && caseCards.length) {
+      caseFilterBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var filter = btn.getAttribute('data-case-filter');
+          caseFilterBtns.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+          caseCards.forEach(function (c) {
+            var cat = c.getAttribute('data-case-cat');
+            if (filter === 'all' || cat === filter) {
+              c.removeAttribute('hidden');
+            } else {
+              c.setAttribute('hidden', '');
+            }
+          });
+        });
+      });
+    }
 
     function closeLb() {
       if (!lightbox || !lbVideo) return;
@@ -1077,8 +1395,11 @@
         '.nh-hero h1',
         '.nh-hero-sub',
         '.head_bar_top',
+        '.nh-hero-cta-row',
+        '.nh-hero-proof-bar',
         '.nh-hero-benefits',
         '.nh-hero-video-wrap',
+        '.nh-pillar-item',
         '.nh-section-title-wrap h2',
         '.nh-section-title-wrap p',
         '.nh-ticker-title',
@@ -1090,12 +1411,8 @@
         '.nh-case-card',
         // Cards de Público-Alvo
         '.nh-audience-card',
-        // Cards da Timeline
-        '.step-card',
         // Tiles da Composição Bento
         '.tile',
-        // Card de Oferta Pack 10
-        '.price_container_solo',
         // Sanfonas do FAQ
         '.nh-faq-item',
         // Bloco de Agendamento

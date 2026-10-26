@@ -1,0 +1,1433 @@
+<!doctype html>
+<html lang="pt-BR" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meu Kanban · Pedro · Soft &amp; Co.</title>
+<meta name="description" content="Quadro Kanban pessoal e operacional de Pedro.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://softcommunication.com/admin/kanban.html">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/soft-simbolo-tiki-chocolate.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/tokens.css?v=20261025-5">
+<link rel="stylesheet" href="../assets/css/admin.css?v=20261025-5">
+<script src="../assets/js/admin-auth.js?v=20261025-5"></script>
+<style>
+  /* ---------- Barra de Filtros Direta no Fundo Branco (Sem Card) ---------- */
+  .kb-controls-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #E6E0D6;
+    width: 100%;
+  }
+  .kb-filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+  .kb-filter-label {
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin-right: 4px;
+    color: #5C4B40;
+  }
+  .kb-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid #D8C8B0;
+    background: #FFFFFF;
+    color: #3B2A20;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .kb-pill-btn:hover {
+    border-color: #17110E;
+    background: #F8F6F2;
+    color: #17110E;
+  }
+  .kb-pill-btn.is-active {
+    background: #17110E !important;
+    border-color: #17110E !important;
+    color: #FFFFFF !important;
+  }
+  .kb-search-box {
+    flex: 1 1 220px;
+    max-width: 320px;
+    min-width: 0;
+  }
+  @media (max-width: 640px) {
+    .kb-search-box { max-width: 100%; flex: 1 1 100%; }
+  }
+  .kb-search-box input {
+    min-height: 34px;
+    font-size: 12.5px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #F8F6F2;
+    border: 1px solid #D8C8B0;
+    color: #17110E;
+    width: 100%;
+  }
+
+  /* ---------- Status ---------- */
+  .kb-sync-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #F4F1EA;
+    border: 1px solid #D8C8B0;
+    color: #3B2A20;
+    font-weight: 700;
+  }
+  .kb-sync-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #16A34A;
+  }
+  .kb-sync-badge.is-saving .kb-sync-dot {
+    background: #D97706;
+  }
+
+  /* ---------- Quadro Kanban Responsivo (Mobile-First -> Mac -> Second Screen) ---------- */
+  .kb-board {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    width: 100%;
+    max-width: 100%;
+    align-items: start;
+  }
+  @media (min-width: 640px) {
+    .kb-board {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1024px) {
+    .kb-board {
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+    }
+  }
+  @media (min-width: 1600px) {
+    .kb-board {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+  }
+
+  /* APENAS O KANBAN E OS CARDS LITERAIS EM CARDS */
+  .kb-col {
+    background: #F8F6F2;
+    border: 1px solid #E6E0D6;
+    border-radius: 12px;
+    padding: 14px;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    min-height: 220px;
+    min-width: 0;
+    color: #17110E;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .kb-col.is-drag-over {
+    border: 2px dashed #17110E;
+    background: #F0ECE3;
+  }
+  .kb-col-head {
+    display: grid;
+    gap: 2px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #E6E0D6;
+  }
+  .kb-col-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    min-width: 0;
+  }
+  .kb-col-title {
+    font-family: var(--font-sans);
+    font-size: 14.5px;
+    line-height: 1.25;
+    font-weight: 800;
+    color: #17110E;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .kb-col-title:hover {
+    color: #5C4B40;
+  }
+  .kb-col-sub {
+    font-size: 11.5px;
+    line-height: 1.35;
+    color: #6E5D52;
+  }
+  .kb-col-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+  .kb-icon-btn {
+    min-width: 24px;
+    height: 24px;
+    padding: 0 4px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #5C4B40;
+    font-size: 11px;
+    cursor: pointer;
+    display: inline-grid;
+    place-items: center;
+  }
+  .kb-icon-btn:hover {
+    border-color: #C8BCA8;
+    background: #FFFFFF;
+    color: #17110E;
+  }
+  .kb-col-count {
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    display: inline-grid;
+    place-items: center;
+    background: #17110E;
+    color: #FFFFFF;
+    font-size: 10.5px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .kb-cards-list {
+    display: grid;
+    gap: 10px;
+    min-height: 48px;
+  }
+
+  .kb-empty {
+    padding: 18px 10px;
+    border: 1px dashed #D8C8B0;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #6E5D52;
+  }
+
+  /* ---------- Cartão Literal do Kanban ---------- */
+  .kb-card {
+    background: #FFFFFF;
+    border: 1px solid #DCD4C6;
+    border-radius: 10px;
+    padding: 14px;
+    display: grid;
+    gap: 8px;
+    cursor: grab;
+    position: relative;
+    color: #17110E;
+    transition: all 0.15s ease;
+    box-shadow: 0 2px 8px rgba(23, 17, 14, 0.05);
+    min-width: 0;
+  }
+  .kb-card:hover {
+    border-color: #17110E;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(23, 17, 14, 0.09);
+  }
+  .kb-card.is-dragging {
+    opacity: 0.45;
+  }
+  .kb-card.is-priority-urgente {
+    border-left: 4px solid #DC2626;
+  }
+  .kb-card.is-priority-alta {
+    border-left: 4px solid #17110E;
+  }
+
+  .kb-card-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+  }
+  .kb-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .kb-prio-badge {
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-weight: 800;
+  }
+  .kb-prio-urgente {
+    background: #FEE2E2;
+    color: #991B1B;
+  }
+  .kb-prio-alta {
+    background: #17110E;
+    color: #FFFFFF;
+  }
+  .kb-prio-normal,
+  .kb-prio-baixa {
+    background: #F4F1EA;
+    color: #5C4B40;
+  }
+
+  .kb-cat-tag {
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #3B2A20;
+    background: #F4F1EA;
+    border: 1px solid #D8C8B0;
+    border-radius: 999px;
+    padding: 2px 7px;
+    font-weight: 700;
+  }
+
+  .kb-card-title {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 800;
+    color: #17110E;
+    cursor: pointer;
+    word-break: break-word;
+  }
+
+  .kb-card-desc {
+    font-size: 12px;
+    line-height: 1.45;
+    color: #5C4B40;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: pre-line;
+  }
+
+  /* Checklist interativo direto no cartão */
+  .kb-card-checklist {
+    display: grid;
+    gap: 5px;
+    padding-top: 6px;
+    border-top: 1px solid #EFECE6;
+  }
+  .kb-check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 12px;
+    line-height: 1.35;
+    font-weight: 500;
+    color: #17110E;
+    cursor: pointer;
+  }
+  .kb-check-item input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    margin: 2px 0 0;
+    accent-color: #17110E;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .kb-check-item.is-done span {
+    text-decoration: line-through;
+    color: #8C7A6B;
+  }
+  .kb-check-progress {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: #5C4B40;
+  }
+
+  .kb-card-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding-top: 8px;
+    border-top: 1px solid #EFECE6;
+    font-size: 11px;
+  }
+  .kb-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    color: #5C4B40;
+  }
+  .kb-card-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+  }
+  .kb-mini-btn {
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 6px;
+    border: 1px solid #C8BCA8;
+    background: #FFFFFF;
+    color: #17110E;
+    font-size: 10.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .kb-mini-btn:hover {
+    border-color: #17110E;
+    background: #17110E;
+    color: #FFFFFF;
+  }
+
+  .kb-add-card-btn {
+    width: 100%;
+    min-height: 36px;
+    border-radius: 8px;
+    border: 1px dashed #C8BCA8;
+    background: #FFFFFF;
+    color: #3B2A20;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .kb-add-card-btn:hover {
+    background: #17110E;
+    border-style: solid;
+    border-color: #17110E;
+    color: #FFFFFF;
+  }
+
+  /* Modais */
+  .kb-modal {
+    border: 1px solid #DCD4C6;
+    border-radius: 16px;
+    background: #FFFFFF;
+    color: #17110E;
+    padding: 24px;
+    max-width: 580px;
+    width: 92vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+  }
+  .kb-modal::backdrop {
+    background: rgba(23, 17, 14, 0.45);
+    backdrop-filter: blur(4px);
+  }
+  .kb-checklist-editor {
+    display: grid;
+    gap: 8px;
+  }
+  .kb-checklist-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+    align-items: center;
+  }
+</style>
+</head>
+<body>
+<a class="skip-link btn" href="#contenu">Pular para o conteúdo</a>
+
+<div class="a-shell">
+  <aside class="a-side">
+    <a class="brand" href="index.html" aria-label="Painel Soft & Co.">
+      <img src="../assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="100" height="32">
+    </a>
+    <nav class="a-nav" aria-label="Navegação administrativa">
+      <a href="index.html">Painel</a>
+      <a href="kanban.html" aria-current="page">Meu Kanban <span class="count" id="nav-kanban-count">0</span></a>
+      <a href="mediatheque.html">Vídeos <span class="count" data-video-count>52</span></a>
+      <a href="../nova-home.html" target="_blank" rel="noopener" style="margin-top:auto;">Nova Home ↗</a>
+      <a href="../index.html" target="_blank" rel="noopener">Site Público ↗</a>
+    </nav>
+    <div class="a-side-foot">
+      <div class="a-user">
+        <img src="../assets/brand/soft-simbolo-tiki-chocolate.svg" alt="Soft Tiki">
+        <span>Pedro<br><span class="small">Administrador</span></span>
+      </div>
+      <button type="button" class="btn btn-outline btn-small" id="btn-side-logout">Sair</button>
+    </div>
+  </aside>
+
+  <main class="a-main" id="contenu">
+    <div class="a-mobile-head">
+      <img src="../assets/brand/soft-horizontal-creme.svg" alt="Soft Communication">
+      <span class="eyebrow">Meu Kanban</span>
+    </div>
+
+    <!-- Cabeçalho Limpo (Sem Card) -->
+    <div class="a-topbar">
+      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:10px;">
+        <h1 class="a-title">Meu Kanban</h1>
+        <span class="tag" id="kpi-total-badge">0 tarefas</span>
+        <span class="kb-sync-badge" id="kb-sync-status">
+          <span class="kb-sync-dot"></span>
+          <span id="kb-sync-text">Salvo</span>
+        </span>
+      </div>
+      <div class="a-topbar-actions">
+        <button type="button" class="btn btn-outline btn-small" id="btn-kb-reset" title="Apagar todas as tarefas e zerar o quadro">Zerar</button>
+        <button type="button" class="btn btn-outline btn-small" id="btn-kb-new-col">+ Coluna</button>
+        <button type="button" class="btn btn-small" id="btn-kb-new-card">+ Nova Tarefa</button>
+      </div>
+    </div>
+
+    <!-- Filtros Diretos no Fundo Branco (Sem Card, Sem Calebe) -->
+    <div class="kb-controls-bar" aria-label="Filtros do Kanban">
+      <div class="kb-filter-group" id="filter-priority-group">
+        <span class="kb-filter-label">Prioridade:</span>
+        <button type="button" class="kb-pill-btn is-active" data-filter-priority="todas">Todas</button>
+        <button type="button" class="kb-pill-btn" data-filter-priority="urgente">Urgente</button>
+        <button type="button" class="kb-pill-btn" data-filter-priority="alta">Alta</button>
+        <button type="button" class="kb-pill-btn" data-filter-priority="normal">Normal</button>
+      </div>
+
+      <div class="kb-filter-group" id="filter-category-group">
+        <span class="kb-filter-label">Frente:</span>
+        <button type="button" class="kb-pill-btn is-active" data-filter-cat="todas">Todas</button>
+        <button type="button" class="kb-pill-btn" data-filter-cat="Cinema 4K">Cinema 4K</button>
+        <button type="button" class="kb-pill-btn" data-filter-cat="Reels 9:16">Reels 9:16</button>
+        <button type="button" class="kb-pill-btn" data-filter-cat="Imobiliário IA">Imobiliário IA</button>
+        <button type="button" class="kb-pill-btn" data-filter-cat="Site & Tech">Site &amp; Tech</button>
+      </div>
+
+      <div class="kb-search-box">
+        <input type="search" id="kb-search" placeholder="Buscar tarefa ou projeto...">
+      </div>
+    </div>
+
+    <!-- Quadro Kanban (Único elemento em Cards) -->
+    <section aria-label="Colunas do Kanban">
+      <div class="kb-board" id="kb-board"></div>
+    </section>
+
+  </main>
+</div>
+
+<nav class="a-bottom" aria-label="Navegação administrativa móvel">
+  <a href="index.html">Painel</a>
+  <a href="kanban.html" aria-current="page">Kanban</a>
+  <a href="mediatheque.html">Vídeos</a>
+</nav>
+
+<!-- Modal: Criar / Editar Tarefa -->
+<dialog class="kb-modal" id="modal-card" aria-labelledby="modal-card-heading">
+  <form id="form-card" style="display:grid; gap:14px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; border-bottom:1px solid #E6E0D6; padding-bottom:12px;">
+      <h2 class="a-heading" id="modal-card-heading">Nova Tarefa</h2>
+      <button type="button" class="btn btn-outline btn-small" id="btn-close-card-modal" style="min-height:30px; padding:0 10px;">✕</button>
+    </div>
+
+    <input type="hidden" id="card-id">
+
+    <div class="field">
+      <label for="card-title">Título da Tarefa *</label>
+      <input type="text" class="input" id="card-title" required placeholder="Ex.: Finalizar corte 9:16 em 60fps">
+    </div>
+
+    <div class="fields">
+      <div class="field">
+        <label for="card-column">Coluna / Etapa *</label>
+        <div class="select-wrap">
+          <select class="select" id="card-column"></select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="card-priority">Prioridade</label>
+        <div class="select-wrap">
+          <select class="select" id="card-priority">
+            <option value="urgente">Urgente</option>
+            <option value="alta">Alta</option>
+            <option value="normal" selected>Normal</option>
+            <option value="baixa">Baixa</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="fields">
+      <div class="field">
+        <label for="card-category">Frente / Categoria</label>
+        <input type="text" class="input" id="card-category" list="kb-category-suggestions" placeholder="Ex.: Cinema 4K, Reels 9:16, Site & Tech...">
+        <datalist id="kb-category-suggestions">
+          <option value="Cinema 4K">
+          <option value="Reels 9:16">
+          <option value="Imobiliário IA">
+          <option value="Site & Tech">
+          <option value="Motion & Pós">
+        </datalist>
+      </div>
+
+      <div class="field">
+        <label for="card-due">Prazo / Meta</label>
+        <input type="text" class="input" id="card-due" placeholder="Ex.: Hoje, Sexta-feira...">
+      </div>
+    </div>
+
+    <div class="fields">
+      <div class="field">
+        <label for="card-client">Projeto / Referência</label>
+        <input type="text" class="input" id="card-client" placeholder="Ex.: Nova Home, Campanha...">
+      </div>
+
+      <div class="field">
+        <label for="card-links">Link</label>
+        <input type="text" class="input" id="card-links" placeholder="https://...">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="card-desc">Notas</label>
+      <textarea class="textarea" id="card-desc" rows="3" placeholder="Anote os detalhes da tarefa..."></textarea>
+    </div>
+
+    <!-- Checklist Editor -->
+    <div class="field" style="border-top:1px solid #E6E0D6; padding-top:12px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px;">
+        <label style="margin:0;">Checklist</label>
+        <button type="button" class="kb-mini-btn" id="btn-add-check-row">+ Adicionar passo</button>
+      </div>
+      <div class="kb-checklist-editor" id="card-checklist-editor"></div>
+    </div>
+
+    <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; border-top:1px solid #E6E0D6; padding-top:14px;">
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn btn-outline btn-small" id="btn-delete-card" style="display:none; color:#B91C1C; border-color:#FECACA;">Excluir</button>
+        <button type="button" class="btn btn-outline btn-small" id="btn-duplicate-card" style="display:none;">Duplicar</button>
+      </div>
+      <div style="display:flex; gap:8px; margin-left:auto;">
+        <button type="button" class="btn btn-outline btn-small" id="btn-cancel-card">Cancelar</button>
+        <button type="submit" class="btn btn-small" id="btn-save-card">Salvar</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<!-- Modal: Criar / Editar Coluna -->
+<dialog class="kb-modal" id="modal-column" aria-labelledby="modal-col-heading" style="max-width:420px;">
+  <form id="form-column" style="display:grid; gap:14px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #E6E0D6; padding-bottom:10px;">
+      <h2 class="a-heading" id="modal-col-heading">Editar Coluna</h2>
+      <button type="button" class="btn btn-outline btn-small" id="btn-close-col-modal" style="min-height:28px; padding:0 8px;">✕</button>
+    </div>
+
+    <input type="hidden" id="col-edit-mode" value="create">
+    <input type="hidden" id="col-id-hidden">
+
+    <div class="field">
+      <label for="col-title-input">Nome da Coluna *</label>
+      <input type="text" class="input" id="col-title-input" required placeholder="Ex.: Em Andamento">
+    </div>
+
+    <div class="field">
+      <label for="col-sub-input">Subtítulo</label>
+      <input type="text" class="input" id="col-sub-input" placeholder="Ex.: Entregas da semana">
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; border-top:1px solid #E6E0D6; padding-top:12px;">
+      <button type="button" class="btn btn-outline btn-small" id="btn-delete-col" style="display:none; color:#B91C1C; border-color:#FECACA;">Excluir</button>
+      <div style="display:flex; gap:8px; margin-left:auto;">
+        <button type="button" class="btn btn-outline btn-small" id="btn-cancel-col">Cancelar</button>
+        <button type="submit" class="btn btn-small">Salvar</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<div class="a-toast" id="toast" hidden role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var API_URL = 'https://xvabghgvrhpnyywpmodb.supabase.co';
+  var API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YWJnaGd2cmhwbnl5d3Btb2RiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3NTgwNTEsImV4cCI6MjEwNzMzNDA1MX0.d0CNiaTYEnpsCY4N9qS6HNIxa3u7DYtzAOErvZHzC0w';
+  var STORAGE_MIRROR_KEY = 'soft_kanban_pedro_v2';
+
+  var state = {
+    columns: [],
+    cards: [],
+    filters: {
+      priority: 'todas',
+      category: 'todas',
+      search: ''
+    },
+    draggedCardId: null
+  };
+
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.hidden = false;
+    clearTimeout(t.__timer);
+    t.__timer = setTimeout(function () { t.hidden = true; }, 2500);
+  }
+
+  function setSyncState(saving, text) {
+    var badge = document.getElementById('kb-sync-status');
+    var label = document.getElementById('kb-sync-text');
+    if (!badge || !label) return;
+    if (saving) {
+      badge.classList.add('is-saving');
+      label.textContent = text || 'Salvando...';
+    } else {
+      badge.classList.remove('is-saving');
+      label.textContent = text || 'Salvo';
+    }
+  }
+
+  function apiHeaders(extra) {
+    var h = {
+      'apikey': API_KEY,
+      'Authorization': 'Bearer ' + API_KEY,
+      'Content-Type': 'application/json'
+    };
+    if (extra) {
+      Object.keys(extra).forEach(function (k) { h[k] = extra[k]; });
+    }
+    return h;
+  }
+
+  function saveLocalMirror() {
+    try {
+      localStorage.setItem(STORAGE_MIRROR_KEY, JSON.stringify({
+        columns: state.columns,
+        cards: state.cards
+      }));
+    } catch (e) {}
+  }
+
+  function loadBoard() {
+    setSyncState(true, 'Carregando...');
+    return Promise.all([
+      fetch(API_URL + '/rest/v1/soft_kanban_columns?order=position.asc,created_at.asc', { headers: apiHeaders() }).then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }),
+      fetch(API_URL + '/rest/v1/soft_kanban_cards?archived=eq.false&order=position.asc,id.asc', { headers: apiHeaders() }).then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+    ])
+    .then(function (results) {
+      state.columns = Array.isArray(results[0]) ? results[0] : [];
+      state.cards = Array.isArray(results[1]) ? results[1] : [];
+      saveLocalMirror();
+      setSyncState(false, 'Salvo');
+      renderAll();
+    })
+    .catch(function () {
+      try {
+        var raw = localStorage.getItem(STORAGE_MIRROR_KEY);
+        if (raw) {
+          var m = JSON.parse(raw);
+          state.columns = m.columns || [];
+          state.cards = m.cards || [];
+        }
+      } catch (e) {}
+      setSyncState(false, 'Local');
+      renderAll();
+    });
+  }
+
+  function escapeHtml(str) {
+    return String(str == null ? '' : str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function priorityLabel(val) {
+    if (val === 'urgente') return 'Urgente';
+    if (val === 'alta') return 'Alta';
+    if (val === 'baixa') return 'Baixa';
+    return 'Normal';
+  }
+
+  function matchesFilters(card) {
+    var f = state.filters;
+    if (f.priority !== 'todas' && card.priority !== f.priority) return false;
+    if (f.category !== 'todas' && (card.category || '') !== f.category) return false;
+    if (f.search) {
+      var q = f.search.toLowerCase();
+      var hay = [
+        card.title || '',
+        card.description || '',
+        card.client_project || '',
+        card.category || '',
+        card.due_date || '',
+        JSON.stringify(card.checklist || [])
+      ].join(' ').toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    return true;
+  }
+
+  function updateCounters() {
+    var total = state.cards.length;
+    var badge = document.getElementById('kpi-total-badge');
+    var navCount = document.getElementById('nav-kanban-count');
+    if (badge) badge.textContent = total + (total === 1 ? ' tarefa' : ' tarefas');
+    if (navCount) navCount.textContent = total;
+
+    document.querySelectorAll('[data-filter-priority]').forEach(function (btn) {
+      btn.classList.toggle('is-active', btn.getAttribute('data-filter-priority') === state.filters.priority);
+    });
+    document.querySelectorAll('[data-filter-cat]').forEach(function (btn) {
+      btn.classList.toggle('is-active', btn.getAttribute('data-filter-cat') === state.filters.category);
+    });
+  }
+
+  function renderBoard() {
+    var board = document.getElementById('kb-board');
+    if (!board) return;
+
+    var html = '';
+    state.columns.forEach(function (col, colIdx) {
+      var colCards = state.cards
+        .filter(function (c) { return c.column_id === col.id && matchesFilters(c); })
+        .sort(function (a, b) { return (a.position || 0) - (b.position || 0) || (a.id - b.id); });
+
+      var subText = (col.subtitle || '').replace(/Pedro & Calebe|Calebe|da dupla/gi, 'Pedro');
+
+      html += '<section class="kb-col" data-col-id="' + escapeHtml(col.id) + '" aria-label="Coluna ' + escapeHtml(col.title) + '">';
+      html += '  <div class="kb-col-head">';
+      html += '    <div class="kb-col-top">';
+      html += '      <h2 class="kb-col-title" data-action="edit-col" data-col-id="' + escapeHtml(col.id) + '" title="Clique para editar esta coluna">' + escapeHtml(col.title) + '</h2>';
+      html += '      <div class="kb-col-actions">';
+      if (colIdx > 0) {
+        html += '        <button type="button" class="kb-icon-btn" data-action="move-col-left" data-col-id="' + escapeHtml(col.id) + '" title="Mover para a esquerda">←</button>';
+      }
+      if (colIdx < state.columns.length - 1) {
+        html += '        <button type="button" class="kb-icon-btn" data-action="move-col-right" data-col-id="' + escapeHtml(col.id) + '" title="Mover para a direita">→</button>';
+      }
+      html += '        <button type="button" class="kb-icon-btn" data-action="edit-col" data-col-id="' + escapeHtml(col.id) + '" title="Editar coluna">✎</button>';
+      html += '        <span class="kb-col-count">' + colCards.length + '</span>';
+      html += '      </div>';
+      html += '    </div>';
+      if (subText) {
+        html += '    <p class="kb-col-sub">' + escapeHtml(subText) + '</p>';
+      }
+      html += '  </div>';
+
+      html += '  <div class="kb-cards-list" data-drop-list="' + escapeHtml(col.id) + '">';
+      if (colCards.length === 0) {
+        html += '    <div class="kb-empty">Vazio</div>';
+      } else {
+        colCards.forEach(function (card) {
+          var checks = Array.isArray(card.checklist) ? card.checklist : [];
+          var doneCount = checks.filter(function (i) { return i && i.done; }).length;
+
+          html += '<article class="kb-card is-priority-' + escapeHtml(card.priority || 'normal') + '" draggable="true" data-card-id="' + card.id + '">';
+          html += '  <div class="kb-card-top">';
+          html += '    <div class="kb-badges">';
+          html += '      <span class="kb-prio-badge kb-prio-' + escapeHtml(card.priority || 'normal') + '">' + escapeHtml(priorityLabel(card.priority)) + '</span>';
+          if (card.category) {
+            html += '      <span class="kb-cat-tag">' + escapeHtml(card.category) + '</span>';
+          }
+          html += '    </div>';
+          html += '  </div>';
+
+          html += '  <h3 class="kb-card-title" data-action="edit-card" data-card-id="' + card.id + '">' + escapeHtml(card.title) + '</h3>';
+
+          if (card.description) {
+            html += '  <p class="kb-card-desc">' + escapeHtml(card.description) + '</p>';
+          }
+
+          if (checks.length > 0) {
+            html += '  <div class="kb-card-checklist">';
+            html += '    <div class="kb-check-progress"><span>Checklist</span><span>' + doneCount + '/' + checks.length + '</span></div>';
+            checks.forEach(function (item, idx) {
+              if (!item || !item.text) return;
+              html += '    <label class="kb-check-item ' + (item.done ? 'is-done' : '') + '">';
+              html += '      <input type="checkbox" data-action="toggle-check" data-card-id="' + card.id + '" data-check-idx="' + idx + '" ' + (item.done ? 'checked' : '') + '>';
+              html += '      <span>' + escapeHtml(item.text) + '</span>';
+              html += '    </label>';
+            });
+            html += '  </div>';
+          }
+
+          html += '  <div class="kb-card-foot">';
+          html += '    <div class="kb-card-meta">';
+          if (card.client_project) {
+            html += '      <span><strong>' + escapeHtml(card.client_project) + '</strong></span>';
+          }
+          if (card.due_date) {
+            html += '      <span>⏱ ' + escapeHtml(card.due_date) + '</span>';
+          }
+          if (card.links) {
+            html += '      <a href="' + escapeHtml(card.links) + '" target="_blank" rel="noopener" style="text-decoration:underline;">Link ↗</a>';
+          }
+          html += '    </div>';
+          html += '    <div class="kb-card-controls">';
+          if (colIdx > 0) {
+            html += '      <button type="button" class="kb-mini-btn" data-action="step-left" data-card-id="' + card.id + '" title="Voltar etapa">←</button>';
+          }
+          if (colIdx < state.columns.length - 1) {
+            html += '      <button type="button" class="kb-mini-btn" data-action="step-right" data-card-id="' + card.id + '" title="Avançar etapa">→</button>';
+          }
+          html += '      <button type="button" class="kb-mini-btn" data-action="edit-card" data-card-id="' + card.id + '">Editar</button>';
+          html += '    </div>';
+          html += '  </div>';
+          html += '</article>';
+        });
+      }
+      html += '  </div>';
+
+      html += '  <button type="button" class="kb-add-card-btn" data-action="add-card-in-col" data-col-id="' + escapeHtml(col.id) + '">+ Adicionar</button>';
+      html += '</section>';
+    });
+
+    board.innerHTML = html;
+    bindDragAndDrop();
+  }
+
+  function renderAll() {
+    updateCounters();
+    renderBoard();
+  }
+
+  function bindDragAndDrop() {
+    var cards = document.querySelectorAll('.kb-card[draggable="true"]');
+    var cols = document.querySelectorAll('.kb-col');
+
+    cards.forEach(function (cardEl) {
+      cardEl.addEventListener('dragstart', function (e) {
+        var id = Number(cardEl.getAttribute('data-card-id'));
+        state.draggedCardId = id;
+        cardEl.classList.add('is-dragging');
+        if (e.dataTransfer) {
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/plain', String(id));
+        }
+      });
+      cardEl.addEventListener('dragend', function () {
+        cardEl.classList.remove('is-dragging');
+        state.draggedCardId = null;
+        cols.forEach(function (c) { c.classList.remove('is-drag-over'); });
+      });
+    });
+
+    cols.forEach(function (colEl) {
+      colEl.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+        colEl.classList.add('is-drag-over');
+      });
+      colEl.addEventListener('dragleave', function (e) {
+        if (!colEl.contains(e.relatedTarget)) {
+          colEl.classList.remove('is-drag-over');
+        }
+      });
+      colEl.addEventListener('drop', function (e) {
+        e.preventDefault();
+        colEl.classList.remove('is-drag-over');
+        var targetColId = colEl.getAttribute('data-col-id');
+        var cardId = state.draggedCardId || Number(e.dataTransfer && e.dataTransfer.getData('text/plain'));
+        if (!cardId || !targetColId) return;
+        moveCardToColumn(cardId, targetColId);
+      });
+    });
+  }
+
+  function moveCardToColumn(cardId, targetColId) {
+    var card = state.cards.find(function (c) { return c.id === Number(cardId); });
+    if (!card || card.column_id === targetColId) return;
+
+    var oldCol = card.column_id;
+    card.column_id = targetColId;
+    saveLocalMirror();
+    renderAll();
+
+    setSyncState(true, 'Movendo...');
+    fetch(API_URL + '/rest/v1/soft_kanban_cards?id=eq.' + card.id, {
+      method: 'PATCH',
+      headers: apiHeaders({ 'Prefer': 'return=representation' }),
+      body: JSON.stringify({ column_id: targetColId })
+    })
+    .then(function (r) {
+      if (!r.ok) throw new Error('Falha');
+      setSyncState(false, 'Salvo');
+    })
+    .catch(function () {
+      card.column_id = oldCol;
+      renderAll();
+      setSyncState(false, 'Erro');
+    });
+  }
+
+  function toggleCardChecklistItem(cardId, checkIdx, checked) {
+    var card = state.cards.find(function (c) { return c.id === Number(cardId); });
+    if (!card || !Array.isArray(card.checklist) || !card.checklist[checkIdx]) return;
+
+    card.checklist[checkIdx].done = !!checked;
+    saveLocalMirror();
+    renderAll();
+
+    setSyncState(true, 'Salvando...');
+    fetch(API_URL + '/rest/v1/soft_kanban_cards?id=eq.' + card.id, {
+      method: 'PATCH',
+      headers: apiHeaders({ 'Prefer': 'return=minimal' }),
+      body: JSON.stringify({ checklist: card.checklist })
+    })
+    .then(function () { setSyncState(false, 'Salvo'); })
+    .catch(function () { setSyncState(false, 'Local'); });
+  }
+
+  /* ---------- Modal de Tarefa ---------- */
+  var modalCard = document.getElementById('modal-card');
+  var formCard = document.getElementById('form-card');
+  var checklistEditor = document.getElementById('card-checklist-editor');
+
+  function populateColumnSelect(selectedColId) {
+    var sel = document.getElementById('card-column');
+    if (!sel) return;
+    sel.innerHTML = state.columns.map(function (c) {
+      var isSel = c.id === selectedColId ? ' selected' : '';
+      return '<option value="' + escapeHtml(c.id) + '"' + isSel + '>' + escapeHtml(c.title) + '</option>';
+    }).join('');
+  }
+
+  function renderChecklistEditorRows(items) {
+    if (!checklistEditor) return;
+    checklistEditor.innerHTML = '';
+    (items || []).forEach(function (item) {
+      addChecklistEditorRow(item.text || '', !!item.done);
+    });
+  }
+
+  function addChecklistEditorRow(text, done) {
+    if (!checklistEditor) return;
+    var row = document.createElement('div');
+    row.className = 'kb-checklist-row';
+    row.innerHTML =
+      '<input type="checkbox" class="chk-done" ' + (done ? 'checked' : '') + ' style="width:16px;height:16px;accent-color:#17110E;">' +
+      '<input type="text" class="input chk-text" value="' + escapeHtml(text || '') + '" placeholder="Passo..." style="min-height:34px;padding:4px 10px;font-size:13px;">' +
+      '<button type="button" class="kb-mini-btn btn-remove-chk" title="Remover">✕</button>';
+    row.querySelector('.btn-remove-chk').addEventListener('click', function () {
+      row.remove();
+    });
+    checklistEditor.appendChild(row);
+  }
+
+  function collectChecklistFromEditor() {
+    var rows = checklistEditor ? checklistEditor.querySelectorAll('.kb-checklist-row') : [];
+    var out = [];
+    rows.forEach(function (r) {
+      var txt = r.querySelector('.chk-text').value.trim();
+      var dn = r.querySelector('.chk-done').checked;
+      if (txt) out.push({ text: txt, done: dn });
+    });
+    return out;
+  }
+
+  function openCardModal(cardId, defaultColId) {
+    var existing = cardId ? state.cards.find(function (c) { return c.id === Number(cardId); }) : null;
+    var defaultCol = defaultColId || (state.columns[0] ? state.columns[0].id : 'a-fazer');
+
+    document.getElementById('modal-card-heading').textContent = existing ? 'Editar Tarefa' : 'Nova Tarefa';
+    document.getElementById('card-id').value = existing ? existing.id : '';
+    document.getElementById('card-title').value = existing ? (existing.title || '') : '';
+    populateColumnSelect(existing ? existing.column_id : defaultCol);
+    document.getElementById('card-priority').value = existing ? (existing.priority || 'normal') : 'normal';
+    document.getElementById('card-category').value = existing ? (existing.category || 'Cinema 4K') : 'Cinema 4K';
+    document.getElementById('card-client').value = existing ? (existing.client_project || '') : '';
+    document.getElementById('card-due').value = existing ? (existing.due_date || '') : '';
+    document.getElementById('card-desc').value = existing ? (existing.description || '') : '';
+    document.getElementById('card-links').value = existing ? (existing.links || '') : '';
+
+    renderChecklistEditorRows(existing && Array.isArray(existing.checklist) ? existing.checklist : []);
+
+    var btnDel = document.getElementById('btn-delete-card');
+    var btnDup = document.getElementById('btn-duplicate-card');
+    if (btnDel) btnDel.style.display = existing ? 'inline-flex' : 'none';
+    if (btnDup) btnDup.style.display = existing ? 'inline-flex' : 'none';
+
+    if (modalCard && typeof modalCard.showModal === 'function') {
+      modalCard.showModal();
+      document.getElementById('card-title').focus();
+    }
+  }
+
+  function closeCardModal() {
+    if (modalCard && modalCard.open) modalCard.close();
+  }
+
+  document.getElementById('btn-add-check-row').addEventListener('click', function () {
+    addChecklistEditorRow('', false);
+    var inputs = checklistEditor.querySelectorAll('.chk-text');
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  });
+
+  document.getElementById('btn-close-card-modal').addEventListener('click', closeCardModal);
+  document.getElementById('btn-cancel-card').addEventListener('click', closeCardModal);
+
+  formCard.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var idVal = document.getElementById('card-id').value;
+    var payload = {
+      title: document.getElementById('card-title').value.trim(),
+      assignee: 'pedro',
+      column_id: document.getElementById('card-column').value,
+      priority: document.getElementById('card-priority').value,
+      category: document.getElementById('card-category').value.trim() || 'Geral',
+      client_project: document.getElementById('card-client').value.trim(),
+      due_date: document.getElementById('card-due').value.trim(),
+      description: document.getElementById('card-desc').value.trim(),
+      links: document.getElementById('card-links').value.trim(),
+      checklist: collectChecklistFromEditor()
+    };
+
+    if (!payload.title) return;
+
+    setSyncState(true, 'Salvando...');
+    if (idVal) {
+      fetch(API_URL + '/rest/v1/soft_kanban_cards?id=eq.' + encodeURIComponent(idVal), {
+        method: 'PATCH',
+        headers: apiHeaders({ 'Prefer': 'return=representation' }),
+        body: JSON.stringify(payload)
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (rows) {
+        var updated = rows && rows[0] ? rows[0] : Object.assign({ id: Number(idVal) }, payload);
+        var idx = state.cards.findIndex(function (c) { return c.id === Number(idVal); });
+        if (idx !== -1) state.cards[idx] = Object.assign({}, state.cards[idx], updated);
+        saveLocalMirror();
+        renderAll();
+        closeCardModal();
+        setSyncState(false, 'Salvo');
+        showToast('Tarefa atualizada.');
+      });
+    } else {
+      payload.position = (state.cards.filter(function (c) { return c.column_id === payload.column_id; }).length + 1) * 10;
+      fetch(API_URL + '/rest/v1/soft_kanban_cards', {
+        method: 'POST',
+        headers: apiHeaders({ 'Prefer': 'return=representation' }),
+        body: JSON.stringify(payload)
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (rows) {
+        if (rows && rows[0]) state.cards.push(rows[0]);
+        saveLocalMirror();
+        renderAll();
+        closeCardModal();
+        setSyncState(false, 'Salvo');
+        showToast('Nova tarefa criada.');
+      });
+    }
+  });
+
+  document.getElementById('btn-duplicate-card').addEventListener('click', function () {
+    var idVal = document.getElementById('card-id').value;
+    if (!idVal) return;
+    document.getElementById('card-id').value = '';
+    document.getElementById('card-title').value = document.getElementById('card-title').value + ' (Cópia)';
+    document.getElementById('modal-card-heading').textContent = 'Duplicar Tarefa';
+    document.getElementById('btn-delete-card').style.display = 'none';
+    document.getElementById('btn-duplicate-card').style.display = 'none';
+  });
+
+  document.getElementById('btn-delete-card').addEventListener('click', function () {
+    var idVal = document.getElementById('card-id').value;
+    if (!idVal) return;
+    if (!window.confirm('Excluir esta tarefa?')) return;
+
+    setSyncState(true, 'Removendo...');
+    fetch(API_URL + '/rest/v1/soft_kanban_cards?id=eq.' + encodeURIComponent(idVal), {
+      method: 'DELETE',
+      headers: apiHeaders()
+    })
+    .then(function () {
+      state.cards = state.cards.filter(function (c) { return c.id !== Number(idVal); });
+      saveLocalMirror();
+      renderAll();
+      closeCardModal();
+      setSyncState(false, 'Salvo');
+      showToast('Tarefa removida.');
+    });
+  });
+
+  /* ---------- Modal de Coluna ---------- */
+  var modalCol = document.getElementById('modal-column');
+  var formCol = document.getElementById('form-column');
+
+  function slugifyColId(str) {
+    return str
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 32) || ('col-' + Date.now());
+  }
+
+  function openColumnModal(colId) {
+    var existing = colId ? state.columns.find(function (c) { return c.id === colId; }) : null;
+    document.getElementById('col-edit-mode').value = existing ? 'edit' : 'create';
+    document.getElementById('col-id-hidden').value = existing ? existing.id : '';
+    document.getElementById('modal-col-heading').textContent = existing ? 'Editar Coluna' : 'Nova Coluna';
+    document.getElementById('col-title-input').value = existing ? existing.title : '';
+    document.getElementById('col-sub-input').value = existing ? (existing.subtitle || '') : '';
+    document.getElementById('btn-delete-col').style.display = existing ? 'inline-flex' : 'none';
+
+    if (modalCol && typeof modalCol.showModal === 'function') {
+      modalCol.showModal();
+      document.getElementById('col-title-input').focus();
+    }
+  }
+
+  function closeColModal() {
+    if (modalCol && modalCol.open) modalCol.close();
+  }
+
+  document.getElementById('btn-close-col-modal').addEventListener('click', closeColModal);
+  document.getElementById('btn-cancel-col').addEventListener('click', closeColModal);
+
+  formCol.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var mode = document.getElementById('col-edit-mode').value;
+    var colId = document.getElementById('col-id-hidden').value;
+    var title = document.getElementById('col-title-input').value.trim();
+    var subtitle = document.getElementById('col-sub-input').value.trim();
+    if (!title) return;
+
+    setSyncState(true, 'Salvando...');
+    if (mode === 'edit' && colId) {
+      fetch(API_URL + '/rest/v1/soft_kanban_columns?id=eq.' + encodeURIComponent(colId), {
+        method: 'PATCH',
+        headers: apiHeaders({ 'Prefer': 'return=representation' }),
+        body: JSON.stringify({ title: title, subtitle: subtitle })
+      })
+      .then(function () {
+        var c = state.columns.find(function (x) { return x.id === colId; });
+        if (c) { c.title = title; c.subtitle = subtitle; }
+        saveLocalMirror();
+        renderAll();
+        closeColModal();
+        setSyncState(false, 'Salvo');
+      });
+    } else {
+      var newId = slugifyColId(title) + '-' + String(Date.now()).slice(-4);
+      var pos = (state.columns.length + 1) * 10;
+      var newCol = { id: newId, title: title, subtitle: subtitle, position: pos, color_tag: 'areia' };
+      fetch(API_URL + '/rest/v1/soft_kanban_columns', {
+        method: 'POST',
+        headers: apiHeaders({ 'Prefer': 'return=representation' }),
+        body: JSON.stringify(newCol)
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (rows) {
+        state.columns.push(rows && rows[0] ? rows[0] : newCol);
+        saveLocalMirror();
+        renderAll();
+        closeColModal();
+        setSyncState(false, 'Salvo');
+      });
+    }
+  });
+
+  document.getElementById('btn-delete-col').addEventListener('click', function () {
+    var colId = document.getElementById('col-id-hidden').value;
+    if (!colId) return;
+    if (!window.confirm('Excluir esta coluna?')) return;
+
+    setSyncState(true, 'Excluindo...');
+    fetch(API_URL + '/rest/v1/soft_kanban_columns?id=eq.' + encodeURIComponent(colId), {
+      method: 'DELETE',
+      headers: apiHeaders()
+    })
+    .then(function () {
+      state.columns = state.columns.filter(function (c) { return c.id !== colId; });
+      state.cards = state.cards.filter(function (c) { return c.column_id !== colId; });
+      saveLocalMirror();
+      renderAll();
+      closeColModal();
+      setSyncState(false, 'Salvo');
+    });
+  });
+
+  function swapColumnOrder(colId, dir) {
+    var idx = state.columns.findIndex(function (c) { return c.id === colId; });
+    var targetIdx = idx + dir;
+    if (idx < 0 || targetIdx < 0 || targetIdx >= state.columns.length) return;
+
+    var colA = state.columns[idx];
+    var colB = state.columns[targetIdx];
+    var tempPos = colA.position;
+    colA.position = colB.position;
+    colB.position = tempPos;
+    if (colA.position === colB.position) {
+      colA.position = (targetIdx + 1) * 10;
+      colB.position = (idx + 1) * 10;
+    }
+    state.columns.sort(function (a, b) { return (a.position || 0) - (b.position || 0); });
+    saveLocalMirror();
+    renderAll();
+
+    Promise.all([
+      fetch(API_URL + '/rest/v1/soft_kanban_columns?id=eq.' + encodeURIComponent(colA.id), {
+        method: 'PATCH', headers: apiHeaders(), body: JSON.stringify({ position: colA.position })
+      }),
+      fetch(API_URL + '/rest/v1/soft_kanban_columns?id=eq.' + encodeURIComponent(colB.id), {
+        method: 'PATCH', headers: apiHeaders(), body: JSON.stringify({ position: colB.position })
+      })
+    ]);
+  }
+
+  document.addEventListener('click', function (e) {
+    var actEl = e.target.closest('[data-action]');
+    if (actEl) {
+      var action = actEl.getAttribute('data-action');
+      var cardId = actEl.getAttribute('data-card-id');
+      var colId = actEl.getAttribute('data-col-id');
+
+      if (action === 'edit-card' && cardId) {
+        e.preventDefault();
+        openCardModal(Number(cardId));
+      } else if (action === 'add-card-in-col' && colId) {
+        e.preventDefault();
+        openCardModal(null, colId);
+      } else if (action === 'edit-col' && colId) {
+        e.preventDefault();
+        openColumnModal(colId);
+      } else if (action === 'move-col-left' && colId) {
+        e.preventDefault();
+        swapColumnOrder(colId, -1);
+      } else if (action === 'move-col-right' && colId) {
+        e.preventDefault();
+        swapColumnOrder(colId, 1);
+      } else if ((action === 'step-left' || action === 'step-right') && cardId) {
+        e.preventDefault();
+        var card = state.cards.find(function (c) { return c.id === Number(cardId); });
+        if (!card) return;
+        var cIdx = state.columns.findIndex(function (col) { return col.id === card.column_id; });
+        var nextIdx = action === 'step-left' ? cIdx - 1 : cIdx + 1;
+        if (nextIdx >= 0 && nextIdx < state.columns.length) {
+          moveCardToColumn(card.id, state.columns[nextIdx].id);
+        }
+      }
+      return;
+    }
+
+    var fPrio = e.target.closest('[data-filter-priority]');
+    if (fPrio) {
+      state.filters.priority = fPrio.getAttribute('data-filter-priority');
+      renderAll();
+      return;
+    }
+
+    var fCat = e.target.closest('[data-filter-cat]');
+    if (fCat) {
+      state.filters.category = fCat.getAttribute('data-filter-cat');
+      renderAll();
+      return;
+    }
+  });
+
+  document.addEventListener('change', function (e) {
+    var chk = e.target.closest('[data-action="toggle-check"]');
+    if (chk) {
+      var cId = Number(chk.getAttribute('data-card-id'));
+      var idx = Number(chk.getAttribute('data-check-idx'));
+      toggleCardChecklistItem(cId, idx, chk.checked);
+    }
+  });
+
+  var searchInput = document.getElementById('kb-search');
+  if (searchInput) {
+    searchInput.addEventListener('input', function () {
+      state.filters.search = searchInput.value.trim();
+      renderBoard();
+    });
+  }
+
+  document.getElementById('btn-kb-new-card').addEventListener('click', function () {
+    openCardModal(null);
+  });
+  document.getElementById('btn-kb-new-col').addEventListener('click', function () {
+    openColumnModal(null);
+  });
+  var btnReset = document.getElementById('btn-kb-reset');
+  if (btnReset) {
+    btnReset.addEventListener('click', function () {
+      if (!window.confirm('Zerar todas as tarefas do quadro?')) return;
+      setSyncState(true, 'Zerando...');
+      fetch(API_URL + '/rest/v1/soft_kanban_cards?id=gt.0', {
+        method: 'DELETE',
+        headers: apiHeaders()
+      })
+      .then(function () {
+        state.cards = [];
+        try { localStorage.removeItem(STORAGE_MIRROR_KEY); } catch (e) {}
+        renderAll();
+        setSyncState(false, 'Zerado');
+        showToast('Quadro zerado.');
+      });
+    });
+  }
+
+  var btnLogout = document.getElementById('btn-side-logout');
+  if (btnLogout) {
+    btnLogout.addEventListener('click', function () {
+      try { sessionStorage.removeItem('soft_admin_session_auth_v1'); } catch (e) {}
+      window.location.reload();
+    });
+  }
+
+  loadBoard();
+})();
+</script>
+</body>
+</html>

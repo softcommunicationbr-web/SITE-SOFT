@@ -97,3 +97,40 @@ create table if not exists public.lead_webhook_logs (
 
 create index if not exists idx_lead_webhook_lead on public.lead_webhook_logs(lead_id);
 create index if not exists idx_lead_webhook_status on public.lead_webhook_logs(status);
+
+-- ============================================================
+-- 4) Kanban Operacional Exclusivo · Pedro & Calebe
+--    Totalmente editável (colunas + cartões + checklists)
+-- ============================================================
+create table if not exists public.soft_kanban_columns (
+  id          text primary key,
+  title       text not null,
+  subtitle    text not null default '',
+  position    integer not null default 0,
+  color_tag   text not null default 'areia',
+  created_at  timestamptz not null default now(),
+  updated_at  timestamptz not null default now()
+);
+
+create table if not exists public.soft_kanban_cards (
+  id              bigserial primary key,
+  column_id       text not null references public.soft_kanban_columns(id) on delete cascade,
+  title           text not null,
+  description     text not null default '',
+  assignee        text not null default 'ambos' check (assignee in ('pedro', 'calebe', 'ambos')),
+  priority        text not null default 'normal' check (priority in ('urgente', 'alta', 'normal', 'baixa')),
+  category        text not null default 'Geral',
+  client_project  text not null default '',
+  due_date        text not null default '',
+  checklist       jsonb not null default '[]'::jsonb,
+  links           text not null default '',
+  position        integer not null default 0,
+  archived        boolean not null default false,
+  created_at      timestamptz not null default now(),
+  updated_at      timestamptz not null default now()
+);
+
+create index if not exists idx_soft_kanban_cols_pos on public.soft_kanban_columns(position);
+create index if not exists idx_soft_kanban_cards_col_pos on public.soft_kanban_cards(column_id, position);
+create index if not exists idx_soft_kanban_cards_assignee on public.soft_kanban_cards(assignee);
+

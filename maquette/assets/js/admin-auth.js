@@ -91,21 +91,21 @@
           '<img src="../assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="140" height="45">' +
         '</div>' +
         '<div class="admin-auth-header">' +
-          '<span class="tag">Acesso Restrito</span>' +
-          '<h2 class="a-title" id="auth-card-title" style="margin-top:12px;font-size:32px;">Painel Administrativo</h2>' +
-          '<p class="small" style="color:var(--areia);margin-top:8px;">Autenticação obrigatória. Digite a senha única para gerenciar o catálogo, vídeos e pedidos de orçamento.</p>' +
+          '<span class="tag">SOFT &amp; CO. · Acesso Restrito</span>' +
+          '<h2 class="a-title" id="auth-card-title" style="margin-top:12px;font-size:24px;color:#17110E;">Painel Administrativo</h2>' +
+          '<p class="small" style="color:#5C4E44;margin-top:8px;">Digite sua senha para acessar o Meu Kanban e o catálogo de vídeos.</p>' +
         '</div>' +
         '<form id="admin-auth-form" class="a-form" style="margin-top:24px;">' +
           '<div class="field">' +
-            '<label for="admin-pass-input" style="color:var(--creme);">Senha de Segurança</label>' +
-            '<input class="input" id="admin-pass-input" type="password" autocomplete="current-password" required placeholder="Digite a senha..." style="color:var(--creme);border-bottom:1px solid var(--areia);font-size:18px;padding:8px 0;">' +
+            '<label for="admin-pass-input" style="color:#3B2A20;">Senha de Acesso</label>' +
+            '<input class="input" id="admin-pass-input" type="password" autocomplete="current-password" required placeholder="Digite a senha...">' +
           '</div>' +
-          '<p class="admin-auth-error small" id="admin-auth-error" role="alert" style="color:#FF8585;margin-top:12px;" hidden></p>' +
+          '<p class="admin-auth-error small" id="admin-auth-error" role="alert" style="color:#B91C1C;margin-top:12px;" hidden></p>' +
           '<div class="actions" style="margin-top:24px;">' +
             '<button class="btn btn-primary btn-block" type="submit" id="admin-auth-btn" style="width:100%;">Entrar no Painel</button>' +
           '</div>' +
           '<div style="margin-top:20px;text-align:center;">' +
-            '<a href="../index.html" style="color:var(--areia);text-decoration:none;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;">← Voltar para a Página Mãe</a>' +
+            '<a href="../nova-home.html" style="color:#3B2A20;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;">← Voltar para a Nova Home</a>' +
           '</div>' +
         '</form>' +
       '</div>';

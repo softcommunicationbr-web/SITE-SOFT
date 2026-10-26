@@ -1,0 +1,255 @@
+/* ============================================================
+   Soft Communication · Preloader Cinématique Haute Performance
+   Direção de Arte: Cinema Master DCI 4K · Tahiti · Luxury Dark
+   Símbolo Puro do Tiki Sagrado · Sem Texto · 100% Nítido & Alinhado
+   ============================================================ */
+
+.preloader {
+  display: none;
+}
+
+html.has-preloader {
+  overflow: hidden !important;
+}
+
+html.has-preloader .preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #070504;
+  color: #F3EDE3;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  contain: strict;
+}
+
+/* ---------- 1. Ambiance & Lueur Anamorphique ---------- */
+.preloader-backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.preloader-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 35%, rgba(5, 4, 3, 0.85) 85%, #050403 100%);
+}
+
+.preloader-glow {
+  position: absolute;
+  width: min(90vw, 720px);
+  height: min(90vh, 520px);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  background: radial-gradient(ellipse at center, rgba(226, 200, 154, 0.28) 0%, rgba(216, 200, 176, 0.08) 45%, transparent 72%);
+  filter: blur(48px);
+  opacity: 0;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.preloader-grain {
+  position: absolute;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  background-image: radial-gradient(rgba(243, 237, 227, 0.04) 1px, transparent 1px);
+  background-size: 4px 4px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ---------- 2. Viewfinder HUD (Viseur Cinéma Sem Texto) ---------- */
+.preloader-hud {
+  position: absolute;
+  inset: clamp(14px, 3vw, 32px);
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* Bords du viseur */
+.hud-corners .corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: rgba(216, 200, 176, 0.35);
+}
+.hud-corners .tl { top: 0; left: 0; border-top: 1.5px solid; border-left: 1.5px solid; }
+.hud-corners .tr { top: 0; right: 0; border-top: 1.5px solid; border-right: 1.5px solid; }
+.hud-corners .bl { bottom: 0; left: 0; border-bottom: 1.5px solid; border-left: 1.5px solid; }
+.hud-corners .br { bottom: 0; right: 0; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+
+/* Réticule central d'alignement optique */
+.hud-reticle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 36px;
+  height: 36px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.26;
+}
+.hud-reticle::before, .hud-reticle::after {
+  content: "";
+  position: absolute;
+  background-color: #D8C8B0;
+}
+.hud-reticle::before { left: 17px; top: 0; width: 2px; height: 36px; }
+.hud-reticle::after { top: 17px; left: 0; height: 2px; width: 36px; }
+
+/* ---------- 3. Scène Centrale (Tiki Pur & Feixes de Luz) ---------- */
+.preloader-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+  z-index: 3;
+}
+
+/* Feixe de Luz Volumétrico Descendente (Light Shaft) */
+.preloader-light-shaft {
+  position: absolute;
+  top: -55vh;
+  left: 50%;
+  width: clamp(180px, 32vw, 380px);
+  height: 110vh;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: 50% 0%;
+  background: linear-gradient(180deg, rgba(255, 252, 245, 0.52) 0%, rgba(226, 200, 154, 0.25) 40%, rgba(216, 200, 176, 0.05) 75%, transparent 100%);
+  clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Feixe Laser Horizontal Central (Anamorphic Line) */
+.preloader-laser-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(92vw, 680px);
+  height: 2px;
+  transform: translate(-50%, -50%) scaleX(0);
+  transform-origin: 50% 50%;
+  background: linear-gradient(90deg, transparent 0%, rgba(226, 200, 154, 0.35) 15%, #FFFFFF 50%, rgba(226, 200, 154, 0.35) 85%, transparent 100%);
+  box-shadow: 0 0 16px 2px rgba(255, 248, 235, 0.95), 0 0 36px 6px rgba(226, 200, 154, 0.65);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Emblème Tiki Sacré Polynésien - Perfeitamente Alinhado ao Centro, Sem Texto, Sem Blur */
+.preloader-tiki-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(32px) scale(0.92);
+  will-change: transform, opacity;
+  z-index: 4;
+}
+
+.preloader-tiki-svg {
+  display: block;
+  width: clamp(100px, 16vw, 150px);
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(226, 200, 154, 0.75)) drop-shadow(0 0 50px rgba(216, 200, 176, 0.4));
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.preloader-tiki-svg path {
+  fill: #F3EDE3;
+}
+
+/* Feixe de Luz varrendo o Tiki (Glint / Sheen) */
+.preloader-tiki-sweep {
+  position: absolute;
+  inset: -20px -30px;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+  mix-blend-mode: screen;
+}
+.preloader-tiki-sweep::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(115deg, transparent 15%, rgba(255, 255, 255, 0.3) 35%, rgba(255, 252, 245, 0.95) 50%, rgba(226, 200, 154, 0.8) 60%, transparent 80%);
+  transform: rotate(22deg) translateX(-140%);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Faisceau Optique na Base do Tiki */
+.preloader-beam {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  width: min(84vw, 420px);
+  height: 1px;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: 50% 50%;
+  background: linear-gradient(90deg, transparent 0%, rgba(216, 200, 176, 0.25) 15%, #FFF6E8 50%, rgba(216, 200, 176, 0.25) 85%, transparent 100%);
+  box-shadow: 0 0 14px rgba(226, 200, 154, 0.85), 0 0 28px rgba(216, 200, 176, 0.5);
+  will-change: transform;
+}
+
+.preloader-beam-spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: #FFFBF3;
+  box-shadow: 0 0 14px 4px rgba(255, 248, 235, 0.95), 0 0 32px 8px rgba(226, 200, 154, 0.6);
+  opacity: 0;
+}
+
+/* Shockwave ring lors du thud */
+.preloader-shockwave {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.6);
+  border: 1.5px solid rgba(226, 200, 154, 0.85);
+  box-shadow: 0 0 36px rgba(226, 200, 154, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Mode Mouvement Réduit (Accessibilité) */
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    display: none !important;
+  }
+  html.has-preloader {
+    overflow: auto !important;
+  }
+}

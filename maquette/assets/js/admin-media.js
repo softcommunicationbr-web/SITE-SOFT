@@ -226,7 +226,7 @@
         render();
         var first = sorted()[0];
         if (first) select(first.id);
-        UI.toast('Cachê resetado com sucesso! Sincronizados ' + (res.count || A.items().length) + ' vídeos diretamente do Supabase.');
+        UI.toast('Cachê atualizado com sucesso (' + (res.count || A.items().length) + ' vídeos).');
       }).catch(function (err) {
         btnCacheReset.disabled = false;
         btnCacheReset.textContent = origText;
@@ -241,7 +241,7 @@
   $('btn-open-add').addEventListener('click', function () {
     var remote = mode() === 'remote';
     $('add-file').disabled = !remote;
-    $('add-file-hint').textContent = remote ? 'O arquivo é enviado para o Supabase e a capa é gerada sozinha.' : 'O envio de arquivos exige o Supabase configurado. Por enquanto, use o link do vídeo.';
+    $('add-file-hint').textContent = remote ? 'O arquivo é enviado para o catálogo e a capa é gerada automaticamente.' : 'Escolha ou cole o link direto do vídeo.';
     msg(''); addModal.showModal();
   });
   var closeAdd = function () { if (addModal.open) addModal.close(); };

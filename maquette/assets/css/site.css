@@ -1,3 +1,5 @@
+@import url('preloader.css');
+
 /* ============================================================
    Soft Communication — maquette privée · styles du site public
    Dépend de tokens.css. Règles : 4 couleurs, Cormorant + Poppins,
@@ -325,29 +327,6 @@ ul, ol { padding: 0; list-style: none; }
 body[data-menu-open] { overflow: hidden; }
 main { padding-top: 0; }
 
-/* ---------- Écran d'ouverture (accueil) ---------- */
-/* Preloader: o logo surge do chão em 3D e a cortina sobe (assets/js/preloader.js) */
-.preloader { display: none; }
-html.has-preloader { overflow: hidden; }
-html.has-preloader .preloader {
-  position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center;
-  background: var(--chocolate); color: var(--creme); cursor: pointer; perspective: 1400px;
-}
-.preloader-stage { position: relative; width: min(64vw, 520px); transform-style: preserve-3d; will-change: transform; }
-.preloader-ground { position: relative; transform-style: preserve-3d; clip-path: inset(-60% -40% 0 -40%); }
-.pl3-svg { display: block; width: 100%; height: auto; overflow: visible; transform-origin: 50% 100%; backface-visibility: hidden; }
-.pl3-comm { position: absolute; inset: 0; }
-.preloader-logo .pl-glyph, .pl3-svg .pl-glyph { fill: var(--creme); }
-.preloader-floor { position: absolute; left: -6%; right: -6%; bottom: -2px; height: 2px; background: var(--areia); transform: scaleX(0); transform-origin: 50% 50%; }
-html.has-preloader .pl3-svg { transform: rotateX(82deg) translateY(58%); opacity: 0; }
-.preloader-sound {
-  position: absolute; left: 50%; bottom: var(--space-8); transform: translateX(-50%);
-  background: none; border: 0; border-bottom: 1px solid var(--areia); color: var(--areia); cursor: pointer;
-  font-family: var(--font-sans); font-size: 11px; line-height: 16px; font-weight: 500; letter-spacing: 0.32em;
-  text-transform: uppercase; padding: var(--space-2) 0; white-space: nowrap;
-}
-.preloader-sound[hidden] { display: none; }
-@media (prefers-reduced-motion: reduce) { .preloader { display: none !important; } html.has-preloader { overflow: auto; } }
 
 /* ---------- Hero ---------- */
 .hero {
