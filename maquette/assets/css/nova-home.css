@@ -1680,6 +1680,31 @@ html, body {
   border-color: rgba(216, 200, 176, 0.35);
   background: #1B1B22;
 }
+.review-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.review-top-bar .stars {
+  margin-bottom: 0;
+}
+.review-location {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--nh-accent);
+  background: rgba(216, 200, 176, 0.08);
+  border: 1px solid rgba(216, 200, 176, 0.2);
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
 .stars {
   color: var(--nh-accent);
   font-size: 15px;
@@ -1710,17 +1735,15 @@ html, body {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 .avatar {
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--nh-border-glow);
+  width: 48px;
+  height: 48px;
+  border: 1.5px solid var(--nh-border-glow);
   background: linear-gradient(135deg, #241A14, #131317);
   border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: var(--nh-accent);
-  font-size: 12.5px;
-  font-weight: 600;
+  object-fit: cover;
+  display: block;
   flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 .author-info {
   display: flex;

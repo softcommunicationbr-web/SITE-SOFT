@@ -1251,64 +1251,77 @@
       });
     }
 
-    // Geração Dinâmica dos Depoimentos em Faixas Contínuas (Dual Marquee)
+    // Geração Dinâmica dos Depoimentos em Faixas Contínuas (Dual Marquee Global)
+    var rootPath = document.documentElement.getAttribute('data-root') || './';
     var testimonialsData = [
       [
-        "TB",
-        "Direção de Marketing · The Brando",
-        "A Soft Communication capturou a essência do nosso atol com precisão e respeito absoluto à nossa identidade. Os vídeos 9:16 entregues para as vilas geraram um volume recorde de reservas diretas dos EUA e Europa."
+        "client-1.jpg",
+        "Tevaite Brotherson · Diretora de Marketing",
+        "A Soft Communication capturou a essência do nosso atol com respeito absoluto à identidade da marca. Os vídeos 9:16 produzidos para as vilas privativas geraram recordes de reservas diretas dos EUA e Europa.",
+        "Bora Bora · Polinésia"
       ],
       [
-        "FS",
-        "Comunicação · Four Seasons Bora Bora",
-        "A criatividade e o tempo de resposta da equipe são impecáveis. Formatos impactantes nos primeiros 3 segundos, mantendo o posicionamento ultra-luxo do nosso resort. Uma parceria de enorme sucesso."
+        "client-6.jpg",
+        "Claire Delaunay · Diretora Geral",
+        "O rigor estético da equipe Soft compete de igual para igual com os melhores estúdios de Paris. A entrega em 4K e a iluminação cinematográfica trouxeram um prestígio imediato às nossas campanhas.",
+        "Paris · França"
       ],
       [
-        "TP",
-        "Diretor Geral · Tahiti Pearl Market",
-        "Profunda compreensão dos códigos de luxo e do artesanato polinésio. Os vídeos documentais e formatos verticais dobraram nossa conversão nas coleções especiais. Excelência pura."
+        "client-7.jpg",
+        "Marcus Vance · Fundador & CEO",
+        "No mercado de luxo de Nova York, a atenção se ganha em menos de 2 segundos. O ritmo dinâmico e os enquadramentos de cinema nos permitiram vender 100% dos imóveis antes mesmo da conclusão das obras.",
+        "Nova York · EUA"
       ],
       [
-        "IC",
-        "Direção Comercial · InterContinental Resorts",
-        "Dezenas de variações entregues com rapidez impressionante e uma qualidade visual deslumbrante. O vídeo vertical se tornou nosso maior motor de engajamento nas redes."
+        "client-8.jpg",
+        "Rodrigo Brandão · Arquiteto Titular",
+        "O domínio deles sobre os volumes arquitetônicos e as texturas naturais é impressionante. Nossos projetos ganharam visibilidade global através de filmes que valorizam cada detalhe do design.",
+        "São Paulo · Brasil"
       ],
       [
-        "MB",
-        "Fundador & Proprietário · Manava Beach Resort",
-        "Vídeos dinâmicos, áudio imersivo e uma atenção aos detalhes que faz toda a diferença. O método em 9 etapas é extremamente ágil: 14 dias do início à publicação."
+        "client-9.jpg",
+        "Eleanor Somerset · Diretora Criativa",
+        "Contar a história de gemas raras e pérolas exclusivas exige um olhar artístico apurado. A Soft Communication valorizou nossas coleções com uma elegância e precisão impressionantes.",
+        "Londres · UK"
       ],
       [
-        "TH",
-        "Gestão · Tahiti Homes Luxury Villas",
-        "Nossos imóveis de luxo nunca foram apresentados com tanto requinte. O retorno foi imediato: os pedidos de reserva dispararam após os reels irem ao ar."
+        "client-2.jpg",
+        "Matahi Ellis · Diretor de Operações",
+        "Imagens aéreas e subaquáticas de tirar o fôlego. O trabalho de sound design imersivo desperta o desejo imediato de viajar e multiplicou nossas reservas de passeios exclusivos.",
+        "Moorea · Polinésia"
       ],
       [
-        "ME",
-        "Diretor de Operações · Moorea Explorer",
-        "Imagens aéreas e aquáticas de tirar o fôlego. A edição e o sound design despertam um desejo imediato de viver a experiência e agendar um roteiro."
+        "client-3.jpg",
+        "Yuka Takahashi · Fundadora & Criadora",
+        "Buscávamos pureza visual absoluta para nossos rituais de skincare. Os vídeos em formato curto produzidos pela Soft dispararam nossas taxas de conversão no Japão e nos Estados Unidos.",
+        "Tóquio · Japão"
       ],
       [
-        "PI",
-        "Fundador · Pacifique Imóveis de Luxo",
-        "A união de ângulos diferenciados e projeções inovadoras nos permitiu vender todo um empreendimento na planta antes do previsto. Parabéns pelo profissionalismo."
+        "client-4.jpg",
+        "Marc von Allmen · Sócio Gestor",
+        "O método em 9 etapas deles é um exemplo de pontualidade suíça: entrega em 14 dias cravados, zero concessão na qualidade e comunicação transparente do início ao fim.",
+        "Genebra · Suíça"
       ]
     ];
 
     function renderReviewCard(q) {
+      var avatarImg = rootPath + 'assets/brand/avatars/' + q[0];
       return '<article class="review">' +
         '<div>' +
-          '<div class="stars">' +
-            '<span class="star-icon">★</span>' +
-            '<span class="star-icon">★</span>' +
-            '<span class="star-icon">★</span>' +
-            '<span class="star-icon">★</span>' +
-            '<span class="star-icon">★</span>' +
+          '<div class="review-top-bar">' +
+            '<div class="stars">' +
+              '<span class="star-icon">★</span>' +
+              '<span class="star-icon">★</span>' +
+              '<span class="star-icon">★</span>' +
+              '<span class="star-icon">★</span>' +
+              '<span class="star-icon">★</span>' +
+            '</div>' +
+            '<span class="review-location">' + q[3] + '</span>' +
           '</div>' +
           '<p class="quote">“' + q[2] + '”</p>' +
         '</div>' +
         '<div class="author">' +
-          '<span class="avatar">' + q[0] + '</span>' +
+          '<img class="avatar" src="' + avatarImg + '" alt="' + q[1].split(' · ')[0] + '" width="48" height="48" loading="lazy">' +
           '<div class="author-info">' +
             '<span class="author-name">' + q[1].split(' · ')[0] + '</span>' +
             '<span class="author-role">' + (q[1].split(' · ')[1] || 'Parceiro Soft') + '</span>' +

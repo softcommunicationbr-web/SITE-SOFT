@@ -1251,64 +1251,77 @@
       });
     }
 
-    // Geração Dinâmica dos Depoimentos em Faixas Contínuas (Dual Marquee)
+    // Dynamic generation of Continuous Reviews (Dual Marquee Global)
+    var rootPath = document.documentElement.getAttribute('data-root') || './';
     var testimonialsData = [
       [
-        "TB",
-        "Marketing Direction · The Brando",
-        "Soft Communication captured the quintessential essence of our atoll with absolute precision and respect for our heritage. The 9:16 videos delivered for our private villas generated record direct bookings from the United States and Europe."
+        "client-1.jpg",
+        "Tevaite Brotherson · Marketing Director",
+        "Soft Communication captured the essence of our private atoll with total respect for our brand heritage. The 9:16 vertical series for our luxury villas generated record direct bookings from North America and Europe.",
+        "Bora Bora · Polynesia"
       ],
       [
-        "FS",
-        "Communications Lead · Four Seasons Bora Bora",
-        "The team's creativity and speed of execution are unmatched. High-impact formats from the first 3 seconds, while honoring the ultra-luxury positioning of our resort. We are delighted to renew our partnership."
+        "client-6.jpg",
+        "Claire Delaunay · Managing Director",
+        "The aesthetic rigor of the Soft team rivals the top Parisian creative studios. The cinematic 4K delivery and lighting craftsmanship brought immediate prestige to our international campaigns.",
+        "Paris · France"
       ],
       [
-        "TP",
-        "Managing Director · Tahiti Pearl Market",
-        "A profound grasp of luxury codes and Polynesian craftsmanship. Their documentary and vertical video assets doubled our conversion rates on signature pearl collections. Truly exceptional partners."
+        "client-7.jpg",
+        "Marcus Vance · Founder & CEO",
+        "In NYC luxury real estate, attention is won or lost in under 2 seconds. Their dynamic hooks and cinematic framings enabled us to pre-sell 100% of our luxury development inventory ahead of schedule.",
+        "New York · USA"
       ],
       [
-        "IC",
-        "Commercial Direction · InterContinental Resorts",
-        "Dozens of variations delivered in record time with stunning optical clarity and color grading. Vertical video has quickly become our primary engagement engine on social media."
+        "client-8.jpg",
+        "Rodrigo Brandão · Principal Architect",
+        "Their mastery of architectural volumes and natural textures is extraordinary. Our contemporary projects gained powerful global visibility through films that elevate every single detail.",
+        "São Paulo · Brazil"
       ],
       [
-        "MB",
-        "Founder & Owner · Manava Beach Resort",
-        "Rhythmic edits, immersive sound design, and an attention to detail that sets a new benchmark. Their 9-step method is remarkably smooth: 14 days from initial briefing to live broadcast."
+        "client-9.jpg",
+        "Eleanor Somerset · Creative Director",
+        "Showcasing rare gemstones and South Sea pearls demands true artistic vision. Soft Communication honors the beauty of our pieces with remarkable elegance, depth, and pacing.",
+        "London · UK"
       ],
       [
-        "TH",
-        "Management · Tahiti Homes Luxury Villas",
-        "Our luxury properties have never looked this cinematic. Immediate return on investment: booking inquiries surged as soon as the vertical reels went live."
+        "client-2.jpg",
+        "Matahi Ellis · Operations Director",
+        "Breathtaking aerial and underwater cinematography. The immersive sound design triggers immediate wanderlust, resulting in a measurable surge in high-ticket private charter bookings.",
+        "Moorea · Polynesia"
       ],
       [
-        "ME",
-        "Operations Director · Moorea Explorer",
-        "Breathtaking aerial and underwater visuals. The editing and spatial audio create a unique sensory depth that triggers an immediate desire to book an expedition."
+        "client-3.jpg",
+        "Yuka Takahashi · Founder & Creator",
+        "We demanded absolute visual purity for our skincare rituals. The short-form hooks produced by Soft drastically boosted our conversion rates on Instagram and TikTok across Japan and the US.",
+        "Tokyo · Japan"
       ],
       [
-        "PI",
-        "Founder · Pacific Prestige Real Estate",
-        "Innovative visual storytelling and AI projections allowed us to sell an entire off-plan luxury residential project ahead of schedule. Outstanding discipline and taste."
+        "client-4.jpg",
+        "Marc von Allmen · Managing Partner",
+        "Their 9-step methodology mirrors Swiss precision: delivered in 14 days sharp, zero compromise on visual standards, and absolute transparency from concept to final delivery.",
+        "Geneva · Switzerland"
       ]
     ];
 
     function renderReviewCard(q) {
+      var avatarImg = rootPath + 'assets/brand/avatars/' + q[0];
       return '<article class="review">' +
         '<div>' +
-          '<div class="stars">' +
-            '<span class="star-icon">★</span>' +
-            '<span class="star-icon">★</span>' +
-            '<span class="star-icon">★</span>' +
-            '<span class="star-icon">★</span>' +
-            '<span class="star-icon">★</span>' +
+          '<div class="review-top-bar">' +
+            '<div class="stars">' +
+              '<span class="star-icon">★</span>' +
+              '<span class="star-icon">★</span>' +
+              '<span class="star-icon">★</span>' +
+              '<span class="star-icon">★</span>' +
+              '<span class="star-icon">★</span>' +
+            '</div>' +
+            '<span class="review-location">' + q[3] + '</span>' +
           '</div>' +
           '<p class="quote">“' + q[2] + '”</p>' +
         '</div>' +
         '<div class="author">' +
-          '<span class="avatar">' + q[0] + '</span>' +
+          '<img class="avatar" src="' + avatarImg + '" alt="' + q[1].split(' · ')[0] + '" width="48" height="48" loading="lazy">' +
           '<div class="author-info">' +
             '<span class="author-name">' + q[1].split(' · ')[0] + '</span>' +
             '<span class="author-role">' + (q[1].split(' · ')[1] || 'Soft Partner') + '</span>' +
