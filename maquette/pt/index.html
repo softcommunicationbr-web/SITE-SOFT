@@ -1179,17 +1179,6 @@
 
 </main>
 
-<!-- Barra Fixa Flutuante de Conversão no Mobile (Bottom Bar) -->
-<div class="nh-mobile-bottom-bar" id="nhMobileBottomBar">
-  <a class="nh-bottom-btn-wa" href="https://wa.me/68987043112?text=Ol%C3%A1%20%21%20Gostaria%20de%20entrar%20em%20contato%20para%20falar%20sobre%20v%C3%ADdeos%20com%20a%20Soft%20Communication." target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" style="margin-right:6px;"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.28-2.42 5.84a8.188 8.188 0 0 1-5.83 2.41c-1.46 0-2.89-.39-4.14-1.13l-.3-.18-3.09.81.82-3.01-.2-.31a8.16 8.16 0 0 1-1.25-4.43c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.64c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.07-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.49-.4-.42-.56-.43h-.47c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.28 3.79.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.17-.48-.29z"/></svg>
-    <span>Entrar em contato</span>
-  </a>
-  <a class="nh-bottom-btn-cta" href="#contact">
-    <span>Contato</span>
-  </a>
-</div>
-
 <!-- Lightbox para visionamento vídeo vertical em alta resolução -->
 <div class="nh-lightbox" id="nhLightbox" aria-hidden="true" role="dialog">
   <button class="nh-lightbox-close" id="nhLightboxClose" type="button" aria-label="Fechar">✕</button>
@@ -1431,7 +1420,6 @@
     var lightbox = document.getElementById('nhLightbox');
     var lbVideo = document.getElementById('nhLightboxVideo');
     var lbClose = document.getElementById('nhLightboxClose');
-    var bottomBar = document.getElementById('nhMobileBottomBar');
 
     if (prev && next && track) {
       prev.addEventListener('click', function () {
@@ -1499,16 +1487,6 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && lightbox && lightbox.classList.contains('is-open')) closeLb();
     });
-
-    // Exibir barra de conversão móvel após o scroll
-    window.addEventListener('scroll', function () {
-      if (!bottomBar) return;
-      if (window.scrollY > 400) {
-        bottomBar.classList.add('is-visible');
-      } else {
-        bottomBar.classList.remove('is-visible');
-      }
-    }, { passive: true });
 
     // Animação rica dos textos e cards surgindo do chão ao passar o scroll
     if ('IntersectionObserver' in window) {

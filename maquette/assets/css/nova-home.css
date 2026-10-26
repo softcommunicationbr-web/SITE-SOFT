@@ -2330,54 +2330,6 @@ html, body {
   .nh-booking-card { padding: 42px 28px; }
 }
 
-/* Barra Fixa de Conversão Mobile (Bottom Bar) */
-.nh-mobile-bottom-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: rgba(14, 14, 18, 0.94);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 1px solid var(--nh-border-glow);
-  padding: 10px 16px env(safe-area-inset-bottom, 10px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  z-index: 95;
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.6);
-  transform: translateY(120%);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.nh-mobile-bottom-bar.is-visible {
-  transform: translateY(0);
-}
-@media (min-width: 768px) {
-  .nh-mobile-bottom-bar { display: none !important; }
-}
-.nh-mobile-bottom-bar a {
-  flex: 1;
-  text-align: center;
-  padding: 12px 14px;
-  border-radius: 999px;
-  font-size: 13.5px;
-  font-weight: 600;
-  text-decoration: none;
-}
-.nh-bottom-btn-wa {
-  background: #25D366;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.nh-bottom-btn-cta {
-  background: #fff;
-  color: #111;
-}
-
 /* Lightbox para visionamento vídeo vertical */
 .nh-lightbox {
   position: fixed;
