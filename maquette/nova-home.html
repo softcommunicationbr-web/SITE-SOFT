@@ -46,15 +46,26 @@
   </div>
 
   <!-- Drawer Menu Mobile -->
-  <div class="nh-mobile-drawer" id="nhMobileDrawer">
-    <a href="#showcase" data-drawer-link>Réalisations &amp; Portfolio</a>
-    <a href="#etudes" data-drawer-link>Études de Cas &amp; Résultats</a>
-    <a href="#chiffres" data-drawer-link>Indicateurs de Confiance</a>
-    <a href="#methode" data-drawer-link>La Méthode en 9 Étapes</a>
-    <a href="#avis" data-drawer-link>Témoignages Clients</a>
-    <a href="#diferenciais" data-drawer-link>Nos Différentiels</a>
+    <div class="nh-mobile-drawer" id="nhMobileDrawer">
+    <div class="nh-drawer-lang-row">
+      <span class="nh-drawer-lang-label">Langue</span>
+      <div class="nh-lang-switch" aria-label="Langues disponíveis">
+        <a class="nh-lang-link is-active" href="nova-home.html" lang="fr">FR</a>
+        <a class="nh-lang-link" href="en/index.html" lang="en">EN</a>
+        <a class="nh-lang-link" href="pt/index.html" lang="pt">PT</a>
+      </div>
+    </div>
+    <a href="#showcase" data-drawer-link>Réalisations</a>
+    <a href="#etudes" data-drawer-link>Études de Cas</a>
+    <a href="#methode" data-drawer-link>La Méthode</a>
+    <a href="#avis" data-drawer-link>Témoignages</a>
+    <a href="#diferenciais" data-drawer-link>Différentiels</a>
     <a href="#faq" data-drawer-link>Questions Fréquentes</a>
     <a href="#contact" data-drawer-link style="color: var(--nh-accent); font-weight: 600;">Prendre contact →</a>
+    <div class="nh-drawer-trust">
+      <span class="nh-proof-stars" aria-hidden="true">★★★★★</span>
+      <span>Excellence &amp; Satisfaction certifiée</span>
+    </div>
   </div>
 </header>
 
@@ -68,7 +79,7 @@
       <div class="head_bar_top">
         <span>
           <span class="nh-live-dot" aria-hidden="true"></span>
-          Studio Cinématographique · Polynésie Française · 4K &amp; IA
+          Cinéma 4K &amp; IA · Polynésie
         </span>
       </div>
 
@@ -92,26 +103,6 @@
         <a class="nh-btn-secondary-hero" href="#showcase">
           <span>Voir les réalisations ↓</span>
         </a>
-      </div>
-
-      <div class="nh-hero-proof-bar" aria-label="Excellence cinématographique et satisfaction certifiée">
-        <span class="nh-proof-stars" aria-hidden="true">★★★★★</span>
-        <span class="nh-proof-text">Excellence cinématographique &amp; satisfaction certifiée</span>
-      </div>
-
-      <div class="nh-hero-benefits">
-        <div class="nh-benefit-item">
-          <div class="nh-bullet-dot"></div>
-          <span>Masters 4K &amp; déclinaisons 9:16</span>
-        </div>
-        <div class="nh-benefit-item">
-          <div class="nh-bullet-dot"></div>
-          <span>Direction artistique sur mesure</span>
-        </div>
-        <div class="nh-benefit-item">
-          <div class="nh-bullet-dot"></div>
-          <span>Projections immobilières IA sans location de décor</span>
-        </div>
       </div>
 
       <!-- Nível 3 (Detalhe): Visor de Direção 16:9 Oficial do Catálogo -->
@@ -1359,8 +1350,6 @@
         '.nh-hero-sub',
         '.head_bar_top',
         '.nh-hero-cta-row',
-        '.nh-hero-proof-bar',
-        '.nh-hero-benefits',
         '.nh-hero-video-wrap',
         '.nh-pillar-item',
         '.nh-section-title-wrap h2',
