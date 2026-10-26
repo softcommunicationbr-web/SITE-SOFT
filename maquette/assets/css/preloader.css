@@ -1,7 +1,7 @@
 /* ============================================================
    Soft Communication · Preloader Minimaliste Haute Performance
    Direção de Arte: Cinema Master · Tahiti · Luxury Dark
-   Símbolo Puro do Tiki Sagrado · Sem Ruído · Transição Ultra-Suave
+   Símbolo Puro do Tiki Sagrado · Sem Ruído · Saída Ultra-Suave
    ============================================================ */
 
 .preloader {
@@ -26,21 +26,24 @@ html.has-preloader .preloader {
   user-select: none;
   -webkit-user-select: none;
   contain: strict;
-  will-change: opacity, transform;
-  transition: opacity 0.85s cubic-bezier(.16, 1, .3, 1), transform 0.85s cubic-bezier(.16, 1, .3, 1);
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.82s cubic-bezier(.85, 0, .15, 1);
 }
 
+/* Saída Cinemática · Desliza suavemente para cima saindo da tela principal */
 .preloader.is-exiting {
-  opacity: 0 !important;
-  transform: scale(1.02) !important;
+  transform: translate3d(0, -100%, 0) !important;
   pointer-events: none !important;
-  transition: opacity 0.85s cubic-bezier(.16, 1, .3, 1), transform 0.85s cubic-bezier(.16, 1, .3, 1) !important;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.85);
+  border-bottom: 1px solid rgba(216, 200, 176, 0.16);
+  transition: transform 0.82s cubic-bezier(.85, 0, .15, 1) !important;
 }
 
 .preloader.is-exiting .preloader-tiki-wrap {
   opacity: 0 !important;
-  transform: scale(1.04) !important;
-  transition: opacity 0.75s cubic-bezier(.16, 1, .3, 1), transform 0.75s cubic-bezier(.16, 1, .3, 1) !important;
+  transform: translate3d(0, -50px, 0) scale(0.95) !important;
+  transition: opacity 0.5s ease-out, transform 0.65s cubic-bezier(.85, 0, .15, 1) !important;
 }
 
 /* Símbolo Tiki Sagrado Puro · 100% Nítido, Perfeitamente Centralizado */
@@ -51,17 +54,18 @@ html.has-preloader .preloader {
   align-items: center;
   margin: 0;
   opacity: 0;
-  transform: scale(0.94);
+  transform: scale(0.92);
   will-change: transform, opacity;
   pointer-events: none;
 }
 
 .preloader-tiki-svg {
   display: block;
-  width: clamp(72px, 12vw, 110px);
+  width: clamp(74px, 12vw, 112px);
   height: auto;
   transform-origin: 50% 50%;
   will-change: transform, opacity;
+  filter: drop-shadow(0 0 22px rgba(216, 200, 176, 0.18));
 }
 
 .preloader-tiki-svg path {
@@ -86,16 +90,6 @@ html.has-preloader .preloader {
   border: none !important;
   box-shadow: none !important;
   background: none !important;
-}
-
-/* Se ainda houver elementos decorativos residuais, oculta */
-.preloader-backdrop,
-.preloader-hud,
-.preloader-shockwave,
-.preloader-light-shaft,
-.preloader-laser-line,
-.preloader-tiki-sweep,
-.preloader-beam {
   display: none !important;
 }
 

@@ -1519,14 +1519,26 @@
         }
       });
 
-      // Elementos do topo revelam com suavidade logo após carregar
-      setTimeout(function () {
+      // Elementos do topo revelam com suavidade sincronizados com a abertura da tela principal
+      function revealTopEls() {
+        if (topEls.__revealed) return;
+        topEls.__revealed = true;
         topEls.forEach(function (el, i) {
           setTimeout(function () {
             el.classList.add('is-risen');
           }, i * 65);
         });
-      }, 60);
+      }
+
+      if (document.documentElement.classList.contains('has-preloader')) {
+        window.addEventListener('soft-preloader-exit', function () {
+          setTimeout(revealTopEls, 90);
+        }, { once: true });
+        window.addEventListener('soft-preloader-done', revealTopEls, { once: true });
+        setTimeout(revealTopEls, 2500);
+      } else {
+        setTimeout(revealTopEls, 60);
+      }
 
       // Função ultra-suave de contagem progressiva dos números (Odometer / Counter Roll-up)
       function animateNumber(el, duration) {

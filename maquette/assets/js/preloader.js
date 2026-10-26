@@ -1,7 +1,7 @@
 /* ============================================================
    Soft Communication · Preloader Minimaliste Haute Performance
    Direção de Arte: Cinema Master · Tahiti · Luxury Dark
-   Símbolo Puro do Tiki Sagrado · Sem Ruído · Transição Ultra-Suave
+   Símbolo Puro do Tiki Sagrado · Sem Ruído · Saída Ultra-Suave
    ============================================================ */
 (function (w, d) {
   'use strict';
@@ -17,9 +17,9 @@
 
   var tiki = el.querySelector('.preloader-tiki-wrap') || el.querySelector('svg');
 
-  // Curvas de aceleração ultra-suaves (DCI 4K Luxury)
+  // Curvas de aceleração ultra-suaves cinematográficas
   var EASE_SMOOTH = 'cubic-bezier(.16, 1, .3, 1)';
-  var EASE_EXIT   = 'cubic-bezier(.22, 1, .36, 1)';
+  var EASE_EXIT   = 'cubic-bezier(.85, 0, .15, 1)';
 
   var anims = [];
   var finished = false;
@@ -43,28 +43,38 @@
     });
     anims = [];
     el.classList.remove('is-exiting');
-    el.style.opacity = '';
     el.style.transform = '';
+    el.style.opacity = '';
+    el.style.transition = '';
     if (tiki) {
-      tiki.style.opacity = '';
       tiki.style.transform = '';
+      tiki.style.opacity = '';
+      tiki.style.transition = '';
     }
   }
 
   function schedule() {
     // 1. Entrada suave e sublime do Símbolo Sagrado
     if (tiki) {
-      A(tiki, [
-        { opacity: 0, transform: 'scale(0.92)' },
+      var anim = A(tiki, [
+        { opacity: 0, transform: 'scale(0.90)' },
         { opacity: 1, transform: 'scale(1)' }
       ], { delay: 60, duration: 680, easing: EASE_SMOOTH });
+
+      if (!anim) {
+        setTimeout(function () {
+          tiki.style.transition = 'opacity 0.68s ' + EASE_SMOOTH + ', transform 0.68s ' + EASE_SMOOTH;
+          tiki.style.opacity = '1';
+          tiki.style.transform = 'scale(1)';
+        }, 60);
+      }
     }
 
-    // 2. Tempo de contemplação elegante antes do dissolve cinematográfico
-    var holdDuration = 1450;
+    // 2. Tempo de contemplação elegante antes da cortina subir saindo da tela principal
+    var holdDuration = 1350;
     setTimeout(function () {
       if (!finished && !finishing) {
-        exitSmooth(780, false);
+        exitSmooth(820, false);
       }
     }, holdDuration);
 
@@ -74,7 +84,7 @@
       if (currentRun === runId && !finished) {
         done();
       }
-    }, holdDuration + 1200);
+    }, holdDuration + 1400);
   }
 
   function exitSmooth(dur, isUserSkip) {
@@ -82,21 +92,35 @@
     finishing = true;
     runId++;
 
-    var exitDuration = dur || (isUserSkip ? 420 : 780);
+    var exitDuration = dur || (isUserSkip ? 460 : 820);
     el.classList.add('is-exiting');
 
-    // Dissolve ultra-suave da tela inteira revelando o site
-    A(el, [
-      { opacity: 1, transform: 'scale(1)' },
-      { opacity: 0, transform: 'scale(1.02)' }
+    // Avisa que a saída da tela principal iniciou (para o hero revelar em perfeita harmonia)
+    w.dispatchEvent(new CustomEvent('soft-preloader-exit', { detail: { duration: exitDuration } }));
+
+    // Cortina sobe suavemente saindo da tela principal
+    var animEl = A(el, [
+      { transform: 'translate3d(0, 0, 0)' },
+      { transform: 'translate3d(0, -100%, 0)' }
     ], { duration: exitDuration, easing: EASE_EXIT });
 
-    // Fade-out suave simultâneo do símbolo
+    if (!animEl) {
+      el.style.transition = 'transform ' + (exitDuration / 1000) + 's ' + EASE_EXIT;
+      el.style.transform = 'translate3d(0, -100%, 0)';
+    }
+
+    // Símbolo Tiki sobe suavemente com inércia e suave fade
     if (tiki) {
-      A(tiki, [
-        { opacity: 1, transform: 'scale(1)' },
-        { opacity: 0, transform: 'scale(1.04)' }
+      var animTiki = A(tiki, [
+        { transform: 'translate3d(0, 0, 0) scale(1)', opacity: 1 },
+        { transform: 'translate3d(0, -50px, 0) scale(0.95)', opacity: 0 }
       ], { duration: Math.min(exitDuration, 520), easing: EASE_EXIT });
+
+      if (!animTiki) {
+        tiki.style.transition = 'opacity 0.45s ease-out, transform 0.52s ' + EASE_EXIT;
+        tiki.style.opacity = '0';
+        tiki.style.transform = 'translate3d(0, -50px, 0) scale(0.95)';
+      }
     }
 
     setTimeout(function () {
@@ -118,7 +142,7 @@
 
   function skip() {
     if (finished || finishing) return;
-    exitSmooth(420, true);
+    exitSmooth(460, true);
   }
 
   function onKey(e) {
@@ -130,7 +154,7 @@
 
   // Interação do visitante: toque, clique ou scroll revela o site suavemente
   var canGestureSkip = false;
-  setTimeout(function () { canGestureSkip = true; }, 250);
+  setTimeout(function () { canGestureSkip = true; }, 220);
 
   el.addEventListener('click', function () {
     skip();
