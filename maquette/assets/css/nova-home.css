@@ -438,45 +438,27 @@ html, body {
   line-height: 1.62;
 }
 
-/* Prova Social Editorial abaixo dos CTAs */
+/* Prova Social Editorial abaixo dos CTAs (Clean, Minimalista & Sem Card/Avatares) */
 .nh-hero-proof-bar {
   display: inline-flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-top: 22px;
-  padding: 8px 18px;
-  border-radius: 999px;
-  background: rgba(27, 21, 18, 0.72);
-  border: 1px solid rgba(216, 200, 176, 0.16);
-}
-.nh-proof-avatars {
-  display: flex;
-  align-items: center;
-}
-.nh-proof-avatars img {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1.5px solid #1A1410;
-  margin-left: -8px;
-}
-.nh-proof-avatars img:first-child {
-  margin-left: 0;
-}
-.nh-proof-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--nh-text-secondary);
+  gap: 10px;
+  margin-top: 20px;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 .nh-proof-stars {
   color: var(--nh-accent);
-  letter-spacing: 2px;
-  font-size: 12px;
+  letter-spacing: 3px;
+  font-size: 13px;
+}
+.nh-proof-text {
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: rgba(243, 237, 227, 0.72);
+  font-weight: 400;
 }
 
 .nh-hero-benefits {
