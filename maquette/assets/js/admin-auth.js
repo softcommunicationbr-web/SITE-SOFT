@@ -1,7 +1,8 @@
 /* ============================================================
    Soft Communication · Autenticação do Painel (/admin)
-   Senha única de acesso: 3131
-   Valida contra a tabela public.admin_auth no Supabase PostgreSQL.
+   A senha NÃO fica neste arquivo: é conferida no servidor pela função
+   public.admin_verificar_senha (hash bcrypt, trava após 10 erros).
+   Ver ferramentas/admin_senha.sql.
    ============================================================ */
 (function (w, d) {
   'use strict';
@@ -9,7 +10,6 @@
   var SUPABASE_URL = 'https://xvabghgvrhpnyywpmodb.supabase.co';
   var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YWJnaGd2cmhwbnl5d3Btb2RiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3NTgwNTEsImV4cCI6MjEwNzMzNDA1MX0.d0CNiaTYEnpsCY4N9qS6HNIxa3u7DYtzAOErvZHzC0w';
   var AUTH_STORAGE_KEY = 'soft_admin_session_auth_v1';
-  var MASTER_PASS = '3131';
 
   function isAuth() {
     try {
@@ -41,41 +41,27 @@
   }
 
   function verifyPasswordInDb(password) {
-    if (password !== MASTER_PASS) {
-      return Promise.reject(new Error('Senha incorreta. Verifique e tente novamente.'));
-    }
-    // Verifica e registra no banco de dados Supabase (tabela admin_auth)
-    return fetch(SUPABASE_URL + '/rest/v1/admin_auth?select=id,username,role&password_hash=eq.' + encodeURIComponent(password), {
+    // Conferência só no servidor (RPC). Sem rede = sem acesso (não há mais senha de reserva no código).
+    return fetch(SUPABASE_URL + '/rest/v1/rpc/admin_verificar_senha', {
+      method: 'POST',
       headers: {
         'apikey': SUPABASE_ANON,
-        'Authorization': 'Bearer ' + SUPABASE_ANON
-      }
+        'Authorization': 'Bearer ' + SUPABASE_ANON,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ p_senha: password })
     })
     .then(function (res) {
-      if (!res.ok) throw new Error('Erro ao verificar no banco de dados.');
-      return res.json();
-    })
-    .then(function (data) {
-      if (data && data.length > 0) {
-        // Atualiza last_login no banco
-        fetch(SUPABASE_URL + '/rest/v1/admin_auth?id=eq.' + data[0].id, {
-          method: 'PATCH',
-          headers: {
-            'apikey': SUPABASE_ANON,
-            'Authorization': 'Bearer ' + SUPABASE_ANON,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({ last_login: new Date().toISOString() })
-        }).catch(function () { /* falha silenciosa de telemetria */ });
+      return res.json().catch(function () { return null; }).then(function (data) {
+        if (!res.ok) {
+          var m = data && data.message;
+          throw new Error(m && /tentativas/i.test(m) ? m : 'Não foi possível verificar agora. Tente de novo.');
+        }
+        if (data !== true) throw new Error('Senha incorreta. Verifique e tente novamente.');
         return true;
-      }
-      return true; // Senha master validada
-    })
-    .catch(function (err) {
-      // Se offline ou erro de rede, a senha master continua válida
-      console.warn('Supabase auth offline fallback:', err);
-      return true;
+      });
+    }, function () {
+      throw new Error('Sem conexão com o servidor. Tente de novo.');
     });
   }
 

@@ -1,43 +1,43 @@
-# Prospecção no painel (LeadFinder → /admin/leads)
+# LeadFinder no painel (/admin/leads)
 
-Página `maquette/admin/leads.html` + `assets/js/admin-leads.js` (tela), `supabase/functions/leadfinder/index.ts` (servidor) e `ferramentas/leadfinder.sql` (banco). É a porta do app LeadFinder (Next.js) para o painel estático da Soft. Busca empresas no Google Places, guarda uma carteira compartilhada e usa o Claude para analisar cada lead ou responder perguntas livres.
+O app LeadFinder (Next.js) portado para o site estático, com a mesma tela e o mesmo servidor:
 
-## Por que é diferente do resto do painel
+| Parte | Arquivo |
+|---|---|
+| Tela | `maquette/admin/leads.html`, `maquette/assets/js/admin-leads.js`, `maquette/assets/css/leadfinder.css` |
+| Servidor (mesmas rotas do original: `/leads`, `/places`, `/ai`, `/geocode`, `/bug`) | `supabase/functions/leadfinder/index.ts` |
+| Banco (carteira compartilhada, teto de custo, registro) | `ferramentas/leadfinder.sql` |
+| Senha do painel no servidor | `ferramentas/admin_senha.sql` |
 
-A senha do painel (`admin-auth.js`) só esconde a tela: ela não protege nada no servidor. Esta página gasta dinheiro (Google e Anthropic), então tem **um segundo login, real**:
+## Segurança
 
-- link mágico do Supabase Auth, sem cadastro aberto (`create_user: false`);
-- e-mail precisa estar em `leadfinder_membros`;
-- toda chamada paga passa pela Edge Function, que confere a sessão e o teto diário (`leadfinder_uso`, persistente);
-- as chaves do Google e da Anthropic ficam só nos secrets do Supabase, nunca no navegador nem no Git.
+- **Senha do painel:** só o hash fica no banco. O código do site não tem mais senha. 10 erros em 10 minutos bloqueiam por 10 minutos.
+- **Prospecção:** além da senha do painel, exige login por link mágico (Supabase Auth) de um e-mail cadastrado em `leadfinder_membros`. O servidor confere tudo; a senha do painel sozinha não libera o gasto.
+- **Chaves:** Google e Anthropic só nos secrets do Supabase, nunca no navegador nem no Git.
 
-## Ligar (uma vez)
+## Ligar (uma vez, no Supabase do projeto)
 
-1. **Banco:** rode `ferramentas/leadfinder.sql` no SQL Editor e cadastre os 3 e-mails:
-   `insert into public.leadfinder_membros (email) values ('a@x.com'),('b@x.com'),('c@x.com');`
-2. **Usuários:** Supabase → Authentication → Users → *Invite user* para os mesmos 3 e-mails.
-3. **Redirect do link:** Authentication → URL Configuration → *Redirect URLs*: `https://softcommunicaiton.com/admin/leads` e `https://www.softcommunicaiton.com/admin/leads`.
-4. **Função:** `supabase functions deploy leadfinder` (ou pelo painel, colando `index.ts`).
-5. **Secrets** (Edge Functions → Secrets), na conta do Calebe:
+1. **SQL Editor:** rode `ferramentas/leadfinder.sql` e depois `ferramentas/admin_senha.sql`. Em seguida, defina a senha (troque pela senha escolhida):
+   `update public.admin_auth set password_hash = extensions.crypt('SENHA', extensions.gen_salt('bf'));`
+2. **Membros:** `insert into public.leadfinder_membros (email) values ('a@x.com'),('b@x.com'),('c@x.com');`
+3. **Usuários:** Authentication → Users → *Invite user* para os mesmos 3 e-mails.
+4. **Redirect:** Authentication → URL Configuration → *Redirect URLs*: `https://softcommunicaiton.com/admin/leads` e `https://www.softcommunicaiton.com/admin/leads`.
+5. **Função:** publicar `leadfinder` com **verify JWT desligado** (a função confere o usuário por conta própria).
+6. **Secrets** (Edge Functions → Secrets):
 
-| Secret | Obrigatório | Valor |
-|---|---|---|
-| `GOOGLE_MAPS_API_KEY` | para buscar | chave restrita **só** à Places API (New), sem restrição de referenciador (é usada no servidor) |
-| `ANTHROPIC_API_KEY` | para a IA | chave da Anthropic. Sem ela, a página funciona e avisa "IA não ligada" |
-| `LEADFINDER_AI_MODEL` | não | padrão `claude-haiku-5-5` (barato). Trocar por `claude-sonnet-5-5` se quiser análises mais finas |
-| `LEADFINDER_DAILY_CALL_CAP` | não | teto diário de chamadas ao Google (padrão 200) |
-| `LEADFINDER_AI_DAILY_CAP` | não | teto diário de análises/perguntas à IA (padrão 100) |
-| `LEADFINDER_ORIGINS` | não | domínios que podem chamar a função (padrão: softcommunicaiton.com, www, site-soft.vercel.app, localhost:8000) |
+| Secret | Valor |
+|---|---|
+| `GOOGLE_MAPS_API_KEY` | chave restrita **só** à Places API (New). Sem ela, o app roda em modo demonstração |
+| `ANTHROPIC_API_KEY` | chave da Anthropic (começa com `sk-ant-api`) |
+| `LEADFINDER_AI_MODEL` | opcional; padrão `claude-sonnet-5-5` |
+| `LEADFINDER_AI_EFFORT` | opcional; padrão `low` |
+| `LEADFINDER_DAILY_CALL_CAP` / `LEADFINDER_AI_DAILY_CAP` | opcionais; tetos diários (padrão 200 / 300) |
+| `LEADFINDER_AGENT_TOKEN` | opcional; token do agente Hermes para `POST /ai` |
+| `LEADFINDER_ALERT_WEBHOOK`, `LEADFINDER_ALERT_FORMAT` | opcionais; avisos de erro (como no original) |
 
-6. **Teto no fornecedor (a proteção real):** orçamento com alerta e cota diária no Google Cloud; limite de gasto mensal no Console da Anthropic.
+7. **Mapa:** para ver leads reais no mapa, crie uma **segunda** chave do Google, só Maps JavaScript API, restrita por referenciador a `https://softcommunicaiton.com/*`, e coloque em `googleMapsBrowserKey` no `assets/js/config.js`. Essa pode ficar pública, porque está restrita.
+8. **Teto no fornecedor:** orçamento com alerta no Google Cloud e limite de gasto mensal na Anthropic.
 
-## Regras de uso
+## IA
 
-- **Google Places:** a carteira guarda só o `place_id`; nome, endereço e telefone são buscados de novo ao abrir. Não exportar listas, não mostrar em mapa que não seja do Google.
-- **Contato:** individual e revisado, nunca em massa. Toda mensagem sugerida oferece "não receber mais". Empresas (pessoa jurídica) apenas. A Polinésia segue a lei francesa (Informatique et Libertés/RGPD); o Brasil, a LGPD. O `leadfinder_log` registra quem buscou e analisou.
-- **IA:** a análise usa só os dados da busca e diz o que falta. Revise antes de enviar.
-
-## O que fica de fora (de propósito)
-
-- Mapa, varredura de área, exportação CSV e backup do app original: o mapa exige Google Maps JS com chave de navegador, e a exportação conflita com os termos do Places.
-- O token do agente Hermes (`LEADFINDER_AGENT_TOKEN`): não foi trazido para cá. Se precisar, ele ganha uma conta própria em `leadfinder_membros`.
+Claude Sonnet 5.5 com esforço baixo (`output_config.effort: "low"`), API `2026-10-21`. Se o Sonnet recusar um pedido, a Anthropic tenta o modelo recomendado (`fallbacks: "default"`). O prompt fala dos serviços da Soft, usa só os dados do Google e diz o que falta.

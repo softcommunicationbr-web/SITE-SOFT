@@ -543,7 +543,7 @@ ul, ol { padding: 0; list-style: none; }
 
 .maquette-banner { display: none !important; }
 
-/* ---------- Autenticação 3131 (Fundo Branco Clean) ---------- */
+/* ---------- Autenticação do painel (Fundo Branco Clean) ---------- */
 html.admin-locked .a-shell { display: none !important; }
 .admin-auth-overlay {
   position: fixed;

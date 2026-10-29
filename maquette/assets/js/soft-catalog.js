@@ -160,7 +160,6 @@
     function login(a, b) {
       var pass = (b !== undefined ? b : a);
       if (typeof pass === 'string') pass = pass.trim();
-      var MASTER_PASS = '3131';
       if (!pass) return Promise.reject(new Error('Digite a senha de administrador.'));
 
       function grant(email) {
@@ -173,22 +172,18 @@
         return s;
       }
 
-      if (pass === MASTER_PASS) {
-        return Promise.resolve(grant('admin@softcommunicaiton.com'));
-      }
-
-      return fetchT(CFG.supabaseUrl + '/rest/v1/admin_auth?select=id,username&password_hash=eq.' + encodeURIComponent(pass), {
-        headers: sbHeaders(null, { Accept: 'application/json' })
-      }, 6000)
+      // Senha conferida só no servidor (ferramentas/admin_senha.sql).
+      return fetchT(CFG.supabaseUrl + '/rest/v1/rpc/admin_verificar_senha', {
+        method: 'POST',
+        headers: sbHeaders(null, { Accept: 'application/json', 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ p_senha: pass })
+      }, 8000)
       .then(function (r) {
-        if (!r.ok) throw new Error('Senha incorreta.');
-        return r.json();
-      })
-      .then(function (rows) {
-        if (rows && rows.length > 0) {
-          return grant((rows[0].username || 'admin') + '@softcommunicaiton.com');
-        }
-        throw new Error('Senha incorreta. Tente novamente.');
+        return r.json().catch(function () { return null; }).then(function (ok) {
+          if (!r.ok) throw new Error(ok && ok.message && /tentativas/i.test(ok.message) ? ok.message : 'Não foi possível verificar agora.');
+          if (ok !== true) throw new Error('Senha incorreta. Tente novamente.');
+          return grant('admin@softcommunicaiton.com');
+        });
       });
     }
     function magicLink(email) {
