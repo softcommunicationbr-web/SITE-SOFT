@@ -3,156 +3,168 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Prospecção · Soft &amp; Co.</title>
-<meta name="description" content="Prospecção interna de empresas (uso restrito).">
+<title>LeadFinder — prospecção local · Soft &amp; Co.</title>
+<meta name="description" content="Encontre empresas para prospectar em qualquer lugar do mundo (uso interno).">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/soft-simbolo-tiki-chocolate.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/tokens.css?v=20261025-5">
-<link rel="stylesheet" href="../assets/css/admin.css?v=20261025-5">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/leadfinder.css?v=20261029-2">
+<!-- Trava de senha do painel (não mexer) -->
 <script src="../assets/js/admin-auth.js?v=20261025-5"></script>
-<style>
-  .lf-row { padding: 16px 0; border-bottom: 1px solid #E5E0D8; }
-  .lf-row-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; align-items: baseline; }
-  .lf-name { font-weight: 700; color: #17110E; font-size: 15px; }
-  .lf-meta { color: #5C4E44; font-size: 12.5px; }
-  .lf-score { font-weight: 800; font-size: 12px; letter-spacing: .08em; }
-  .lf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 14px; margin-top: 10px; }
-  .lf-ai { margin-top: 10px; padding: 12px 14px; background: #F4F1EC; border-left: 3px solid #17110E; font-size: 13px; color: #17110E; }
-  .lf-ai p { margin: 4px 0; }
-  .lf-cats { display: flex; flex-wrap: wrap; gap: 8px; }
-  .lf-cats label { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; padding: 6px 10px; border: 1px solid #D8CFC2; border-radius: 999px; cursor: pointer; }
-  .lf-msg { margin-top: 10px; font-size: 13px; }
-  .lf-msg[data-kind="err"] { color: #B91C1C; }
-  .lf-answer { white-space: pre-wrap; margin-top: 12px; font-size: 13.5px; color: #17110E; }
-  .lf-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-  .lf-filter { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
-  .lf-filter button[aria-pressed="true"] { background: #17110E; color: #F4F1EC; }
-  [hidden] { display: none !important; }
-</style>
 </head>
-<body>
-<a class="skip-link btn" href="#contenu">Pular para o conteúdo</a>
+<body class="lf-body">
+<!--
+  LeadFinder portado do app Next.js (app/page.tsx) para HTML + CSS + JS puro.
+  Partes fixas (rótulos, textos) ficam aqui; tudo que depende de dados é
+  montado por assets/js/admin-leads.js só com textContent/createElement.
+-->
+<div class="lf-app" id="lf-root">
+  <div class="aurora" aria-hidden="true"><i></i></div>
 
-<div class="a-shell">
-  <aside class="a-side">
-    <a class="brand" href="index.html" aria-label="Painel Soft & Co.">
-      <img src="../assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="110" height="36">
-    </a>
-    <nav class="a-nav" aria-label="Navegação administrativa">
-      <a href="index.html">Visão Geral</a>
-      <a href="kanban.html">Meu Kanban</a>
-      <a href="mediatheque.html">Vídeos</a>
-      <a href="leads.html" aria-current="page">Prospecção</a>
-    </nav>
-    <div class="a-side-foot">
-      <button type="button" class="btn btn-outline btn-small" id="btn-side-logout">Sair</button>
-    </div>
-  </aside>
+  <main class="shell">
+    <a class="lf-back" href="index.html">← Voltar ao painel</a>
 
-  <main class="a-main" id="contenu">
-    <div class="a-mobile-head">
-      <img src="../assets/brand/soft-horizontal-creme.svg" alt="Soft Communication">
-      <span class="eyebrow">Prospecção</span>
-    </div>
-
-    <div class="a-topbar">
-      <div>
-        <p class="eyebrow">Uso interno · Calebe, Pedro e equipe</p>
-        <h1 class="a-title">Prospecção de empresas</h1>
-        <p class="small" style="margin-top:4px;">Busca no Google Places, carteira compartilhada e análise com Claude. Cada busca e cada análise custam: há teto diário.</p>
+    <!-- 1. Login (Supabase Auth, link mágico). Sem sessão, o app não aparece. -->
+    <section class="glass lf-login" id="lf-login" aria-labelledby="lf-login-t">
+      <div class="brand">
+        <div class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/></svg></div>
+        <div><h1 id="lf-login-t">LeadFinder</h1><div class="sub">Entre com seu e-mail para acessar a prospecção</div></div>
       </div>
-      <div class="a-topbar-actions">
-        <span class="tag" id="lf-who">Sem sessão</span>
-        <button type="button" class="btn btn-outline btn-small" id="lf-logout" hidden>Sair da prospecção</button>
-      </div>
-    </div>
-
-    <!-- 1. Login real (Supabase Auth, link mágico). A senha do painel não libera esta página. -->
-    <section class="a-card" id="lf-login" aria-labelledby="lf-login-t">
-      <div class="a-card-head"><div><p class="eyebrow">Acesso restrito</p><h2 id="lf-login-t" class="a-heading">Entrar com seu e-mail</h2></div></div>
-      <p class="small">Só e-mails autorizados recebem o link. Abra o link neste mesmo navegador.</p>
-      <form class="a-form" id="lf-login-form" style="margin-top:14px;">
+      <form id="lf-login-form" novalidate>
         <div class="field">
-          <label for="lf-email">E-mail</label>
-          <input class="input" id="lf-email" type="email" autocomplete="email" required maxlength="200">
+          <label class="field-label" for="lf-email">E-mail</label>
+          <input class="input" id="lf-email" type="email" autocomplete="email" required maxlength="200" placeholder="voce@empresa.com">
         </div>
-        <div class="actions" style="margin-top:12px;"><button class="btn btn-small" type="submit">Enviar link de acesso</button></div>
-        <p class="lf-msg small" id="lf-login-msg" role="status" aria-live="polite"></p>
+        <button class="button block" type="submit" id="lf-login-btn">Enviar link de acesso</button>
+        <p class="hint lf-login-msg" id="lf-login-msg" role="status" aria-live="polite"></p>
       </form>
+      <div class="hint">Só e-mails autorizados recebem o link. Abra o link neste mesmo navegador.</div>
     </section>
 
+    <!-- 2. App (port de app/page.tsx) -->
     <div id="lf-app" hidden>
-      <section class="a-card" aria-labelledby="lf-busca-t">
-        <div class="a-card-head">
-          <div><p class="eyebrow">Nova busca</p><h2 id="lf-busca-t" class="a-heading">Onde e o quê</h2></div>
-          <span class="small" id="lf-uso"></span>
+      <header class="topbar glass">
+        <div class="brand">
+          <div class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/></svg></div>
+          <div><h1>LeadFinder</h1><div class="sub">Prospecção local com mais foco e menos trabalho manual</div></div>
         </div>
-        <form class="a-form" id="lf-search-form">
-          <div class="fields">
-            <div class="field">
-              <label for="lf-where">Onde prospectar (cidade, bairro ou endereço)</label>
-              <input class="input" id="lf-where" type="text" maxlength="120" required placeholder="Ex.: Papeete, Tahiti">
-            </div>
-            <div class="field">
-              <label for="lf-radius">Raio</label>
-              <div class="select-wrap"><select class="select" id="lf-radius">
-                <option value="2">2 km</option><option value="5">5 km</option><option value="10" selected>10 km</option><option value="25">25 km</option><option value="50">50 km</option>
-              </select></div>
-            </div>
-            <div class="field">
-              <label for="lf-lang">Idioma dos resultados</label>
-              <div class="select-wrap"><select class="select" id="lf-lang"><option value="fr">Francês</option><option value="pt-BR">Português</option><option value="en">Inglês</option></select></div>
-            </div>
+        <div class="top-actions">
+          <span class="pill demo" id="lf-mode-pill"><span class="dot"></span><span id="lf-mode-text">Modo demonstração</span></span>
+          <span class="pill" aria-live="polite" title="Os leads são salvos sozinhos neste navegador e na carteira da equipe"><span class="dot" id="lf-saved-dot" style="background:#d4d4d8"></span><span id="lf-saved-text">Aguardando alterações</span></span>
+          <div class="bell" id="lf-bell">
+            <button type="button" class="button secondary icon" id="lf-bell-btn" aria-haspopup="dialog" aria-expanded="false" aria-label="Notificações">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 0 0 4 0"/></svg>
+            </button>
           </div>
-          <fieldset style="border:0;padding:0;margin:14px 0 0;">
-            <legend class="small" style="margin-bottom:8px;font-weight:700;">Categorias (cada uma = 1 chamada paga)</legend>
-            <div class="lf-cats" id="lf-cats"></div>
-          </fieldset>
-          <div class="actions" style="margin-top:14px;"><button class="btn btn-small" type="submit" id="lf-search-btn">Buscar empresas</button></div>
-          <p class="lf-msg small" id="lf-search-msg" role="status" aria-live="polite"></p>
-        </form>
-      </section>
-
-      <section class="a-card" aria-labelledby="lf-res-t">
-        <div class="a-card-head">
-          <div><p class="eyebrow">Resultados e carteira</p><h2 id="lf-res-t" class="a-heading">Empresas</h2></div>
-          <button type="button" class="btn btn-secondary btn-small" id="lf-reload">Recarregar carteira</button>
+          <button type="button" class="button" id="lf-csv" disabled><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>Exportar CSV</button>
+          <button type="button" class="button secondary" id="lf-logout" title="Sair da prospecção (o painel continua liberado)">Sair</button>
         </div>
-        <div class="lf-filter" id="lf-filter" role="group" aria-label="Filtrar por status"></div>
-        <div id="lf-list" aria-live="polite"><div class="small">Nenhuma empresa ainda. Faça uma busca.</div></div>
-        <p class="small" style="margin-top:12px;color:#5C4E44;">Dados de empresas: Google Maps. Pelos termos do Google, a carteira guarda só o identificador da empresa; nome, endereço e telefone são buscados de novo ao abrir.</p>
-      </section>
+      </header>
 
-      <section class="a-card" aria-labelledby="lf-ask-t">
-        <div class="a-card-head"><div><p class="eyebrow">Claude</p><h2 id="lf-ask-t" class="a-heading">Perguntar à IA</h2></div></div>
-        <form class="a-form" id="lf-ask-form">
-          <div class="field field-full">
-            <label for="lf-question">Pergunta sobre prospecção, abordagem ou oferta</label>
-            <textarea class="textarea" id="lf-question" maxlength="1500" required placeholder="Ex.: como abordar hotéis de Bora Bora que ainda não têm vídeo institucional?"></textarea>
-          </div>
-          <div class="actions" style="margin-top:10px;"><button class="btn btn-small" type="submit">Perguntar</button></div>
-          <p class="lf-msg small" id="lf-ask-msg" role="status" aria-live="polite"></p>
-          <div class="lf-answer" id="lf-answer"></div>
-        </form>
-      </section>
+      <div id="lf-notices"></div>
+
+      <div id="lf-body">
+        <div class="layout">
+          <aside class="glass filters" aria-label="Configuração da busca">
+            <div class="section-label">Configuração da busca</div>
+
+            <div class="field">
+              <label class="field-label" for="region">Onde prospectar (cidade, bairro ou endereço)</label>
+              <div class="row2">
+                <input id="region" class="input" list="region-list" placeholder="Ex.: Miami, Lisboa, Av. Paulista São Paulo…" maxlength="120" autocomplete="off">
+                <button type="button" class="button secondary" id="lf-locate">Localizar</button>
+              </div>
+              <datalist id="region-list"></datalist>
+              <div class="hint" aria-live="polite" id="lf-region-hint"></div>
+            </div>
+
+            <div class="field">
+              <span class="field-label" id="radius-label">Raio de busca</span>
+              <div class="segmented" role="radiogroup" aria-labelledby="radius-label" id="lf-radii"></div>
+            </div>
+
+            <div class="field">
+              <span class="field-label" id="sweep-label">Cobrir área maior (varredura)</span>
+              <div class="segmented" role="radiogroup" aria-labelledby="sweep-label" id="lf-sweeps"></div>
+              <div class="hint" id="lf-sweep-hint"></div>
+            </div>
+
+            <div class="field">
+              <span class="field-label" id="goal-label">Foco da prospecção</span>
+              <div class="segmented" role="radiogroup" aria-labelledby="goal-label" id="lf-goals"></div>
+              <div class="hint" id="lf-goal-hint"></div>
+            </div>
+
+            <div class="field">
+              <div class="field-head">
+                <span class="field-label" id="lf-cat-label">Categorias (11)</span>
+                <button type="button" class="linkbtn" id="lf-cat-toggle">Limpar</button>
+              </div>
+              <div class="category-list" id="lf-cats"></div>
+              <div class="hint">Cada categoria gera uma consulta. Sem garantia de cobertura completa.</div>
+            </div>
+
+            <button type="button" class="button block" id="lf-search"></button>
+            <div id="lf-sweep-slot"></div>
+            <div id="lf-progress-slot"></div>
+            <div aria-live="polite" id="lf-message"></div>
+
+            <div class="field sect">
+              <label class="field-label" for="tpl">Mensagem de abordagem (WhatsApp)</label>
+              <textarea id="tpl" class="input area" rows="4" maxlength="500"></textarea>
+              <div class="hint">Use {nome} para o nome da empresa. O botão abre o WhatsApp com a mensagem pronta; o envio é sempre manual, um a um.</div>
+            </div>
+
+            <div class="field sect">
+              <span class="field-label">Seus dados</span>
+              <div class="row2">
+                <button type="button" class="button secondary" id="lf-backup" disabled><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>Backup</button>
+                <button type="button" class="button secondary" id="lf-restore"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4l4 4M4 21h16"/></svg>Restaurar</button>
+              </div>
+              <input id="lf-file" type="file" accept="application/json,.json" class="sr-only" tabindex="-1" aria-label="Arquivo de backup">
+              <div class="hint">Status, notas e datas ficam neste navegador e na carteira compartilhada da equipe. Baixe um backup de vez em quando.</div>
+            </div>
+
+            <div class="footer">Leads são oportunidades para avaliar, não garantia de interesse. Confira os dados antes de entrar em contato.</div>
+          </aside>
+
+          <section class="maincol">
+            <div class="stats">
+              <div class="glass stat"><div class="stat-label">Leads encontrados</div><div class="stat-value" id="lf-st-total">0</div><div class="stat-note">na lista atual</div></div>
+              <div class="glass stat"><div class="stat-label">Alta prioridade</div><div class="stat-value" id="lf-st-priority">0</div><div class="stat-note">pontuação ≥ 80</div></div>
+              <div class="glass stat"><div class="stat-label">Em acompanhamento</div><div class="stat-value" id="lf-st-contacted">0</div><div class="stat-note">contatados ou além</div></div>
+              <div class="glass stat"><div class="stat-label">Retornos pendentes</div><div class="stat-value" data-testid="followups" id="lf-st-followups">0</div><div class="stat-note">próxima ação até hoje</div></div>
+            </div>
+
+            <div class="toolbar">
+              <div class="tabs" role="tablist" aria-label="Visualização">
+                <button type="button" role="tab" aria-selected="true" class="tab" id="lf-tab-list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Lista</button>
+                <button type="button" role="tab" aria-selected="false" class="tab" id="lf-tab-map"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>Mapa</button>
+              </div>
+              <div class="searchbox"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/></svg><input class="input" id="lf-q" placeholder="Buscar nome, cidade, categoria, notas…" aria-label="Buscar nos leads"></div>
+            </div>
+
+            <div class="funnel" role="group" aria-label="Funil por status" id="lf-funnel"></div>
+
+            <div id="lf-view"></div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">LeadFinder v0.4 · Leads e status ficam salvos neste navegador e na carteira compartilhada da equipe (Supabase). A pontuação é uma heurística (nota, avaliações e presença de site) e não mede intenção de compra. Respeite os termos do Google Maps Platform e a LGPD ao usar os dados.</footer>
     </div>
   </main>
+
+  <div class="toasts" role="region" aria-label="Notificações" id="lf-toasts"></div>
 </div>
 
-<nav class="a-bottom" aria-label="Navegação administrativa móvel">
-  <a href="index.html">Painel</a>
-  <a href="kanban.html">Kanban</a>
-  <a href="mediatheque.html">Vídeos</a>
-  <a href="leads.html" aria-current="page">Prospecção</a>
-</nav>
-
-<div class="a-toast" id="toast" hidden role="status" aria-live="polite"></div>
-
 <script src="../assets/js/config.js?v=20261025-5"></script>
-<script src="../assets/js/admin-leads.js?v=20261029-1"></script>
+<script src="../assets/js/leadfinder/lib.js?v=20261029-2"></script>
+<script src="../assets/js/leadfinder/notify.js?v=20261029-2"></script>
+<script src="../assets/js/leadfinder/maps.js?v=20261029-2"></script>
+<script src="../assets/js/admin-leads.js?v=20261029-2"></script>
 </body>
 </html>
