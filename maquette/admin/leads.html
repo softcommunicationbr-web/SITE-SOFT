@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prospecção · Soft &amp; Co.</title>
+<meta name="description" content="Prospecção interna de empresas (uso restrito).">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="icon" type="image/svg+xml" href="../assets/brand/soft-simbolo-tiki-chocolate.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/tokens.css?v=20261025-5">
+<link rel="stylesheet" href="../assets/css/admin.css?v=20261025-5">
+<script src="../assets/js/admin-auth.js?v=20261025-5"></script>
+<style>
+  .lf-row { padding: 16px 0; border-bottom: 1px solid #E5E0D8; }
+  .lf-row-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; align-items: baseline; }
+  .lf-name { font-weight: 700; color: #17110E; font-size: 15px; }
+  .lf-meta { color: #5C4E44; font-size: 12.5px; }
+  .lf-score { font-weight: 800; font-size: 12px; letter-spacing: .08em; }
+  .lf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 14px; margin-top: 10px; }
+  .lf-ai { margin-top: 10px; padding: 12px 14px; background: #F4F1EC; border-left: 3px solid #17110E; font-size: 13px; color: #17110E; }
+  .lf-ai p { margin: 4px 0; }
+  .lf-cats { display: flex; flex-wrap: wrap; gap: 8px; }
+  .lf-cats label { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; padding: 6px 10px; border: 1px solid #D8CFC2; border-radius: 999px; cursor: pointer; }
+  .lf-msg { margin-top: 10px; font-size: 13px; }
+  .lf-msg[data-kind="err"] { color: #B91C1C; }
+  .lf-answer { white-space: pre-wrap; margin-top: 12px; font-size: 13.5px; color: #17110E; }
+  .lf-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .lf-filter { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+  .lf-filter button[aria-pressed="true"] { background: #17110E; color: #F4F1EC; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<a class="skip-link btn" href="#contenu">Pular para o conteúdo</a>
+
+<div class="a-shell">
+  <aside class="a-side">
+    <a class="brand" href="index.html" aria-label="Painel Soft & Co.">
+      <img src="../assets/brand/soft-horizontal-creme.svg" alt="Soft Communication" width="110" height="36">
+    </a>
+    <nav class="a-nav" aria-label="Navegação administrativa">
+      <a href="index.html">Visão Geral</a>
+      <a href="kanban.html">Meu Kanban</a>
+      <a href="mediatheque.html">Vídeos</a>
+      <a href="leads.html" aria-current="page">Prospecção</a>
+    </nav>
+    <div class="a-side-foot">
+      <button type="button" class="btn btn-outline btn-small" id="btn-side-logout">Sair</button>
+    </div>
+  </aside>
+
+  <main class="a-main" id="contenu">
+    <div class="a-mobile-head">
+      <img src="../assets/brand/soft-horizontal-creme.svg" alt="Soft Communication">
+      <span class="eyebrow">Prospecção</span>
+    </div>
+
+    <div class="a-topbar">
+      <div>
+        <p class="eyebrow">Uso interno · Calebe, Pedro e equipe</p>
+        <h1 class="a-title">Prospecção de empresas</h1>
+        <p class="small" style="margin-top:4px;">Busca no Google Places, carteira compartilhada e análise com Claude. Cada busca e cada análise custam: há teto diário.</p>
+      </div>
+      <div class="a-topbar-actions">
+        <span class="tag" id="lf-who">Sem sessão</span>
+        <button type="button" class="btn btn-outline btn-small" id="lf-logout" hidden>Sair da prospecção</button>
+      </div>
+    </div>
+
+    <!-- 1. Login real (Supabase Auth, link mágico). A senha do painel não libera esta página. -->
+    <section class="a-card" id="lf-login" aria-labelledby="lf-login-t">
+      <div class="a-card-head"><div><p class="eyebrow">Acesso restrito</p><h2 id="lf-login-t" class="a-heading">Entrar com seu e-mail</h2></div></div>
+      <p class="small">Só e-mails autorizados recebem o link. Abra o link neste mesmo navegador.</p>
+      <form class="a-form" id="lf-login-form" style="margin-top:14px;">
+        <div class="field">
+          <label for="lf-email">E-mail</label>
+          <input class="input" id="lf-email" type="email" autocomplete="email" required maxlength="200">
+        </div>
+        <div class="actions" style="margin-top:12px;"><button class="btn btn-small" type="submit">Enviar link de acesso</button></div>
+        <p class="lf-msg small" id="lf-login-msg" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <div id="lf-app" hidden>
+      <section class="a-card" aria-labelledby="lf-busca-t">
+        <div class="a-card-head">
+          <div><p class="eyebrow">Nova busca</p><h2 id="lf-busca-t" class="a-heading">Onde e o quê</h2></div>
+          <span class="small" id="lf-uso"></span>
+        </div>
+        <form class="a-form" id="lf-search-form">
+          <div class="fields">
+            <div class="field">
+              <label for="lf-where">Onde prospectar (cidade, bairro ou endereço)</label>
+              <input class="input" id="lf-where" type="text" maxlength="120" required placeholder="Ex.: Papeete, Tahiti">
+            </div>
+            <div class="field">
+              <label for="lf-radius">Raio</label>
+              <div class="select-wrap"><select class="select" id="lf-radius">
+                <option value="2">2 km</option><option value="5">5 km</option><option value="10" selected>10 km</option><option value="25">25 km</option><option value="50">50 km</option>
+              </select></div>
+            </div>
+            <div class="field">
+              <label for="lf-lang">Idioma dos resultados</label>
+              <div class="select-wrap"><select class="select" id="lf-lang"><option value="fr">Francês</option><option value="pt-BR">Português</option><option value="en">Inglês</option></select></div>
+            </div>
+          </div>
+          <fieldset style="border:0;padding:0;margin:14px 0 0;">
+            <legend class="small" style="margin-bottom:8px;font-weight:700;">Categorias (cada uma = 1 chamada paga)</legend>
+            <div class="lf-cats" id="lf-cats"></div>
+          </fieldset>
+          <div class="actions" style="margin-top:14px;"><button class="btn btn-small" type="submit" id="lf-search-btn">Buscar empresas</button></div>
+          <p class="lf-msg small" id="lf-search-msg" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="a-card" aria-labelledby="lf-res-t">
+        <div class="a-card-head">
+          <div><p class="eyebrow">Resultados e carteira</p><h2 id="lf-res-t" class="a-heading">Empresas</h2></div>
+          <button type="button" class="btn btn-secondary btn-small" id="lf-reload">Recarregar carteira</button>
+        </div>
+        <div class="lf-filter" id="lf-filter" role="group" aria-label="Filtrar por status"></div>
+        <div id="lf-list" aria-live="polite"><div class="small">Nenhuma empresa ainda. Faça uma busca.</div></div>
+        <p class="small" style="margin-top:12px;color:#5C4E44;">Dados de empresas: Google Maps. Pelos termos do Google, a carteira guarda só o identificador da empresa; nome, endereço e telefone são buscados de novo ao abrir.</p>
+      </section>
+
+      <section class="a-card" aria-labelledby="lf-ask-t">
+        <div class="a-card-head"><div><p class="eyebrow">Claude</p><h2 id="lf-ask-t" class="a-heading">Perguntar à IA</h2></div></div>
+        <form class="a-form" id="lf-ask-form">
+          <div class="field field-full">
+            <label for="lf-question">Pergunta sobre prospecção, abordagem ou oferta</label>
+            <textarea class="textarea" id="lf-question" maxlength="1500" required placeholder="Ex.: como abordar hotéis de Bora Bora que ainda não têm vídeo institucional?"></textarea>
+          </div>
+          <div class="actions" style="margin-top:10px;"><button class="btn btn-small" type="submit">Perguntar</button></div>
+          <p class="lf-msg small" id="lf-ask-msg" role="status" aria-live="polite"></p>
+          <div class="lf-answer" id="lf-answer"></div>
+        </form>
+      </section>
+    </div>
+  </main>
+</div>
+
+<nav class="a-bottom" aria-label="Navegação administrativa móvel">
+  <a href="index.html">Painel</a>
+  <a href="kanban.html">Kanban</a>
+  <a href="mediatheque.html">Vídeos</a>
+  <a href="leads.html" aria-current="page">Prospecção</a>
+</nav>
+
+<div class="a-toast" id="toast" hidden role="status" aria-live="polite"></div>
+
+<script src="../assets/js/config.js?v=20261025-5"></script>
+<script src="../assets/js/admin-leads.js?v=20261029-1"></script>
+</body>
+</html>
