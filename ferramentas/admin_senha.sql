@@ -2,9 +2,18 @@
 -- Soft Communication · senha do painel conferida no SERVIDOR
 -- A senha nunca fica no código do site: só o hash (bcrypt) no banco.
 -- Para trocar a senha, rode no SQL Editor (troque NOVA_SENHA):
---   update public.admin_auth set password_hash = extensions.crypt('NOVA_SENHA', extensions.gen_salt('bf'));
+--   update public.admin_auth set password_hash = extensions.crypt('NOVA_SENHA', extensions.gen_salt('bf')) where true;
 -- ============================================================
 create extension if not exists pgcrypto with schema extensions;
+
+-- Tabela da senha (cria se ainda não existir; se já existe, não mexe)
+create table if not exists public.admin_auth (
+  id int primary key default 1,
+  password_hash text,
+  last_login timestamptz
+);
+insert into public.admin_auth (password_hash)
+  select null where not exists (select 1 from public.admin_auth);
 
 -- Tentativas erradas (trava: 10 erros em 10 minutos bloqueiam por 10 minutos)
 create table if not exists public.admin_login_tentativas (
@@ -24,7 +33,7 @@ begin
                  where a.password_hash like '$2%' and a.password_hash = extensions.crypt(coalesce(p_senha, ''), a.password_hash))
     into ok;
   if ok then
-    update public.admin_auth set last_login = now();
+    update public.admin_auth set last_login = now() where true;
     delete from public.admin_login_tentativas where em < now() - interval '1 day';
   else
     insert into public.admin_login_tentativas default values;
