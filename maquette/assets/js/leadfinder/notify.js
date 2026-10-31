@@ -29,7 +29,16 @@
   function saveLog() { try { w.localStorage.setItem(LOG_KEY, JSON.stringify(log)); } catch (e) { /* log é opcional */ } }
   function txt(v) { return typeof v === 'string' ? v : (v == null ? '' : String(v)); }
 
-  function dismiss(id) { toasts = toasts.filter(function (x) { return x.id !== id; }); renderToasts(); }
+  var shown = new Set();
+  /** Sai deslizando e só então sai da lista. */
+  function dismiss(id) {
+    var node = ui.toasts && ui.toasts.querySelector('[data-toast="' + id + '"]');
+    var drop = function () { toasts = toasts.filter(function (x) { return x.id !== id; }); renderToasts(); };
+    if (!node || (w.matchMedia && w.matchMedia('(prefers-reduced-motion: reduce)').matches)) return drop();
+    if (node.classList.contains('out')) return;
+    node.classList.add('out');
+    w.setTimeout(drop, 200);
+  }
 
   /** notify({level, title, detail?, source?}) — igual ao original. */
   function notify(n) {
@@ -64,7 +73,8 @@
     if (!ui.toasts) return;
     ui.toasts.textContent = '';
     toasts.forEach(function (t) {
-      ui.toasts.appendChild(el('div', { class: 'toast ' + t.level, role: t.level === 'error' || t.level === 'warn' ? 'alert' : 'status' }, [
+      var isNew = !shown.has(t.id); shown.add(t.id);
+      ui.toasts.appendChild(el('div', { class: 'toast ' + t.level + (isNew ? ' is-new' : ''), 'data-toast': t.id, role: t.level === 'error' || t.level === 'warn' ? 'alert' : 'status' }, [
         el('span', { class: 'toast-dot', 'aria-hidden': 'true' }),
         el('div', { class: 'toast-body' }, [el('strong', { text: t.title }), t.detail ? el('span', { text: t.detail }) : null]),
         el('button', { class: 'toast-x', type: 'button', 'aria-label': 'Fechar notificação', text: '×', on: { click: function () { dismiss(t.id); } } })

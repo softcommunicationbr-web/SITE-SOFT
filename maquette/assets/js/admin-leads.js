@@ -19,7 +19,7 @@
   'use strict';
 
   var LF = w.LF;
-  var el = LF.el, icon = LF.icon, notify = LF.notify;
+  var el = LF.el, icon = LF.icon, notify = LF.notify, fx = LF.fx;
 
   /* ---------- configuração ---------- */
   var CFG = w.SOFT_CONFIG || {};
@@ -72,7 +72,7 @@
     seqTemplates: LF.SEQ_DEFAULTS.slice(), openSell: null, raioxBusy: [], propBusy: [], propLang: 'pt-BR', propServs: {}, quick: '',
     route: { sel: null, start: 'region', gps: null, mode: 'driving', result: null }, reportMonth: '', report: null, reportBusy: false
   };
-  var R = { cancelSweep: false, hydrated: new Set(), saveErrorShown: false, remoteIds: new Set(), started: false, crashed: false, histTimer: null };
+  var R = { cancelSweep: false, hydrated: new Set(), saveErrorShown: false, remoteIds: new Set(), started: false, crashed: false, histTimer: null, seqSeen: new Set(), seqLabel: new Map(), sellOpenAt: {} };
   var session = null;
 
   function set(patch) { Object.assign(S, patch); commit(); }
@@ -436,7 +436,7 @@
     var picks = portfolioFor(lead);
     var semDireito = picks.filter(function (p) { return !p.direitos; });
     if (semDireito.length && !w.confirm(semDireito.length + ' vídeo(s) sugerido(s) estão com direitos "a confirmar" no catálogo.\n\nIncluir assim mesmo na proposta? (Cancelar = proposta sem vídeos)')) picks = [];
-    var win = LF.proposalWindow(S.propLang);
+    var win = LF.proposalWindow(S.propLang, new URL('../assets/brand/soft-simbolo-tiki-chocolate.svg', w.location.href).href);
     if (!win) { notify({ level: 'warn', title: 'O navegador bloqueou a janela', detail: 'Permita pop-ups para este site e tente de novo.' }); return; }
     setBusy('propBusy', lead.id, true);
     var city = String(lead.address || '').split(',').slice(-3, -1).join(',').trim();
@@ -471,7 +471,10 @@
     var href = LF.whatsappLink(lead.phone, msg);
     if (!href) return null;
     var label = passo === 1 ? 'Abordar no WhatsApp' : 'Passo ' + passo + ': ' + st.proximo.nome;
-    return extLink(href, [icon('chat', 14), label], 'wa', function (e) {
+    var lbl = el('span', { class: 'wa-label', text: label });
+    var before = R.seqLabel.get(lead.id); R.seqLabel.set(lead.id, passo);
+    if (before && before !== passo && !fx.reduced()) lbl.classList.add('fx-swap');
+    return extLink(href, [icon('chat', 14), lbl], 'wa', function (e) {
       if (passo === 1) {
         var prev = isReal(lead) ? lastContato(lead.id) : null;
         if (prev && !w.confirm(lead.name + ' já foi abordada em ' + fmtWhen(prev.em) + ' por ' + who(prev.email) + '.\n\nAbordar de novo?')) { e.preventDefault(); return; }
@@ -865,15 +868,23 @@
     $('lf-backup').disabled = !S.leads.length;
   }
 
+  var TAB_HINT = {
+    list: 'Seus leads para trabalhar. Filtre pelo status, abra "Vender" para preparar a abordagem e use o botão verde do WhatsApp.',
+    map: 'Monte a rota de visitas do dia e veja os leads no mapa.',
+    hist: 'Tudo o que a equipe já fez, para ninguém repetir área, empresa, mensagem ou ideia.',
+    report: 'Como foi o mês: funil, taxa de resposta e o que funciona melhor.'
+  };
   function renderStats(D) {
-    $('lf-st-total').textContent = String(S.leads.length);
-    $('lf-st-priority').textContent = String(D.priority);
-    $('lf-st-contacted').textContent = String(D.contacted);
-    $('lf-st-followups').textContent = String(D.followUps);
+    fx.count($('lf-st-total'), 'st-total', S.leads.length);
+    fx.count($('lf-st-priority'), 'st-priority', D.priority);
+    fx.count($('lf-st-contacted'), 'st-contacted', D.contacted);
+    fx.count($('lf-st-followups'), 'st-followups', D.followUps);
     $('lf-tab-list').setAttribute('aria-selected', S.tab === 'list' ? 'true' : 'false');
     $('lf-tab-map').setAttribute('aria-selected', S.tab === 'map' ? 'true' : 'false');
     $('lf-tab-hist').setAttribute('aria-selected', S.tab === 'hist' ? 'true' : 'false');
     $('lf-tab-report').setAttribute('aria-selected', S.tab === 'report' ? 'true' : 'false');
+    fx.ink(d.querySelector('.lf-app .tabs'));
+    $('lf-tab-hint').textContent = TAB_HINT[S.tab] || '';
     var q = $('lf-q'); if (q.value !== S.search) q.value = S.search;
   }
 
@@ -905,6 +916,7 @@
       lead.phone ? el('a', { class: 'meta', href: 'tel:' + lead.phone.replace(/[^\d+]/g, '') }, [icon('phone', 13), lead.phone]) : null,
       lead.website ? el('span', { class: 'meta' }, [icon('globe', 13), 'Tem site']) : el('span', { class: 'meta gap' }, [icon('globe', 13), 'Sem site']),
       fake ? el('span', { class: 'meta warn', text: 'Dado fictício' }) : null,
+      !fake && !worked(lead, D.touch) ? fx.enter(el('span', { class: 'meta fresh', title: 'Ninguém da equipe trabalhou esta empresa ainda', text: 'Novo para a equipe' }), 'fresh|' + lead.id, 0, 'fx-pulse') : null,
       D.touch.get(lead.id) && D.touch.get(lead.id).contato
         ? el('span', { class: 'meta seen', title: 'Já abordada pela equipe' }, [icon('chat', 13), 'Abordada ' + fmtWhen(D.touch.get(lead.id).contato.em) + ' · ' + who(D.touch.get(lead.id).contato.email)])
         : R.remoteIds.has(lead.id) ? el('span', { class: 'meta seen', text: 'Já na carteira' }) : null,
@@ -923,7 +935,7 @@
 
     var links = el('div', { class: 'lead-links' }, [
       fake ? null : (seqLink(lead, D) || (wa ? extLink(LF.whatsappLink(lead.phone, '') || wa, [icon('chat', 14), 'Abrir WhatsApp'], 'wa') : null)),
-      el('button', { type: 'button', class: 'linkbtn strong', 'aria-expanded': S.openSell === lead.id ? 'true' : 'false', 'data-fk': fk('sell'), text: S.openSell === lead.id ? 'Fechar vender' : 'Vender (raio-X, portfólio, proposta)', on: { click: function () { set({ openSell: S.openSell === lead.id ? null : lead.id }); } } }),
+      el('button', { type: 'button', class: 'button secondary small sell-btn', 'aria-expanded': S.openSell === lead.id ? 'true' : 'false', 'data-fk': fk('sell'), title: 'Raio-X do site, vídeos do portfólio e proposta', text: S.openSell === lead.id ? 'Fechar' : 'Vender', on: { click: function () { R.sellOpenAt[lead.id] = Date.now(); set({ openSell: S.openSell === lead.id ? null : lead.id }); } } }),
       lead.website ? extLink(lead.website, ['Abrir site ', icon('out', 12)]) : null,
       lead.googleMapsUri ? extLink(lead.googleMapsUri, ['Google Maps ', icon('out', 12)]) : null,
       !fake && !lead.pending ? el('button', { type: 'button', class: 'linkbtn', disabled: busy, 'data-fk': fk('ai'), text: busy ? 'Analisando…' : lead.ai ? 'Reanalisar com IA' : 'Analisar com IA', on: { click: function () { analyze(lead); } } }) : null,
@@ -938,7 +950,8 @@
     var bar = el('span'); bar.style.width = lead.score + '%';
     var right = el('div', { class: 'lead-right' }, [
       el('div', { class: 'score', title: 'Pontuação de prioridade' }, [el('div', { class: 'scorebar', 'aria-hidden': 'true' }, [bar]), lead.score + '/100']),
-      sel
+      sel,
+      seqTrack(lead)
     ]);
 
     var aiBox = null;
@@ -988,11 +1001,81 @@
   }
 
 
+
+  /* ---------- peças visuais do vender mais ---------- */
+  // Peso de cada falha na nota de presença online (estimativa da Soft, não é nota do Google).
+  var PESO = { sem_site: 35, site_fora_do_ar: 35, site_sem_https: 12, site_sem_mobile: 15, site_lento: 10, site_desatualizado: 8,
+    sem_descricao: 5, sem_previa: 4, sem_icone: 3, sem_video: 12, sem_instagram: 8, poucas_avaliacoes: 6 };
+  function presenceScore(rx) {
+    var t = 0; rx.lacunas.forEach(function (l) { t += PESO[l.codigo] || 4; });
+    return Math.max(0, Math.min(100, 100 - t));
+  }
+
+  /** Capa do vídeo; no hover toca uma prévia sem som (carrega só quando o mouse passa). */
+  function pfThumb(p) {
+    var url = videoOf(p), poster = p.item.poster ? new URL('../' + String(p.item.poster).replace(/^\//, ''), w.location.href).href : '';
+    var media = el('span', { class: 'pf-media' });
+    if (poster) { var im = el('img', { alt: '', loading: 'lazy', decoding: 'async' }); im.src = poster; media.appendChild(im); }
+    var card = extLink(url, [media, el('span', { class: 'pf-title', text: p.item.title }),
+      el('span', { class: 'pf-tags' }, [p.item.tags || '', p.direitos ? null : el('span', { class: 'meta warn', title: 'Confirme os direitos no catálogo antes de enviar ao cliente', text: 'direitos a confirmar' })])], 'pf-card');
+    if (!card) return el('span');
+    var vid = null;
+    card.addEventListener('mouseenter', function () {
+      if (fx.reduced() || !LF.httpUrl(url)) return;
+      if (!vid) { vid = el('video', { muted: '', playsinline: '', loop: '', preload: 'none', 'aria-hidden': 'true' }); vid.muted = true; vid.src = url; media.appendChild(vid); }
+      var pr = vid.play(); if (pr && pr.catch) pr.catch(function () {});
+      media.classList.add('playing');
+    });
+    card.addEventListener('mouseleave', function () { if (vid) vid.pause(); media.classList.remove('playing'); });
+    return card;
+  }
+
+  /** Desenho simples da rota (sem mapa): pontos na posição relativa e linha que se traça. */
+  function routeSketch(start, ordered, animate) {
+    var NS = 'http://www.w3.org/2000/svg';
+    var pts = [start].concat(ordered), W = 320, H = 180, pad = 18;
+    var lats = pts.map(function (p) { return p.lat; }), lngs = pts.map(function (p) { return p.lng; });
+    var minLa = Math.min.apply(null, lats), maxLa = Math.max.apply(null, lats), minLo = Math.min.apply(null, lngs), maxLo = Math.max.apply(null, lngs);
+    var k = Math.cos((minLa + maxLa) / 2 * Math.PI / 180);
+    var sx = (maxLo - minLo) * k || 1e-6, sy = (maxLa - minLa) || 1e-6, sc = Math.min((W - 2 * pad) / sx, (H - 2 * pad) / sy);
+    var xy = pts.map(function (p) { return [pad + ((p.lng - minLo) * k) * sc + ((W - 2 * pad) - sx * sc) / 2, H - pad - (p.lat - minLa) * sc - ((H - 2 * pad) - sy * sc) / 2]; });
+    var svg = d.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('class', 'route-svg' + (animate ? ' draw' : ''));
+    svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', 'Desenho da ordem das paradas (não é mapa)');
+    var path = d.createElementNS(NS, 'path');
+    path.setAttribute('d', xy.map(function (q, i) { return (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1); }).join(' '));
+    path.setAttribute('pathLength', '1'); path.setAttribute('class', 'route-line');
+    svg.appendChild(path);
+    xy.forEach(function (q, i) {
+      var g = d.createElementNS(NS, 'g'); g.setAttribute('class', 'route-pt' + (i ? '' : ' start'));
+      g.setAttribute('transform', 'translate(' + q[0].toFixed(1) + ' ' + q[1].toFixed(1) + ')');
+      if (animate) g.style.setProperty('--fx-i', String(i));
+      var c = d.createElementNS(NS, 'circle'); c.setAttribute('r', i ? '9' : '6'); g.appendChild(c);
+      if (i) { var t = d.createElementNS(NS, 'text'); t.setAttribute('text-anchor', 'middle'); t.setAttribute('dy', '3.5'); t.textContent = String(i); g.appendChild(t); }
+      svg.appendChild(g);
+    });
+    return el('div', { class: 'route-sketch' }, [svg, el('div', { class: 'hint', text: 'Ponto pequeno = partida. Desenho só da ordem; o trajeto real abre no Google Maps.' })]);
+  }
+
+  /** Trilha de 3 passos da sequência; o passo recém-feito aparece com um check animado. */
+  function seqTrack(lead) {
+    var st = LF.seqState(lead);
+    if (!st.feito && !st.ativa) return null;
+    var dots = LF.SEQ.map(function (p) {
+      var done = p.passo <= st.feito, next = st.ativa && st.proximo && st.proximo.passo === p.passo;
+      var dot = el('span', { class: 'seq-dot' + (done ? ' done' : '') + (next ? ' next' : ''), title: p.nome + (done ? ' (feito)' : next ? ' (próximo)' : '') }, [done ? icon('check', 12) : String(p.passo)]);
+      if (done) { var k = 'seqdot|' + lead.id + '|' + p.passo; if (!R.seqSeen.has(lead.id)) fx.mark(k); else fx.enter(dot, k, 0, 'fx-pop'); }
+      return dot;
+    });
+    R.seqSeen.add(lead.id);
+    return el('div', { class: 'seq-track', 'aria-label': 'Sequência: ' + st.feito + ' de 3 passos feitos' }, [el('span', { class: 'seq-label', text: 'Sequência' }), el('span', { class: 'seq-dots' }, dots)]);
+  }
+
   /** Painel "Vender" do lead: raio-X, portfólio certo e proposta. */
   function sellPanel(lead, D) {
     var fk = function (k) { return k + '|' + lead.id; };
     var rx = lead.raiox, rbusy = busy('raioxBusy', lead.id);
-    var rxBox = el('div', { class: 'sell-block' }, [
+    var rxBox = el('div', { class: 'sell-block' + (rbusy ? ' scanning' : '') }, [
       el('div', { class: 'sell-head' }, [el('h4', { text: 'Raio-X' }),
         el('button', { type: 'button', class: 'button secondary small', disabled: rbusy || lead.pending, 'data-fk': fk('rx'), text: rbusy ? 'Analisando o site…' : rx ? 'Refazer raio-X' : 'Fazer raio-X', on: { click: function () { runRaiox(lead); } } })]),
       !rx ? el('div', { class: 'hint', text: 'Lê a página inicial do site da empresa (endereço informado pelo Google), mede o que falta e liga cada falha a um serviço da Soft. Usa 1 consulta ao Google e 1 à IA.' }) : null
@@ -1000,12 +1083,18 @@
     if (rx) {
       if (rx.demo) rxBox.appendChild(el('div', { class: 'hint', text: 'Lead de demonstração: o site não foi lido.' }));
       if (rx.resumo) rxBox.appendChild(el('p', { class: 'sell-text', text: rx.resumo }));
-      if (rx.lacunas.length) rxBox.appendChild(el('ul', { class: 'sell-list' }, rx.lacunas.map(function (l) {
-        return el('li', null, [l.titulo, l.servico && LF.OFERTAS[l.servico] ? el('span', { class: 'tag', text: LF.OFERTAS[l.servico].nome }) : null]);
+      var nota = presenceScore(rx), bar = el('span', { class: 'fbar' });
+      rxBox.appendChild(el('div', { class: 'health', title: 'Estimativa da Soft a partir das falhas medidas no site. Não é uma nota do Google.' }, [
+        el('div', { class: 'health-head' }, [el('span', { text: 'Presença online' }), fx.count(el('b'), 'health|' + lead.id, nota, function (v) { return Math.round(v) + '/100'; })]),
+        el('span', { class: 'ftrack' }, [fx.grow(bar, 'health|' + lead.id, nota, 80)])
+      ]));
+      bar.classList.add(nota >= 70 ? 'ok' : nota >= 40 ? 'mid' : 'low');
+      if (rx.lacunas.length) rxBox.appendChild(el('ul', { class: 'sell-list' }, rx.lacunas.map(function (l, i) {
+        return fx.enter(el('li', null, [l.titulo, l.servico && LF.OFERTAS[l.servico] ? el('span', { class: 'tag', text: LF.OFERTAS[l.servico].nome }) : null]), 'lac|' + lead.id + '|' + rx.em + '|' + l.codigo, i, 'fx-slide');
       })));
       else rxBox.appendChild(el('div', { class: 'hint', text: 'Nenhuma falha objetiva encontrada no site.' }));
       if (rx.angulo) rxBox.appendChild(el('div', { class: 'sell-angle' }, [el('b', { text: 'Como abrir a conversa: ' }), rx.angulo + ' ',
-        el('button', { type: 'button', class: 'linkbtn', text: 'Copiar', on: { click: function () { copyText(rx.angulo); } } })]));
+        el('button', { type: 'button', class: 'linkbtn', text: 'Copiar', on: { click: function (e) { copyText(rx.angulo, e.currentTarget); } } })]));
       var ig = rx.sinais && rx.sinais.instagram;
       if (rx.verificar.length || ig) rxBox.appendChild(el('div', { class: 'hint' }, [el('b', { text: 'Conferir à mão: ' }), rx.verificar.join(' · ') + ' ',
         ig ? extLink('https://www.instagram.com/' + ig + '/', ['Abrir @' + ig + ' ', icon('out', 12)]) : null]));
@@ -1015,11 +1104,8 @@
     var picks = portfolioFor(lead);
     var pfBox = el('div', { class: 'sell-block' }, [
       el('div', { class: 'sell-head' }, [el('h4', { text: 'Portfólio certo para este lead' }),
-        picks.length ? el('button', { type: 'button', class: 'button secondary small', text: 'Copiar links', on: { click: function () { copyText(picks.map(function (p) { return p.item.title + ': ' + videoOf(p); }).join('\n')); } } }) : null]),
-      picks.length ? el('ul', { class: 'sell-list' }, picks.map(function (p) {
-        return el('li', null, [extLink(videoOf(p), [p.item.title + ' ', icon('out', 12)]), el('span', { class: 'hint', text: ' ' + (p.item.tags || '') }),
-          p.direitos ? null : el('span', { class: 'meta warn', title: 'Confirme os direitos no catálogo antes de enviar ao cliente', text: 'direitos a confirmar' })]);
-      })) : el('div', { class: 'hint', text: 'Catálogo de vídeos não carregado.' }),
+        picks.length ? el('button', { type: 'button', class: 'button secondary small', text: 'Copiar links', on: { click: function (e) { copyText(picks.map(function (p) { return p.item.title + ': ' + videoOf(p); }).join('\n'), e.currentTarget); } } }) : null]),
+      picks.length ? el('div', { class: 'pf-grid' }, picks.map(function (p, i) { return fx.enter(pfThumb(p), 'pf|' + lead.id + '|' + p.item.id, i); })) : el('div', { class: 'hint', text: 'Catálogo de vídeos não carregado.' }),
       el('div', { class: 'hint', text: 'Escolhidos pela categoria do lead' + (rx ? ' e pelos serviços do raio-X' : '') + '. O 1º vídeo vai no passo 2 da sequência ({video}).' })
     ]);
 
@@ -1043,11 +1129,11 @@
         el('button', { type: 'button', class: 'button small', disabled: pbusy, 'data-fk': fk('prop'), text: pbusy ? 'Gerando…' : 'Gerar proposta', on: { click: function () { gerarProposta(lead); } } })]),
       el('div', { class: 'hint', text: 'Abre a proposta na marca Soft, com o diagnóstico do raio-X e os vídeos acima. Tudo é editável antes de salvar em PDF. Preços e entregáveis vêm de assets/js/leadfinder/ofertas.js (vazio = "sob consulta").' })
     ]);
-    return el('section', { class: 'sell', 'aria-label': 'Vender para ' + lead.name }, [rxBox, pfBox, prBox]);
+    return fx.enter(el('section', { class: 'sell', 'aria-label': 'Vender para ' + lead.name }, [rxBox, pfBox, prBox]), 'sell|' + lead.id + '|' + (R.sellOpenAt[lead.id] || ''), 0, 'fx-open');
   }
 
-  function copyText(t) {
-    var done = function () { notify({ level: 'success', title: 'Copiado' }); };
+  function copyText(t, btn) {
+    var done = function () { fx.flash(btn, 'fx-copied'); notify({ level: 'success', title: 'Copiado' }); };
     if (w.navigator.clipboard && w.navigator.clipboard.writeText) w.navigator.clipboard.writeText(t).then(done, function () { w.prompt('Copie:', t); });
     else w.prompt('Copie:', t);
   }
@@ -1059,13 +1145,20 @@
     var parts = [];
     if (t.due.length) parts.push(t.due.length + ' retorno(s)' + (t.seqDue ? ' · ' + t.seqDue + ' da sequência' : ''));
     if (t.hot.length) parts.push(t.hot.length + ' lead(s) quente(s) sem contato');
-    return el('div', { class: 'glass today', role: 'status' }, [
-      el('div', null, [el('strong', { text: 'Hoje: ' }), parts.join(' · ') || 'nada pendente']),
+    var late = t.due.some(function (l) { return l.nextAction < D.today; });
+    var box = el('div', { class: 'glass today' + (late ? ' late' : ''), role: 'status' }, [
+      el('div', { class: 'today-nums' }, [el('strong', { text: 'Hoje' }),
+        t.due.length ? el('span', { class: 'today-n' }, [fx.count(el('b'), 'today-due', t.due.length), ' retorno(s)' + (t.seqDue ? ' · ' + t.seqDue + ' da sequência' : '')]) : null,
+        t.hot.length ? el('span', { class: 'today-n' }, [fx.count(el('b'), 'today-hot', t.hot.length), ' lead(s) quente(s) sem contato']) : null,
+        late ? el('span', { class: 'meta due', text: 'tem retorno atrasado' }) : null,
+        !t.due.length && !t.hot.length ? el('span', { text: 'nada pendente' }) : null]),
       el('div', { class: 'today-actions' }, [
         el('button', { type: 'button', class: 'button secondary small', 'data-fk': 'quick', text: S.quick === 'hoje' ? 'Mostrar todos' : 'Só os de hoje', on: { click: function () { set({ quick: S.quick === 'hoje' ? '' : 'hoje' }); } } }),
-        session ? el('button', { type: 'button', class: 'linkbtn', text: 'Enviar este resumo para meu e-mail', on: { click: sendDigestTest } }) : null
+        session ? el('button', { type: 'button', class: 'linkbtn', text: 'Enviar este resumo para meu e-mail', on: { click: function (e) { fx.fly(e.currentTarget); sendDigestTest(); } } }) : null
       ])
     ]);
+    if (late) fx.enter(box, 'late|' + D.today, 0, 'fx-alert');
+    return box;
   }
 
   function renderRoute(view, D) {
@@ -1101,14 +1194,21 @@
     if (r) {
       var ordered = r.order.map(function (id) { return byId.get(id); }).filter(Boolean);
       var prev = r.start;
-      box.appendChild(el('ol', { class: 'route-list' }, ordered.map(function (l) {
-        var dkm = LF.distanceKm(prev.lat, prev.lng, l.lat, l.lng); prev = l;
-        return el('li', null, [el('b', { text: l.name }), el('span', { class: 'hint', text: ' · ' + (l.address || '') + ' · +' + dkm.toFixed(1) + ' km' })]);
-      })));
+      var rkey = 'route|' + r.order.join(',') + '|' + r.start.lat + ',' + r.start.lng;
+      var animate = fx.first(rkey) && !fx.reduced();
+      box.appendChild(el('div', { class: 'route-wrap' }, [
+        routeSketch(r.start, ordered, animate),
+        el('ol', { class: 'route-list' }, ordered.map(function (l, i) {
+          var dkm = LF.distanceKm(prev.lat, prev.lng, l.lat, l.lng); prev = l;
+          var li = el('li', null, [el('b', { text: l.name }), el('span', { class: 'hint', text: ' · ' + (l.address || '') + ' · +' + dkm.toFixed(1) + ' km' })]);
+          if (animate) { li.classList.add('fx-slide'); li.style.setProperty('--fx-i', String(i + 2)); }
+          return li;
+        }))
+      ]));
       box.appendChild(el('div', { class: 'sell-row' }, [
         extLink(r.url, [icon('out', 14), ' Abrir no Google Maps'], 'button small'),
-        el('button', { type: 'button', class: 'button secondary small', text: 'Copiar roteiro', on: { click: function () { copyText(ordered.map(function (l, i) { return (i + 1) + '. ' + l.name + (l.address ? ' — ' + l.address : ''); }).join('\n') + '\n\n' + r.url); } } }),
-        el('span', { class: 'hint', text: '≈ ' + r.km.toFixed(1) + ' km em linha reta (estimativa; o Google Maps mostra o trajeto real)' })
+        el('button', { type: 'button', class: 'button secondary small', text: 'Copiar roteiro', on: { click: function (e) { var b = e.currentTarget; copyText(ordered.map(function (l, i) { return (i + 1) + '. ' + l.name + (l.address ? ' — ' + l.address : ''); }).join('\n') + '\n\n' + r.url, b); } } }),
+        el('span', { class: 'hint' }, ['≈ ', fx.count(el('b'), 'route-km', r.km, function (v) { return v.toFixed(1); }, 1100), ' km em linha reta (estimativa; o Google Maps mostra o trajeto real)'])
       ]));
       if (ordered.length > 10) box.appendChild(el('div', { class: 'hint', text: 'O Google Maps abre no máximo 10 paradas por link.' }));
     }
@@ -1132,32 +1232,42 @@
       return;
     }
     var r = S.report.data;
+    var wrap = el('div', { class: 'report-body' });
+    fx.enter(wrap, 'rep|' + S.report.ym, 0, 'fx-fade');
+    view.appendChild(wrap);
+    view = wrap;
     view.appendChild(el('div', { class: 'stats hist-stats' }, [
       [r.abordados, 'Empresas abordadas', r.abordagens + ' mensagem(ns)'], [r.responderam, 'Responderam', pct(r.taxaResposta) + ' das abordadas'],
       [r.reunioes, 'Reuniões marcadas', 'no mês'], [r.clientes, 'Clientes fechados', 'no mês']
-    ].map(function (x) { return el('div', { class: 'glass stat' }, [el('div', { class: 'stat-label', text: x[1] }), el('div', { class: 'stat-value', text: String(x[0]) }), el('div', { class: 'stat-note', text: x[2] })]); })));
+    ].map(function (x, i) { return el('div', { class: 'glass stat' }, [el('div', { class: 'stat-label', text: x[1] }), fx.count(el('div', { class: 'stat-value' }), 'rep-kpi|' + i, x[0]), el('div', { class: 'stat-note', text: x[2] })]); })));
 
     // Funil: uma série, uma cor, número escrito ao lado (não depende da cor)
     var steps = [['Abordadas', r.abordados], ['Responderam', r.responderam], ['Reunião', r.reunioes], ['Cliente', r.clientes]];
     var max = Math.max(1, r.abordados, r.responderam, r.reunioes, r.clientes);
     view.appendChild(el('section', { class: 'glass hist-box', 'aria-labelledby': 'rep-f' }, [el('h3', { id: 'rep-f', text: 'Funil do mês' }),
-      el('div', { class: 'funnel-chart', role: 'img', 'aria-label': steps.map(function (x) { return x[0] + ': ' + x[1]; }).join(', ') }, steps.map(function (x) {
-        var bar = el('span', { class: 'fbar' }); bar.style.width = Math.max(x[1] ? 2 : 0, x[1] / max * 100) + '%';
-        return el('div', { class: 'frow', title: x[0] + ': ' + x[1] + (r.abordados ? ' (' + pct(x[1] / r.abordados) + ' das abordadas)' : '') }, [el('span', { class: 'flabel', text: x[0] }), el('span', { class: 'ftrack' }, [bar]), el('b', { class: 'fval', text: String(x[1]) })]);
+      el('div', { class: 'funnel-chart', role: 'img', 'aria-label': steps.map(function (x) { return x[0] + ': ' + x[1]; }).join(', ') }, steps.map(function (x, i) {
+        var bar = el('span', { class: 'fbar' });
+        fx.grow(bar, 'fun|' + x[0], Math.max(x[1] ? 2 : 0, x[1] / max * 100), 60 + i * 140);
+        return el('div', { class: 'frow', title: x[0] + ': ' + x[1] + (r.abordados ? ' (' + pct(x[1] / r.abordados) + ' das abordadas)' : '') }, [el('span', { class: 'flabel', text: x[0] }), el('span', { class: 'ftrack' }, [bar]), fx.count(el('b', { class: 'fval' }), 'fun|' + x[0], x[1])]);
       })),
       el('div', { class: 'hint', text: 'Contagens = o que aconteceu no mês. "Responderam" = empresas abordadas no mês que responderam depois do contato (até hoje). Com menos de 5 abordagens, as taxas são só indicativas.' }),
       el('div', { class: 'hint', text: r.buscas + ' busca(s) em ' + r.areas + ' área(s) · ' + r.propostas + ' proposta(s) · ' + r.raiox + ' raio-X · ' + r.ideias + ' ideia(s) · ' + r.descartados + ' descartado(s)' })
     ]));
 
-    function table(title, cols, rows) {
+    function table(title, cols, rows, best) {
       var t = el('table', { class: 'rep-table' });
       t.appendChild(el('thead', null, [el('tr', null, cols.map(function (c) { return el('th', { scope: 'col', text: c }); }))]));
-      t.appendChild(el('tbody', null, rows.length ? rows.map(function (rw) { return el('tr', null, rw.map(function (v, i) { return el(i ? 'td' : 'th', i ? { text: String(v) } : { scope: 'row', text: String(v) }); })); })
+      t.appendChild(el('tbody', null, rows.length ? rows.map(function (rw, ri) {
+          var tr = el('tr', ri === best ? { class: 'best' } : null, rw.map(function (v, i) { return el(i ? 'td' : 'th', i ? { text: String(v) } : { scope: 'row' }, i ? null : [String(v), ri === best ? el('span', { class: 'tag best-tag', text: 'melhor' }) : null]); }));
+          return fx.enter(tr, 'row|' + title + '|' + S.report.ym + '|' + ri, ri, 'fx-slide');
+        })
         : [el('tr', null, [el('td', { colspan: String(cols.length), text: 'Sem dados neste mês.' })])]));
       return el('section', { class: 'glass hist-box' }, [el('h3', { text: title }), el('div', { class: 'table-wrap' }, [t])]);
     }
     var rate = function (m) { return [m.chave, m.abordados, m.responderam, pct(m.taxa)]; };
-    view.appendChild(table('Qual mensagem funciona mais', ['Mensagem ({nome} = empresa)', 'Abordadas', 'Responderam', 'Taxa'], r.porMensagem.map(rate)));
+    var bestMsg = -1, bestRate = 0;
+    r.porMensagem.forEach(function (m, i) { if (m.abordados >= 2 && m.taxa > bestRate) { bestRate = m.taxa; bestMsg = i; } });
+    view.appendChild(table('Qual mensagem funciona mais', ['Mensagem ({nome} = empresa)', 'Abordadas', 'Responderam', 'Taxa'], r.porMensagem.map(rate), bestMsg));
     view.appendChild(table('Por categoria', ['Categoria', 'Abordadas', 'Responderam', 'Taxa'], r.porCategoria.map(rate)));
     view.appendChild(table('Por canal / passo', ['Canal', 'Abordadas', 'Responderam', 'Taxa'], r.porCanal.map(rate)));
     view.appendChild(table('Por pessoa', ['Pessoa', 'Mensagens'], r.porPessoa.map(function (m) { return [m.pessoa, m.abordagens]; })));
@@ -1188,7 +1298,8 @@
     if (S.loading && !S.sweepProgress) {
       for (var i = 0; i < 3; i++) list.appendChild(el('div', { class: 'glass skeleton', 'aria-hidden': 'true' }));
     } else if (D.filtered.length) {
-      D.filtered.forEach(function (lead) { list.appendChild(leadCard(lead, D)); });
+      var nNew = 0;
+      D.filtered.forEach(function (lead) { var c = leadCard(lead, D); if (fx.enter(c, 'card|' + lead.id, nNew) && c.classList.contains('fx-rise')) nNew++; list.appendChild(c); });
     } else {
       list.appendChild(el('div', { class: 'glass empty' }, [el('strong', { text: 'Nenhum lead para mostrar' }), 'Faça uma busca ou ajuste os filtros.']));
     }
@@ -1296,14 +1407,14 @@
     }).slice(0, 200);
     view.appendChild(el('section', { class: 'glass hist-box', 'aria-labelledby': 'h-tl' }, [
       el('h3', { id: 'h-tl', text: 'Linha do tempo' }), chips, q,
-      items.length ? el('ol', { class: 'hist-list hist-tl' }, items.map(function (h) {
+      items.length ? el('ol', { class: 'hist-list hist-tl' }, items.map(function (h, i) {
         var lbl = histLeadLabel(h);
-        return el('li', { class: 'hist-item' }, [
+        return fx.enter(el('li', { class: 'hist-item' }, [
           el('div', { class: 'hist-meta' }, [el('span', { class: 'tag', text: HIST_LABEL[h.tipo] || h.tipo }), fmtWhen(h.em) + ' · ' + who(h.email)]),
           el('div', { class: 'hist-text' }, [lbl ? el('b', { text: lbl + ' ' }) : null, histText(h)]),
           h.tipo !== 'busca' && h.tipo !== 'ideia' && h.texto ? el('div', { class: 'hint', text: '"' + h.texto.slice(0, 220) + '"' }) : null,
           h.tipo === 'ideia' ? el('div', { class: 'hint', text: h.texto || '' }) : null
-        ]);
+        ]), 'h|' + h.id, Math.min(i, 12), 'fx-slide');
       })) : el('div', { class: 'hint', text: session ? 'Nada no histórico com esse filtro.' : 'Entre no painel para ver o histórico.' })
     ]));
   }
@@ -1334,6 +1445,7 @@
     try {
       var D = derive();
       renderTop(D); renderNotices(); renderAside(D); renderStats(D); renderFunnel(D);
+      var pb = $('lf-progress'); if (pb) pb.classList.toggle('on', !!(S.loading || S.hydrating || S.raioxBusy.length || S.propBusy.length || S.reportBusy || S.locating));
       var view = $('lf-view'); view.textContent = '';
       if (S.tab === 'list') renderList(view, D); else if (S.tab === 'hist') renderHistory(view, D); else if (S.tab === 'report') renderReport(view); else renderMap(view, D);
     } catch (e) {
@@ -1404,6 +1516,17 @@
     $('lf-tab-report').addEventListener('click', function () { set({ tab: 'report' }); });
     $('lf-q').addEventListener('input', function () { set({ search: $('lf-q').value }); });
     $('lf-logout').addEventListener('click', logout);
+    // Guia "Como usar": aparece na 1ª visita; "Entendi" esconde; "Como usar" mostra de novo
+    var guide = $('lf-guide'), seenGuide = false;
+    try { seenGuide = w.localStorage.getItem('lf-guia-ok') === '1'; } catch (e) { /* sem armazenamento */ }
+    guide.hidden = seenGuide;
+    if (!seenGuide) fx.enter(guide, 'guide', 0, 'fx-rise');
+    $('lf-guide-close').addEventListener('click', function () {
+      try { w.localStorage.setItem('lf-guia-ok', '1'); } catch (e) { /* ignora */ }
+      guide.hidden = true; $('lf-guide-open').focus();
+    });
+    $('lf-guide-open').addEventListener('click', function () { guide.hidden = false; fx.flash(guide, 'fx-rise'); $('lf-guide-close').focus(); });
+    w.addEventListener('resize', function () { fx.ink(d.querySelector('.lf-app .tabs')); });
   }
 
   /* ============================================================

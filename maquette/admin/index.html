@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/tokens.css?v=20261025-5">
-<link rel="stylesheet" href="../assets/css/admin.css?v=20261025-5">
+<link rel="stylesheet" href="../assets/css/admin.css?v=20261031-1">
 <script src="../assets/js/admin-auth.js?v=20261030-1"></script>
 <style>
   .os-status-pill {
@@ -95,8 +95,8 @@
         <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
           <span class="os-status-pill"><span class="os-pulse"></span> PEDRO · GESTÃO INTERNA</span>
         </div>
-        <h1 class="a-title">Central de Produção · Soft &amp; Co.</h1>
-        <p class="small" style="margin-top:4px;">Organização direta das suas pautas, entregas e catálogo de vídeos.</p>
+        <h1 class="a-title" id="home-hello">Central de Produção · Soft &amp; Co.</h1>
+        <p class="small" style="margin-top:4px;" id="home-date">Organização direta das suas pautas, entregas, catálogo de vídeos e prospecção.</p>
       </div>
       <div class="a-topbar-actions">
         <a class="btn btn-small" href="kanban.html">Abrir Meu Kanban</a>
@@ -107,7 +107,7 @@
     <!-- Indicadores Principais (Sem cards fechados, apenas linhas abertas) -->
     <section aria-labelledby="kpi-titre">
       <h2 id="kpi-titre" class="visually-hidden">Resumo Operacional</h2>
-      <div class="a-grid a-grid-3">
+      <div class="a-grid a-grid-4">
         <a class="a-tile" href="kanban.html" style="text-decoration:none;">
           <p class="eyebrow">Meu Kanban</p>
           <p class="a-kpi num" id="kpi-kanban-total">0</p>
@@ -122,6 +122,47 @@
           <p class="eyebrow">Catálogo de Vídeos</p>
           <p class="a-kpi num" data-video-count>52</p>
           <p class="small">vídeos ativos no portfólio</p>
+        </a>
+        <a class="a-tile" href="leads.html" style="text-decoration:none;">
+          <p class="eyebrow">Prospecção · Hoje</p>
+          <p class="a-kpi num" id="kpi-leads-hoje">–</p>
+          <p class="small" id="kpi-leads-sub">retornos para fazer hoje</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Por onde começar: um atalho por área, com o que cada uma faz -->
+    <section class="a-card home-guide" aria-labelledby="guide-title">
+      <div class="a-card-head">
+        <div>
+          <p class="eyebrow">Por onde começar</p>
+          <h2 id="guide-title" class="a-heading">O que dá para fazer aqui</h2>
+        </div>
+      </div>
+      <div class="home-steps">
+        <a class="home-step" href="kanban.html">
+          <span class="home-step-n">1</span>
+          <strong>Organizar o dia</strong>
+          <span class="small">Kanban com as tarefas de produção, prazos e etapas.</span>
+          <span class="home-step-go">Abrir Kanban &rarr;</span>
+        </a>
+        <a class="home-step" href="leads.html">
+          <span class="home-step-n">2</span>
+          <strong>Encontrar clientes</strong>
+          <span class="small">Busque empresas no mapa, faça o raio-X e gere a proposta.</span>
+          <span class="home-step-go">Abrir Prospecção &rarr;</span>
+        </a>
+        <a class="home-step" href="mediatheque.html">
+          <span class="home-step-n">3</span>
+          <strong>Cuidar do portfólio</strong>
+          <span class="small">Ative, ordene e confirme direitos dos vídeos do site.</span>
+          <span class="home-step-go">Abrir Vídeos &rarr;</span>
+        </a>
+        <a class="home-step" href="../index.html" target="_blank" rel="noopener">
+          <span class="home-step-n">4</span>
+          <strong>Ver o site no ar</strong>
+          <span class="small">Confira como os visitantes estão vendo a Soft.</span>
+          <span class="home-step-go">Abrir o site &nearr;</span>
         </a>
       </div>
     </section>
@@ -203,8 +244,8 @@
     var listEl = document.getElementById('dashboard-kanban-list');
 
     if (navKb) navKb.textContent = cards.length;
-    if (kpiKb) kpiKb.textContent = cards.length;
-    if (kpiPedro) kpiPedro.textContent = cards.length;
+    countTo(kpiKb, cards.length);
+    countTo(kpiPedro, cards.length);
     if (kpiKbSub) {
       kpiKbSub.textContent = cards.length === 0 ? 'quadro zerado · pronto para criar' : (cards.length + ' tarefa(s) em andamento');
     }
@@ -226,6 +267,46 @@
     }
   })
   .catch(function() {});
+
+  // Saudação e data de hoje
+  (function () {
+    var h = new Date().getHours(), hello = document.getElementById('home-hello'), date = document.getElementById('home-date');
+    if (hello) hello.textContent = (h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite') + ', Pedro';
+    if (date) date.textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }) + ' · Central de Produção Soft & Co.';
+  })();
+
+  // Números contando (desligado com "reduzir movimento")
+  var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function countTo(node, to) {
+    if (!node) return;
+    if (calm || !(to > 0)) { node.textContent = String(to); return; }
+    var t0 = null;
+    (function step(t) {
+      if (t0 === null) t0 = t;
+      var p = Math.min(1, (t - t0) / 700);
+      node.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) requestAnimationFrame(step);
+    })(performance.now());
+  }
+
+  // Prospecção: retornos de hoje (só com login real; a tabela é protegida)
+  (function () {
+    var out = document.getElementById('kpi-leads-hoje'), sub = document.getElementById('kpi-leads-sub');
+    var sess = null;
+    try { sess = JSON.parse(sessionStorage.getItem('soft_admin_session_v1') || 'null'); } catch (e) { /* sem sessão */ }
+    if (!sess || !sess.access_token || sess.access_token === API_KEY) { if (sub) sub.textContent = 'abra para ver os leads'; return; }
+    var hoje = new Date().toLocaleDateString('sv-SE');
+    fetch(API_URL + '/rest/v1/leadfinder_leads?select=status,proxima_acao', { headers: { apikey: API_KEY, Authorization: 'Bearer ' + sess.access_token } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (rows) {
+        if (!Array.isArray(rows)) { if (sub) sub.textContent = 'abra para ver os leads'; return; }
+        var abertos = rows.filter(function (x) { return x.status !== 'Cliente' && x.status !== 'Descartado'; });
+        var due = abertos.filter(function (x) { return x.proxima_acao && x.proxima_acao <= hoje; }).length;
+        countTo(out, due);
+        if (sub) sub.textContent = due ? 'retorno(s) para hoje · ' + abertos.length + ' na carteira' : 'nada para hoje · ' + abertos.length + ' na carteira';
+      })
+      .catch(function () { if (sub) sub.textContent = 'abra para ver os leads'; });
+  })();
 
   var btnLogout = document.getElementById('btn-side-logout');
   if (btnLogout) {

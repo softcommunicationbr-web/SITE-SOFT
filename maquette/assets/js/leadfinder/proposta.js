@@ -36,12 +36,18 @@
     '.vid img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:var(--areia)}.vid span{display:block;padding:8px 10px;font-size:12px;font-weight:500}' +
     'footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--areia);font-size:12px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}' +
     '[contenteditable]:hover{outline:1px dashed var(--areia);outline-offset:2px}[contenteditable]:focus{outline:1px solid var(--choc);outline-offset:2px}' +
-    '.wait{padding:96px 24px;text-align:center;font-family:"Cormorant Garamond",serif;font-size:28px}.erro{color:var(--choc);border:1px solid var(--choc);border-radius:8px;padding:16px;margin:24px}' +
+    '.wait{min-height:70vh;display:grid;place-content:center;justify-items:center;gap:20px;padding:48px 24px;text-align:center;font-family:"Cormorant Garamond",serif;font-size:28px}' +
+    '.wait img{width:56px;height:auto;animation:reveal 1.6s cubic-bezier(.65,0,.35,1) infinite alternate}' +
+    '@keyframes reveal{from{clip-path:inset(100% 0 0 0);opacity:.2}to{clip-path:inset(0 0 0 0);opacity:1}}' +
+    '.wait span{animation:breathe 1.6s ease-in-out infinite alternate}@keyframes breathe{from{opacity:.55}to{opacity:1}}' +
+    '.doc>*{animation:rise .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0) * 70ms)}' +
+    '@keyframes rise{from{opacity:0;transform:translateY(14px)}}' +
+    '@media (prefers-reduced-motion:reduce){.wait img,.wait span,.doc>*{animation:none}}.erro{color:var(--choc);border:1px solid var(--choc);border-radius:8px;padding:16px;margin:24px}' +
     '@media (max-width:640px){.doc{padding:32px 16px}.grid{grid-template-columns:1fr}h1{font-size:34px}header{flex-direction:column}.meta{text-align:left}}' +
-    '@media print{.bar{display:none}html,body{background:#fff}.doc{padding:0}[contenteditable]:hover,[contenteditable]:focus{outline:none}a{color:var(--choc)}@page{margin:16mm}}';
+    '@media print{.doc>*{animation:none}.bar{display:none}html,body{background:#fff}.doc{padding:0}[contenteditable]:hover,[contenteditable]:focus{outline:none}a{color:var(--choc)}@page{margin:16mm}}';
 
   /** Abre a janela já no clique (evita bloqueio de pop-up) e mostra "gerando". */
-  LF.proposalWindow = function (idioma) {
+  LF.proposalWindow = function (idioma, simbolo) {
     var t = T[idioma] || T['pt-BR'];
     var win = w.open('', '_blank');
     if (!win) return null;
@@ -50,7 +56,10 @@
     d.write('<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Proposta · Soft Communication</title></head><body></body></html>');
     d.close();
     var st = d.createElement('style'); st.textContent = CSS; d.head.appendChild(st);
-    var wait = d.createElement('div'); wait.className = 'wait'; wait.textContent = t.gerando; d.body.appendChild(wait);
+    var wait = d.createElement('div'); wait.className = 'wait';
+    if (simbolo) { var im = d.createElement('img'); im.src = simbolo; im.alt = ''; wait.appendChild(im); }
+    var tx = d.createElement('span'); tx.textContent = t.gerando; wait.appendChild(tx);
+    d.body.appendChild(wait);
     return win;
   };
 
@@ -132,6 +141,7 @@
       c.instagram ? el('div', null, c.instagram) : null,
       c.site ? el('div', null, c.site.replace(/^https?:\/\//, '').replace(/\/$/, '')) : null
     ])]);
+    Array.prototype.forEach.call(doc.children, function (c, i) { c.style.setProperty('--i', String(Math.min(i, 14))); });
     d.body.appendChild(doc);
     win.focus();
   };

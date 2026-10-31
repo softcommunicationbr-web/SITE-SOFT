@@ -578,3 +578,21 @@ html.admin-locked .a-shell { display: none !important; }
 
 /* Títulos sempre em Montserrat ExtraBold (regra da marca no painel) */
 h1, h2, h3, .a-title, .a-heading, .a-kpi, .admin-auth-card h2 { font-family: var(--font-display); font-weight: 800; }
+
+/* ---------- Visão geral: guia "Por onde começar" e entrada suave ---------- */
+.home-guide { margin-top: 24px; margin-bottom: 24px; }
+.home-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.home-step { position: relative; display: grid; align-content: start; gap: 6px; padding: 18px; border: 1px solid var(--adm-border); border-radius: var(--adm-radius-md); background: var(--adm-panel-solid); color: var(--adm-text); text-decoration: none; transition: border-color 200ms, transform 200ms cubic-bezier(.2,.7,.2,1); }
+.home-step:hover, .home-step:focus-visible { border-color: var(--adm-border-glow); transform: translateY(-2px); }
+.home-step strong { font-family: var(--font-display); font-weight: 800; font-size: 15px; }
+.home-step-n { width: 26px; height: 26px; border-radius: 99px; display: grid; place-items: center; background: var(--adm-chocolate); color: var(--adm-creme); font-family: var(--font-display); font-weight: 800; font-size: 12px; }
+.home-step-go { margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--adm-chocolate); }
+@media (max-width: 1000px) { .home-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .home-steps { grid-template-columns: 1fr; } }
+
+.a-main .a-tile, .a-main .a-card, .a-main .home-step { animation: adm-rise 460ms cubic-bezier(.2,.7,.2,1) both; }
+.a-main .a-grid > :nth-child(2), .a-main .home-step:nth-child(2) { animation-delay: 60ms; }
+.a-main .a-grid > :nth-child(3), .a-main .home-step:nth-child(3) { animation-delay: 120ms; }
+.a-main .a-grid > :nth-child(4), .a-main .home-step:nth-child(4) { animation-delay: 180ms; }
+@keyframes adm-rise { from { opacity: 0; transform: translateY(10px); } }
+@media (prefers-reduced-motion: reduce) { .a-main .a-tile, .a-main .a-card, .a-main .home-step { animation: none; } .home-step { transition: none; } }

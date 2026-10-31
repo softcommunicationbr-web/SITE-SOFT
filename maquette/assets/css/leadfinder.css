@@ -206,7 +206,10 @@
 
 /* ───────── Notificações (toast + sino) ───────── */
 .lf-app .toasts { position: fixed; bottom: var(--space-4); right: var(--space-4); z-index: 100; display: grid; gap: var(--space-2); width: min(380px, calc(100vw - 32px)); pointer-events: none; }
-.lf-app .toast { pointer-events: auto; display: grid; grid-template-columns: auto 1fr auto; gap: var(--space-3); align-items: start; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--glass-bg-strong); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); animation: lf-toast-in 220ms var(--ease); }
+.lf-app .toast { pointer-events: auto; display: grid; grid-template-columns: auto 1fr auto; gap: var(--space-3); align-items: start; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--glass-bg-strong); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+.lf-app .toast.is-new { animation: lf-toast-in 260ms var(--ease); }
+.lf-app .toast.out { animation: lf-toast-out 200ms var(--ease) forwards; }
+@keyframes lf-toast-out { to { opacity: 0; transform: translateX(24px) scale(.98); } }
 @keyframes lf-toast-in { from { opacity: 0; transform: translateY(8px) scale(.98); } }
 .lf-app .toast-dot { width: 10px; height: 10px; margin-top: 6px; border-radius: 50%; background: #71717a; }
 .lf-app .toast.success .toast-dot { background: #16a34a; } .lf-app .toast.warn .toast-dot { background: #d97706; } .lf-app .toast.error .toast-dot { background: #dc2626; box-shadow: 0 0 0 4px rgba(220, 38, 38, .15); }
@@ -351,3 +354,123 @@ html.admin-locked .lf-app { display: none !important; }
 }
 .lf-app .sell-list a, .lf-app .route a:not(.button), .lf-app .sell .hint a { color: var(--color-accent); font-weight: 600; text-decoration: none; }
 .lf-app .sell-list a:hover, .lf-app .sell .hint a:hover { text-decoration: underline; }
+
+/* ============================================================
+   Efeitos (motion.js). Curtos, sem exagero; desligados com "reduzir movimento".
+   ============================================================ */
+.lf-app { --fx-ease: cubic-bezier(.2, .7, .2, 1); }
+.lf-app .fx-rise { animation: fx-rise 460ms var(--fx-ease) both; animation-delay: calc(var(--fx-i, 0) * 55ms); }
+@keyframes fx-rise { from { opacity: 0; transform: translateY(12px); } }
+.lf-app .fx-slide { animation: fx-slide 380ms var(--fx-ease) both; animation-delay: calc(var(--fx-i, 0) * 60ms); }
+@keyframes fx-slide { from { opacity: 0; transform: translateX(-10px); } }
+.lf-app .fx-fade { animation: fx-fade 320ms ease both; }
+@keyframes fx-fade { from { opacity: 0; } }
+.lf-app .fx-open { animation: fx-open 340ms var(--fx-ease) both; transform-origin: top; }
+@keyframes fx-open { from { opacity: 0; transform: translateY(-6px) scaleY(.97); } }
+.lf-app .fx-pulse { animation: fx-pulse 1.2s ease-out 300ms 1 both; }
+@keyframes fx-pulse { 0% { box-shadow: 0 0 0 0 rgba(194, 65, 12, .45); } 100% { box-shadow: 0 0 0 10px rgba(194, 65, 12, 0); } }
+.lf-app .fx-pop { animation: fx-pop 520ms cubic-bezier(.34, 1.56, .64, 1) both; }
+@keyframes fx-pop { from { transform: scale(.3); opacity: 0; } }
+.lf-app .fx-alert { animation: fx-alert 1.4s ease 1; }
+@keyframes fx-alert { 0%, 100% { background: var(--glass-bg-strong); } 30% { background: #fde8e8; } }
+.lf-app .fx-copied { animation: fx-copied 700ms ease; }
+@keyframes fx-copied { 0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, .5); background: #dcfce7; } 100% { box-shadow: 0 0 0 10px rgba(22, 163, 74, 0); } }
+.lf-app .wa-label { display: inline-block; }
+.lf-app .wa-label.fx-swap { animation: fx-swap 420ms var(--fx-ease) both; }
+@keyframes fx-swap { from { opacity: 0; transform: translateY(70%); } }
+.fx-envelope { position: fixed; z-index: 99999; color: var(--color-accent, #c2410c); pointer-events: none; animation: fx-fly 900ms cubic-bezier(.5, 0, .3, 1) forwards; }
+@keyframes fx-fly { 0% { transform: translate(0, 0) scale(1); opacity: 1; } 60% { opacity: 1; } 100% { transform: translate(60px, -140px) scale(.6) rotate(-12deg); opacity: 0; } }
+
+/* 4. barra de progresso no topo */
+.lf-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; overflow: hidden; opacity: 0; transition: opacity 200ms; pointer-events: none; }
+.lf-progress.on { opacity: 1; }
+.lf-progress i { position: absolute; inset: 0 auto 0 0; width: 35%; background: var(--color-accent); border-radius: 0 3px 3px 0; animation: fx-load 1.1s ease-in-out infinite; }
+@keyframes fx-load { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+
+/* 5. raio-X lendo o site */
+.lf-app .sell-block.scanning { position: relative; overflow: hidden; }
+.lf-app .sell-block.scanning::after { content: ""; position: absolute; left: 0; right: 0; height: 40px; top: -40px; background: linear-gradient(180deg, transparent, rgba(194, 65, 12, .14), transparent); animation: fx-scan 1.3s ease-in-out infinite; pointer-events: none; }
+@keyframes fx-scan { to { top: 100%; } }
+
+/* 7. nota de presença online */
+.lf-app .health { display: grid; gap: 6px; }
+.lf-app .health-head { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--color-ink-muted); }
+.lf-app .health-head b { color: var(--color-ink); font-variant-numeric: tabular-nums; }
+.lf-app .health .ftrack { display: block; height: 8px; border-radius: 99px; background: rgba(27, 31, 42, .08); overflow: hidden; }
+.lf-app .health .fbar { height: 8px; border-radius: 99px; }
+.lf-app .fbar { transition: width 900ms var(--fx-ease); }
+.lf-app .fbar.low { background: #dc2626; } .lf-app .fbar.mid { background: #d97706; } .lf-app .fbar.ok { background: #16a34a; }
+
+/* 8. portfólio com capa e prévia */
+.lf-app .pf-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.lf-app a.pf-card { display: grid; gap: 4px; text-decoration: none; color: var(--color-ink); font-size: 12px; min-width: 0; }
+.lf-app .pf-media { position: relative; display: block; aspect-ratio: 4 / 5; border-radius: 8px; overflow: hidden; background: rgba(27, 31, 42, .08); }
+.lf-app .pf-media img, .lf-app .pf-media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 500ms var(--fx-ease), opacity 300ms; }
+.lf-app .pf-media video { opacity: 0; }
+.lf-app .pf-media.playing video { opacity: 1; }
+.lf-app a.pf-card:hover .pf-media img, .lf-app a.pf-card:focus-visible .pf-media img { transform: scale(1.06); }
+.lf-app .pf-title { font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+.lf-app .pf-tags { color: var(--color-ink-muted); font-size: 11px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.lf-app .pf-tags .meta { min-height: 20px; padding: 0 6px; font-size: 10px; }
+
+/* 12. trilha da sequência */
+.lf-app .seq-track { display: flex; align-items: center; justify-content: flex-end; gap: 8px; font-size: 11px; color: var(--color-ink-muted); font-weight: 600; }
+.lf-app .seq-dots { display: inline-flex; align-items: center; gap: 4px; }
+.lf-app .seq-dots::before { content: none; }
+.lf-app .seq-dot { width: 20px; height: 20px; border-radius: 99px; display: grid; place-items: center; font-size: 10px; border: 1.5px solid var(--glass-line); color: var(--color-ink-muted); background: #fff; }
+.lf-app .seq-dot.done { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+.lf-app .seq-dot.next { border-color: var(--color-accent); color: var(--color-accent); }
+.lf-app .meta.fresh { background: var(--color-accent-soft); color: var(--color-accent-strong); font-weight: 600; }
+
+/* 16. desenho da rota */
+.lf-app .route-wrap { display: grid; grid-template-columns: minmax(220px, 340px) 1fr; gap: var(--space-4); align-items: start; }
+.lf-app .route-sketch { display: grid; gap: 4px; }
+.lf-app .route-svg { width: 100%; height: auto; border-radius: var(--radius-sm); background: rgba(27, 31, 42, .04); }
+.lf-app .route-line { fill: none; stroke: var(--color-accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.lf-app .route-svg.draw .route-line { stroke-dashoffset: 1; animation: fx-draw 1.2s var(--fx-ease) 150ms forwards; }
+@keyframes fx-draw { to { stroke-dashoffset: 0; } }
+.lf-app .route-pt circle { fill: #fff; stroke: var(--color-accent); stroke-width: 2; }
+.lf-app .route-pt.start circle { fill: var(--color-ink); stroke: none; }
+.lf-app .route-pt text { font: 700 10px Inter, system-ui, sans-serif; fill: var(--color-ink); }
+.lf-app .route-svg.draw .route-pt { animation: fx-drop 420ms cubic-bezier(.34, 1.56, .64, 1) both; animation-delay: calc(var(--fx-i, 0) * 180ms + 150ms); transform-box: fill-box; }
+@keyframes fx-drop { from { opacity: 0; } }
+
+/* 19. melhor mensagem */
+.lf-app .rep-table tr.best { background: #f0fdf4; }
+.lf-app .best-tag { margin-left: 8px; background: #dcfce7; color: #166534; }
+
+/* 23. marcador deslizante das abas */
+.lf-app .tabs { position: relative; }
+.lf-app .tabs .tab-ink { position: absolute; left: 0; border-radius: 8px; background: #fff; box-shadow: 0 1px 3px rgba(40, 30, 20, .12); transition: transform 320ms var(--fx-ease), width 320ms var(--fx-ease); pointer-events: none; }
+.lf-app .tabs .tab { position: relative; z-index: 1; }
+.lf-app .tabs.has-ink .tab[aria-selected="true"] { background: transparent; box-shadow: none; }
+
+/* ---------- layout: guia, dicas das abas, partes recolhidas ---------- */
+.lf-app .guide { padding: var(--space-4) var(--space-5); margin-bottom: var(--space-4); }
+.lf-app .guide-head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
+.lf-app .guide h2 { font-size: 17px; margin: 0; }
+.lf-app .guide-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+.lf-app .guide-steps li { display: grid; gap: 4px; padding: var(--space-3); border-radius: var(--radius-sm); background: rgba(27, 31, 42, .04); font-size: 13px; }
+.lf-app .guide-steps b { font-family: 'Montserrat', 'Inter', sans-serif; font-weight: 800; }
+.lf-app .guide-steps em { font-style: normal; font-weight: 600; }
+.lf-app .guide-open { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; margin-right: var(--space-3); }
+.lf-app .tab-hint { margin: calc(-1 * var(--space-2)) 0 var(--space-3); font-size: 13px; color: var(--color-ink-muted); }
+.lf-app .fold { border-top: 1px solid var(--glass-line); padding-top: var(--space-3); }
+.lf-app .fold > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-2); font-size: 13px; font-weight: 600; padding: 4px 0; }
+.lf-app .fold > summary::-webkit-details-marker { display: none; }
+.lf-app .fold > summary::after { content: "+"; font-weight: 700; color: var(--color-accent); }
+.lf-app .fold[open] > summary::after { content: "–"; }
+.lf-app .fold-sub { margin-left: auto; font-weight: 500; font-size: 12px; color: var(--color-ink-muted); }
+.lf-app .fold > .field { margin-top: var(--space-3); }
+.lf-app .sell-btn[aria-expanded="true"] { background: var(--color-accent-soft); border-color: rgba(194, 65, 12, .45); color: var(--color-accent-strong); }
+.lf-app .today-nums { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.lf-app .today-n b { font-family: 'Montserrat', 'Inter', sans-serif; font-weight: 800; font-size: 18px; font-variant-numeric: tabular-nums; margin-right: 2px; }
+.lf-app .today.late { border-left-color: #dc2626; }
+@media (max-width: 1100px) { .lf-app .guide-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } .lf-app .route-wrap { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .lf-app .guide-steps, .lf-app .pf-grid { grid-template-columns: 1fr 1fr; } .lf-app .guide-open { margin-left: 0; } }
+@media (prefers-reduced-motion: reduce) { .lf-progress i, .fx-envelope { animation: none !important; } .lf-app .fbar { transition: none; } }
+.lf-app .fold > summary { display: grid; grid-template-columns: 1fr auto; row-gap: 2px; align-items: center; }
+.lf-app .fold > summary::after { grid-column: 2; grid-row: 1 / span 2; font-size: 18px; }
+.lf-app .fold-sub { grid-column: 1; grid-row: 2; margin-left: 0; }
+.lf-app a.button { text-decoration: none; }
+.lf-app .map.empty { min-height: 0; padding: var(--space-6) var(--space-5); display: grid; place-items: center; text-align: center; }
