@@ -126,6 +126,31 @@
     };
   };
 
+  /** Valida o raio-X (resposta do /raiox ou versão resumida da tabela). */
+  var SERVS = ['branding', 'manual', 'site', 'motion', 'instagram'];
+  LF.sanitizeRaiox = function (r) {
+    if (!r || typeof r !== 'object' || !Array.isArray(r.lacunas)) return undefined;
+    var sv = function (v) { return SERVS.indexOf(v) >= 0 ? v : null; };
+    var si = r.sinais && typeof r.sinais === 'object' ? r.sinais : null;
+    var ig = si && typeof si.instagram === 'string' && /^[A-Za-z0-9._]{1,30}$/.test(si.instagram) ? si.instagram : null;
+    return {
+      em: str(r.em, 40) || '',
+      demo: r.demo === true,
+      lacunas: r.lacunas.filter(function (l) { return l && /^[a-z_]{3,30}$/.test(l.codigo); }).slice(0, 15)
+        .map(function (l) { return { codigo: l.codigo, titulo: str(l.titulo, 80) || l.codigo, servico: sv(l.servico) }; }),
+      servicos: Array.isArray(r.servicos) ? r.servicos.filter(sv).slice(0, 5) : [],
+      principal: sv(r.principal),
+      resumo: str(r.resumo, 600) || '',
+      angulo: str(r.angulo, 400) || '',
+      verificar: Array.isArray(r.verificar) ? r.verificar.filter(function (x) { return typeof x === 'string'; }).slice(0, 8).map(function (x) { return x.slice(0, 200); }) : [],
+      sinais: si ? { instagram: ig, plataforma: str(si.plataforma, 40) || null, ms: num(si.ms), https: si.https === true, celular: si.celular === true, video: si.video === true, url: httpUrl(si.url) } : null
+    };
+  };
+  /** Versão que vai para a tabela compartilhada: só códigos e serviços (sem textos). */
+  LF.stripRaiox = function (r) {
+    return r ? { em: r.em, demo: r.demo, lacunas: r.lacunas.map(function (l) { return { codigo: l.codigo, titulo: l.titulo, servico: l.servico }; }), servicos: r.servicos, principal: r.principal } : undefined;
+  };
+
   /** Valida/normaliza um lead vindo de fora (servidor, localStorage, backup, tabela). Bloqueia URLs não-http (ex.: javascript:). */
   LF.sanitizeLead = function (x) {
     if (!x || typeof x !== 'object') return null;
@@ -145,6 +170,8 @@
       status: LF.STATUSES.indexOf(o.status) >= 0 ? o.status : 'Novo',
       demo: o.demo === true, pending: pending,
       ai: LF.sanitizeAi(o.ai),
+      raiox: LF.sanitizeRaiox(o.raiox),
+      seq: typeof o.seq === 'number' && o.seq >= 0 && o.seq <= 3 ? Math.floor(o.seq) : 0,
       notes: str(o.notes, 1000),
       nextAction: LF.isDate(o.nextAction) ? o.nextAction : undefined,
       lastContact: LF.isDate(o.lastContact) ? o.lastContact : undefined

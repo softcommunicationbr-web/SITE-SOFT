@@ -115,7 +115,7 @@ create table if not exists public.leadfinder_historico (
   id        bigserial primary key,
   em        timestamptz not null default now(),
   email     text not null default coalesce(auth.jwt() ->> 'email', ''),
-  tipo      text not null check (tipo in ('status','contato','ideia','busca')),
+  tipo      text not null check (tipo in ('status','contato','ideia','busca','proposta','raiox')),
   place_id  text check (place_id is null or place_id ~ '^[A-Za-z0-9_-]{10,200}$'),
   categoria text check (char_length(categoria) <= 80),
   de        text check (char_length(de) <= 60),
@@ -148,12 +148,12 @@ alter table public.leadfinder_historico enable row level security;
 drop policy if exists "membros leem historico" on public.leadfinder_historico;
 create policy "membros leem historico" on public.leadfinder_historico
   for select to authenticated using (public.leadfinder_eh_membro());
--- O app registra só contato, ideia e busca, sempre no nome de quem está logado.
+-- O app registra contato, ideia, busca, proposta e raio-X, sempre no nome de quem está logado.
 drop policy if exists "membros registram" on public.leadfinder_historico;
 create policy "membros registram" on public.leadfinder_historico
   for insert to authenticated with check (
     public.leadfinder_eh_membro()
-    and tipo in ('contato','ideia','busca')
+    and tipo in ('contato','ideia','busca','proposta','raiox')
     and lower(email) = lower(coalesce(auth.jwt() ->> 'email', ''))
   );
 -- Ninguém edita o histórico; cada um só apaga as próprias ideias.
@@ -163,3 +163,17 @@ create policy "apaga a propria ideia" on public.leadfinder_historico
     public.leadfinder_eh_membro() and tipo = 'ideia'
     and lower(email) = lower(coalesce(auth.jwt() ->> 'email', ''))
   );
+
+-- 7) Vender mais: raio-X do lead e sequência de abordagem (1º contato, vídeo-exemplo, último toque).
+-- raiox guarda só códigos (lacunas e serviços indicados) e a data; nada vindo do Google.
+alter table public.leadfinder_leads add column if not exists raiox jsonb;
+alter table public.leadfinder_leads add column if not exists sequencia smallint not null default 0;
+do $$ begin
+  if not exists (select 1 from pg_constraint where conname = 'leadfinder_leads_sequencia_check') then
+    alter table public.leadfinder_leads add constraint leadfinder_leads_sequencia_check check (sequencia between 0 and 3);
+  end if;
+end $$;
+-- Quem rodou a versão anterior: amplia os tipos aceitos no histórico.
+alter table public.leadfinder_historico drop constraint if exists leadfinder_historico_tipo_check;
+alter table public.leadfinder_historico add constraint leadfinder_historico_tipo_check
+  check (tipo in ('status','contato','ideia','busca','proposta','raiox'));

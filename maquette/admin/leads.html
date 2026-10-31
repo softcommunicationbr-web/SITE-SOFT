@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/leadfinder.css?v=20261031-1">
+<link rel="stylesheet" href="../assets/css/leadfinder.css?v=20261031-2">
 <!-- Trava de senha do painel (não mexer) -->
 <script src="../assets/js/admin-auth.js?v=20261030-1"></script>
 </head>
@@ -98,9 +98,13 @@
             <div aria-live="polite" id="lf-message"></div>
 
             <div class="field sect">
-              <label class="field-label" for="tpl">Mensagem de abordagem (WhatsApp)</label>
+              <label class="field-label" for="tpl">Sequência · passo 1: primeiro contato</label>
               <textarea id="tpl" class="input area" rows="4" maxlength="500"></textarea>
-              <div class="hint">Use {nome} para o nome da empresa. O botão abre o WhatsApp com a mensagem pronta; o envio é sempre manual, um a um.</div>
+              <label class="field-label" for="tpl2" style="margin-top:12px">Passo 2: vídeo-exemplo (3 dias depois)</label>
+              <textarea id="tpl2" class="input area" rows="4" maxlength="500"></textarea>
+              <label class="field-label" for="tpl3" style="margin-top:12px">Passo 3: último toque (4 dias depois)</label>
+              <textarea id="tpl3" class="input area" rows="3" maxlength="500"></textarea>
+              <div class="hint">Use {nome} para o nome da empresa e {video} para o link do vídeo do portfólio escolhido para o lead. O botão abre o WhatsApp com a mensagem pronta e agenda o próximo passo; o envio é sempre manual, um a um. A sequência para sozinha quando o lead responde.</div>
             </div>
 
             <div class="field sect">
@@ -129,6 +133,7 @@
                 <button type="button" role="tab" aria-selected="true" class="tab" id="lf-tab-list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Lista</button>
                 <button type="button" role="tab" aria-selected="false" class="tab" id="lf-tab-map"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>Mapa</button>
                 <button type="button" role="tab" aria-selected="false" class="tab" id="lf-tab-hist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/></svg>Histórico</button>
+                <button type="button" role="tab" aria-selected="false" class="tab" id="lf-tab-report"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Relatório</button>
               </div>
               <div class="searchbox"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/></svg><input class="input" id="lf-q" placeholder="Buscar nome, cidade, categoria, notas…" aria-label="Buscar nos leads"></div>
             </div>
@@ -148,9 +153,13 @@
 </div>
 
 <script src="../assets/js/config.js?v=20261025-5"></script>
-<script src="../assets/js/leadfinder/lib.js?v=20261029-2"></script>
+<script src="../assets/js/leadfinder/lib.js?v=20261031-1"></script>
 <script src="../assets/js/leadfinder/notify.js?v=20261029-2"></script>
 <script src="../assets/js/leadfinder/maps.js?v=20261029-2"></script>
-<script src="../assets/js/admin-leads.js?v=20261031-1"></script>
+<script src="../assets/data/catalog.js?v=20261031-1"></script>
+<script src="../assets/js/leadfinder/ofertas.js?v=20261031-1"></script>
+<script src="../assets/js/leadfinder/vendas.js?v=20261031-1"></script>
+<script src="../assets/js/leadfinder/proposta.js?v=20261031-1"></script>
+<script src="../assets/js/admin-leads.js?v=20261031-2"></script>
 </body>
 </html>

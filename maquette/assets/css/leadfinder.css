@@ -304,3 +304,50 @@ html.admin-locked .lf-app { display: none !important; }
 .lf-app .hist-text { font-size: 14px; }
 .lf-app .hist-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .lf-app .hist-box .funnel { margin: 0; }
+
+/* ---------- Vender mais: raio-X, portfólio, proposta, sequência, hoje, rota, relatório ---------- */
+.lf-app .linkbtn.strong { font-weight: 700; }
+.lf-app .button.small { min-height: 34px; padding: 0 var(--space-3); font-size: 13px; }
+.lf-app .meta.seq { background: #eef2ff; color: #3730a3; font-weight: 600; }
+.lf-app .sell { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin-top: var(--space-2); }
+.lf-app .sell-block { display: grid; align-content: start; gap: var(--space-2); padding: var(--space-4); border-radius: var(--radius-sm); background: rgba(27, 31, 42, .04); min-width: 0; }
+.lf-app .sell-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); flex-wrap: wrap; }
+.lf-app .sell h4, .lf-app .route h3 { margin: 0; font-family: 'Montserrat', 'Inter', system-ui, sans-serif; font-weight: 800; font-size: 14px; }
+.lf-app .sell-list { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 13px; }
+.lf-app .sell-list li { overflow-wrap: anywhere; }
+.lf-app .sell-list .tag { margin-left: 6px; }
+.lf-app .sell-text { margin: 0; font-size: 13px; }
+.lf-app .sell-angle { font-size: 13px; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); background: #fff; }
+.lf-app .sell-checks { display: flex; flex-wrap: wrap; gap: 6px; }
+.lf-app .sell-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.lf-app .today { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-3); border-left: 4px solid var(--color-accent); }
+.lf-app .today-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.lf-app .route { display: grid; gap: var(--space-3); padding: var(--space-4); margin-bottom: var(--space-4); }
+.lf-app .route .segmented { min-width: 260px; }
+.lf-app .route-pick { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; max-height: 260px; overflow: auto; font-size: 13px; }
+.lf-app .route-pick li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.lf-app .route-pick input { width: 16px; height: 16px; accent-color: var(--color-accent); }
+.lf-app .route-list { margin: 0; padding-left: 22px; display: grid; gap: 4px; font-size: 13px; }
+.lf-app .funnel-chart { display: grid; gap: 8px; }
+.lf-app .frow { display: grid; grid-template-columns: 110px 1fr 48px; align-items: center; gap: var(--space-2); font-size: 13px; }
+.lf-app .ftrack { height: 14px; }
+.lf-app .fbar { display: block; height: 14px; border-radius: 0 4px 4px 0; background: var(--color-accent); }
+.lf-app .fval { text-align: right; font-variant-numeric: tabular-nums; }
+.lf-app .table-wrap { overflow-x: auto; }
+.lf-app .rep-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.lf-app .rep-table th, .lf-app .rep-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--glass-line); vertical-align: top; }
+.lf-app .rep-table thead th { font-size: 12px; color: var(--color-ink-muted); font-weight: 600; }
+.lf-app .rep-table tbody th { font-weight: 500; overflow-wrap: anywhere; max-width: 420px; }
+.lf-app .rep-table td { font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 1100px) { .lf-app .sell { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .lf-app .frow { grid-template-columns: 90px 1fr 40px; } .lf-app .route .segmented { min-width: 0; width: 100%; } }
+@media print {
+  body.lf-print-report .lf-app .filters, body.lf-print-report .lf-app .topbar, body.lf-print-report .lf-app .stats:not(.hist-stats),
+  body.lf-print-report .lf-app .tabs, body.lf-print-report .lf-app .searchbox, body.lf-print-report .lf-app .funnel,
+  body.lf-print-report .lf-app .no-print, body.lf-print-report .lf-back, body.lf-print-report .lf-app .aurora,
+  body.lf-print-report .lf-app .toasts, body.lf-print-report #lf-notices, body.lf-print-report .lf-app > .shell > #lf-app > .footer { display: none !important; }
+  body.lf-print-report .lf-app .layout { display: block; }
+  body.lf-print-report .lf-app .glass { box-shadow: none; background: #fff; border: 1px solid #ddd; }
+}
+.lf-app .sell-list a, .lf-app .route a:not(.button), .lf-app .sell .hint a { color: var(--color-accent); font-weight: 600; text-decoration: none; }
+.lf-app .sell-list a:hover, .lf-app .sell .hint a:hover { text-decoration: underline; }
