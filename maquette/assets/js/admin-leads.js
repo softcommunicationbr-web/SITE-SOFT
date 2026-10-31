@@ -66,13 +66,14 @@
     sweepKm: 0, sweepProgress: null, goal: 'digital',
     leads: [], mode: null, template: DEFAULT_TEMPLATE,
     warning: '', message: '', error: '', loading: false,
-    tab: 'list', filter: 'Todos', sort: 'score', search: '', openNotes: null,
+    tab: 'hoje', filter: 'Todos', sort: 'score', search: '', openNotes: null,
     loaded: false, savedAt: null, hydrating: false, autoHydrate: false, aiBusy: [],
     hist: [], histFilter: 'Todos', histQ: '', onlyNew: false, ideaDraft: '',
     seqTemplates: LF.SEQ_DEFAULTS.slice(), openSell: null, raioxBusy: [], propBusy: [], propLang: 'pt-BR', propServs: {}, quick: '',
-    route: { sel: null, start: 'region', gps: null, mode: 'driving', result: null }, reportMonth: '', report: null, reportBusy: false
+    route: { sel: null, start: 'region', gps: null, mode: 'driving', result: null }, reportMonth: '', report: null, reportBusy: false,
+    openMore: null, openProp: null, openTimeline: null, focus: null, batch: null
   };
-  var R = { cancelSweep: false, hydrated: new Set(), saveErrorShown: false, remoteIds: new Set(), started: false, crashed: false, histTimer: null, seqSeen: new Set(), seqLabel: new Map(), sellOpenAt: {} };
+  var R = { cancelSweep: false, hydrated: new Set(), saveErrorShown: false, remoteIds: new Set(), started: false, crashed: false, histTimer: null, seqSeen: new Set(), seqLabel: new Map(), sellOpenAt: {}, propDone: new Set(), focusTimer: null, batchStop: false };
   var session = null;
 
   function set(patch) { Object.assign(S, patch); commit(); }
@@ -293,7 +294,7 @@
   var HIST = 'leadfinder_historico';
   var HIST_TYPES = [
     { id: 'Todos', label: 'Tudo' }, { id: 'status', label: 'Status' }, { id: 'contato', label: 'Abordagens' },
-    { id: 'ideia', label: 'Ideias' }, { id: 'busca', label: 'Buscas' }
+    { id: 'ideia', label: 'Ideias' }, { id: 'busca', label: 'Buscas' }, { id: 'proposta', label: 'Propostas' }
   ];
   function myEmail() { var s = w.AdminAuth && w.AdminAuth.session(); return (s && s.email) || ''; }
   function who(email) { return email ? String(email).split('@')[0] : 'alguém'; }
@@ -343,6 +344,7 @@
       var t = m.get(h.place_id) || {};
       if (h.tipo === 'contato' && !t.contato) t.contato = h;
       if (h.tipo === 'status' && !t.status) t.status = h;
+      if (h.tipo === 'proposta' && !t.proposta) t.proposta = h;
       m.set(h.place_id, t);
     });
     return m;
@@ -407,17 +409,18 @@
   function videoOf(pick) { return LF.videoUrl(pick.item, CATALOG.base); }
   function posterOf(pick) { return pick.item.poster ? (LF.httpUrl(pick.item.poster) || SITE_URL + String(pick.item.poster).replace(/^\//, '')) : ''; }
 
-  function runRaiox(lead) {
-    if (busy('raioxBusy', lead.id)) return;
+  function runRaiox(lead, quiet) {
+    if (busy('raioxBusy', lead.id)) return Promise.resolve();
     setBusy('raioxBusy', lead.id, true);
-    postJson('/raiox', { id: lead.id, category: lead.category }).then(function (res) {
+    return postJson('/raiox', { id: lead.id, category: lead.category }).then(function (res) {
       return res.json().catch(function () { return null; }).then(function (data) {
         if (!res.ok || !data) throw new Error((data && data.error) || 'Falha no raio-X.');
         var rx = LF.sanitizeRaiox(data);
         if (!rx) throw new Error('Resposta do raio-X inválida.');
         updateLead(lead.id, { raiox: rx });
+        markDone(lead.id);
         if (isReal(lead)) logHist({ tipo: 'raiox', place_id: lead.id, categoria: lead.category, texto: rx.lacunas.map(function (l) { return l.codigo; }).join(', ').slice(0, 1000), para: rx.principal || null });
-        notify({ level: 'success', title: 'Raio-X pronto', detail: rx.lacunas.length + ' ponto(s) a melhorar · indica: ' + rx.servicos.map(function (x) { return LF.OFERTAS[x] ? LF.OFERTAS[x].nome : x; }).join(', ') });
+        if (!quiet) notify({ level: 'success', title: 'Raio-X pronto', detail: rx.lacunas.length + ' ponto(s) a melhorar · indica: ' + rx.servicos.map(function (x) { return LF.OFERTAS[x] ? LF.OFERTAS[x].nome : x; }).join(', ') });
       });
     }).catch(function (e) {
       notify({ level: 'warn', title: 'Raio-X não concluído', detail: e && e.message ? e.message : 'Erro', source: 'api/raiox' });
@@ -453,6 +456,8 @@
           contato: { email: CFG.email, whatsapp: CFG.whatsapp, instagram: CFG.instagramHandle, site: SITE_URL },
           logo: new URL('../assets/brand/soft-horizontal-chocolate.svg', w.location.href).href
         });
+        markDone(lead.id);
+        R.propDone.add(lead.id);
         if (isReal(lead)) logHist({ tipo: 'proposta', place_id: lead.id, categoria: lead.category, texto: servs.join(', '), de: S.propLang });
       });
     }).catch(function (e) {
@@ -464,13 +469,20 @@
   /** Passo da sequência: abre o WhatsApp com a mensagem do passo e agenda o próximo. */
   function seqLink(lead, D) {
     var st = LF.seqState(lead);
-    if (!st.ativa || lead.demo && !lead.phone) return null;
+    if (!st.ativa) return null;
     var passo = st.proximo.passo;
     var pick = portfolioFor(lead)[0];
     var msg = LF.seqMessage(S.seqTemplates, passo, lead.name, pick ? videoOf(pick) : '');
+    var label = passo === 1 ? 'Abordar no WhatsApp' : 'Passo ' + passo + ': ' + st.proximo.nome;
+    var doStep = function () {
+      updateLead(lead.id, LF.seqPatch(lead, passo, LF.todayLocal()));
+      markDone(lead.id);
+      if (isReal(lead)) logHist({ tipo: 'contato', place_id: lead.id, categoria: lead.category, de: 'Sequência ' + passo, texto: anonMsg(msg, lead.name) });
+    };
+    // lead de demonstração: simula o envio (não abre WhatsApp de número fictício)
+    if (lead.demo) return el('button', { type: 'button', class: 'button small', 'data-fk': 'seq|' + lead.id, text: label + ' (demonstração)', on: { click: doStep } });
     var href = LF.whatsappLink(lead.phone, msg);
     if (!href) return null;
-    var label = passo === 1 ? 'Abordar no WhatsApp' : 'Passo ' + passo + ': ' + st.proximo.nome;
     var lbl = el('span', { class: 'wa-label', text: label });
     var before = R.seqLabel.get(lead.id); R.seqLabel.set(lead.id, passo);
     if (before && before !== passo && !fx.reduced()) lbl.classList.add('fx-swap');
@@ -479,8 +491,7 @@
         var prev = isReal(lead) ? lastContato(lead.id) : null;
         if (prev && !w.confirm(lead.name + ' já foi abordada em ' + fmtWhen(prev.em) + ' por ' + who(prev.email) + '.\n\nAbordar de novo?')) { e.preventDefault(); return; }
       }
-      updateLead(lead.id, LF.seqPatch(lead, passo, LF.todayLocal()));
-      if (isReal(lead)) logHist({ tipo: 'contato', place_id: lead.id, categoria: lead.category, de: 'Sequência ' + passo, texto: anonMsg(msg, lead.name) });
+      doStep();
     });
   }
 
@@ -581,7 +592,7 @@
       next: function (a, b) { return (a.nextAction || '9999-99-99').localeCompare(b.nextAction || '9999-99-99'); }
     };
     var filtered = scored.filter(function (l) {
-      var matchesStatus = S.filter === 'Todos' || l.status === S.filter;
+      var matchesStatus = S.filter === 'Todos' || stageOf(l) === S.filter;
       var matchesSearch = !term || [l.name, l.address, l.category, l.phone || '', l.notes || ''].some(function (v) { return v.toLocaleLowerCase('pt-BR').indexOf(term) >= 0; });
       return matchesStatus && matchesSearch && (!S.onlyNew || !worked(l, touch)) && (S.quick !== 'hoje' || isToday(l));
     }).sort(sorters[S.sort] || sorters.score);
@@ -665,7 +676,7 @@
     set({ loading: true, error: '', warning: '', message: '' });
     fetchCell({ lat: S.region.lat, lng: S.region.lng }, S.radiusKm).then(function (result) {
       mergeResult(result);
-      set({ warning: result.warning || '', message: result.message || '' });
+      set({ warning: result.warning || '', message: result.message || '', tab: 'hoje' });
       if (result.warning && result.mode === 'google') notify({ level: 'warn', title: 'Algumas buscas falharam', detail: result.warning.slice(0, 200), source: 'api/leads' });
       else {
         var touch = touchIndex();
@@ -869,7 +880,8 @@
   }
 
   var TAB_HINT = {
-    list: 'Seus leads para trabalhar. Filtre pelo status, abra "Vender" para preparar a abordagem e use o botão verde do WhatsApp.',
+    hoje: 'O que fazer agora, em ordem. Cada lead mostra um botão só: o próximo passo.',
+    list: 'Todos os leads, por etapa. Use para consultar; o trabalho do dia fica em Hoje.',
     map: 'Monte a rota de visitas do dia e veja os leads no mapa.',
     hist: 'Tudo o que a equipe já fez, para ninguém repetir área, empresa, mensagem ou ideia.',
     report: 'Como foi o mês: funil, taxa de resposta e o que funciona melhor.'
@@ -879,6 +891,7 @@
     fx.count($('lf-st-priority'), 'st-priority', D.priority);
     fx.count($('lf-st-contacted'), 'st-contacted', D.contacted);
     fx.count($('lf-st-followups'), 'st-followups', D.followUps);
+    $('lf-tab-hoje').setAttribute('aria-selected', S.tab === 'hoje' ? 'true' : 'false');
     $('lf-tab-list').setAttribute('aria-selected', S.tab === 'list' ? 'true' : 'false');
     $('lf-tab-map').setAttribute('aria-selected', S.tab === 'map' ? 'true' : 'false');
     $('lf-tab-hist').setAttribute('aria-selected', S.tab === 'hist' ? 'true' : 'false');
@@ -890,12 +903,15 @@
 
   function renderFunnel(D) {
     var box = $('lf-funnel'); box.textContent = '';
-    box.hidden = S.tab === 'hist' || S.tab === 'report';
-    ['Todos'].concat(LF.STATUSES).forEach(function (s) {
-      var n = s === 'Todos' ? S.leads.length : D.statusCounts.get(s) || 0;
-      box.appendChild(el('button', { type: 'button', class: 'fchip', 'aria-pressed': S.filter === s ? 'true' : 'false', 'data-fk': 'f|' + s, on: { click: function () { set({ filter: s }); } } }, [s, el('b', { text: String(n) })]));
+    box.hidden = S.tab !== 'list';
+    if (box.hidden) return;
+    var counts = {}; S.leads.forEach(function (l) { var k = stageOf(l); counts[k] = (counts[k] || 0) + 1; });
+    [{ id: 'Todos', nome: 'Todos' }].concat(STAGES).forEach(function (x) {
+      var n = x.id === 'Todos' ? S.leads.length : counts[x.id] || 0;
+      box.appendChild(el('button', { type: 'button', class: 'fchip', title: x.dica || '', 'aria-pressed': S.filter === x.id ? 'true' : 'false', 'data-fk': 'f|' + x.id, on: { click: function () { set({ filter: x.id }); } } }, [x.nome, el('b', { text: String(n) })]));
     });
   }
+
 
   function extLink(href, kids, cls, onClick) {
     var safe = LF.httpUrl(href);
@@ -903,66 +919,44 @@
     return el('a', { class: cls || null, href: safe, target: '_blank', rel: 'noopener noreferrer', on: onClick ? { click: onClick } : null }, kids);
   }
 
-  function leadCard(lead, D) {
-    var fake = lead.demo === true; // por lead, não pelo modo global
-    var wa = fake ? null : LF.whatsappLink(lead.phone, S.template.replace(/\{nome\}/gi, lead.name));
+  function leadCard(lead, D, opts) {
+    opts = opts || {};
+    var fake = lead.demo === true;
     var due = lead.nextAction && lead.nextAction <= D.today && !has(CLOSED, lead.status);
     var isOpen = S.openNotes === lead.id;
-    var busy = has(S.aiBusy, lead.id);
     var fk = function (k) { return k + '|' + lead.id; };
+    var touch = D.touch.get(lead.id);
 
+    // só o que ajuda a decidir: nota, telefone, site, se a equipe já mexeu e o retorno
     var meta = el('div', { class: 'lead-meta' }, [
       lead.rating !== undefined ? el('span', { class: 'meta' }, [icon('star', 13), lead.rating.toFixed(1) + (lead.ratingCount !== undefined ? ' (' + lead.ratingCount + ')' : '')]) : null,
       lead.phone ? el('a', { class: 'meta', href: 'tel:' + lead.phone.replace(/[^\d+]/g, '') }, [icon('phone', 13), lead.phone]) : null,
       lead.website ? el('span', { class: 'meta' }, [icon('globe', 13), 'Tem site']) : el('span', { class: 'meta gap' }, [icon('globe', 13), 'Sem site']),
       fake ? el('span', { class: 'meta warn', text: 'Dado fictício' }) : null,
-      !fake && !worked(lead, D.touch) ? fx.enter(el('span', { class: 'meta fresh', title: 'Ninguém da equipe trabalhou esta empresa ainda', text: 'Novo para a equipe' }), 'fresh|' + lead.id, 0, 'fx-pulse') : null,
-      D.touch.get(lead.id) && D.touch.get(lead.id).contato
-        ? el('span', { class: 'meta seen', title: 'Já abordada pela equipe' }, [icon('chat', 13), 'Abordada ' + fmtWhen(D.touch.get(lead.id).contato.em) + ' · ' + who(D.touch.get(lead.id).contato.email)])
-        : R.remoteIds.has(lead.id) ? el('span', { class: 'meta seen', text: 'Já na carteira' }) : null,
-      (function () {
-        var st = LF.seqState(lead);
-        if (st.ativa && st.feito > 0) return el('span', { class: 'meta seq', title: 'Sequência de abordagem' }, [icon('chat', 13), 'Sequência ' + st.feito + '/3 · próximo: ' + st.proximo.nome + (lead.nextAction ? ' ' + fmtDate(lead.nextAction) : '')]);
-        if (!st.ativa && st.motivo && st.feito > 0) return el('span', { class: 'meta', text: st.motivo });
-        return null;
-      })(),
-      lead.raiox ? el('span', { class: 'meta gap', title: 'Raio-X: serviços indicados' }, ['Raio-X: ' + lead.raiox.servicos.map(function (x) { return LF.OFERTAS[x] ? LF.OFERTAS[x].curto : x; }).join(' · ')]) : null,
+      touch && touch.contato
+        ? el('span', { class: 'meta seen', title: 'Já abordada pela equipe' }, [icon('chat', 13), 'Abordada ' + fmtWhen(touch.contato.em) + ' · ' + who(touch.contato.email)])
+        : !fake && !worked(lead, D.touch) ? fx.enter(el('span', { class: 'meta fresh', title: 'Ninguém da equipe trabalhou esta empresa ainda', text: 'Novo para a equipe' }), 'fresh|' + lead.id, 0, 'fx-pulse') : null,
       lead.nextAction ? el('span', { class: 'meta' + (due ? ' due' : '') }, [icon('clock', 13), (due ? 'Retornar: ' : 'Retorno: ') + fmtDate(lead.nextAction)]) : null
     ]);
 
-    var notesBtn = el('button', { type: 'button', class: 'linkbtn', 'aria-expanded': isOpen ? 'true' : 'false', 'data-fk': fk('nb'), on: { click: function () { set({ openNotes: isOpen ? null : lead.id }); } } },
-      [icon('note', 13), ' ' + (lead.notes ? 'Notas ●' : 'Notas e retorno')]);
-
-    var links = el('div', { class: 'lead-links' }, [
-      fake ? null : (seqLink(lead, D) || (wa ? extLink(LF.whatsappLink(lead.phone, '') || wa, [icon('chat', 14), 'Abrir WhatsApp'], 'wa') : null)),
-      el('button', { type: 'button', class: 'button secondary small sell-btn', 'aria-expanded': S.openSell === lead.id ? 'true' : 'false', 'data-fk': fk('sell'), title: 'Raio-X do site, vídeos do portfólio e proposta', text: S.openSell === lead.id ? 'Fechar' : 'Vender', on: { click: function () { R.sellOpenAt[lead.id] = Date.now(); set({ openSell: S.openSell === lead.id ? null : lead.id }); } } }),
-      lead.website ? extLink(lead.website, ['Abrir site ', icon('out', 12)]) : null,
-      lead.googleMapsUri ? extLink(lead.googleMapsUri, ['Google Maps ', icon('out', 12)]) : null,
-      !fake && !lead.pending ? el('button', { type: 'button', class: 'linkbtn', disabled: busy, 'data-fk': fk('ai'), text: busy ? 'Analisando…' : lead.ai ? 'Reanalisar com IA' : 'Analisar com IA', on: { click: function () { analyze(lead); } } }) : null,
-      el('button', { type: 'button', class: 'linkbtn', text: 'Excluir', 'data-fk': fk('del'), on: { click: function () { removeLead(lead); } } }),
-      notesBtn
-    ]);
-
-    var sel = el('select', { 'aria-label': 'Status de ' + lead.name, class: 'select', 'data-fk': fk('st') });
-    LF.STATUSES.forEach(function (s) { var o = el('option', { text: s }); o.value = s; if (s === lead.status) o.selected = true; sel.appendChild(o); });
-    sel.addEventListener('change', function () { updateStatus(lead.id, sel.value); });
-
     var bar = el('span'); bar.style.width = lead.score + '%';
-    var right = el('div', { class: 'lead-right' }, [
-      el('div', { class: 'score', title: 'Pontuação de prioridade' }, [el('div', { class: 'scorebar', 'aria-hidden': 'true' }, [bar]), lead.score + '/100']),
-      sel,
-      seqTrack(lead)
+    var head = el('div', { class: 'lead-head' }, [
+      el('div', { class: 'lead-title-row' }, [el('h3', { text: lead.name }), el('span', { class: 'tag' + (fake ? ' demo-tag' : ''), text: lead.category })]),
+      el('div', { class: 'score', title: 'Prioridade: nota, avaliações e presença de site' }, [el('div', { class: 'scorebar', 'aria-hidden': 'true' }, [bar]), lead.score + '/100'])
     ]);
+
+    var actions = el('div', { class: 'lead-actions' }, [el('div', { class: 'next' }, nextActions(lead, D)), moreMenu(lead, D)]);
+
+    var ctx = opts.context ? stageContext(lead, D) : null;
+    if (!opts.context && S.openProp === lead.id && stageOf(lead) === 'proposta') ctx = el('div', { class: 'stage-ctx' }, [propBlock(lead)]);
 
     var aiBox = null;
-    if (lead.ai) {
-      var aiWa = lead.phone && lead.ai.message ? LF.whatsappLink(lead.phone, lead.ai.message) : null;
+    if (lead.ai && S.openSell === lead.id) {
       aiBox = el('div', { class: 'lead-notes', 'aria-label': 'Análise da IA' }, [
-        el('strong', { text: 'Tier ' + lead.ai.tier + ' · fit ' + lead.ai.fit + '/100' }), ' ',
-        el('span', { class: 'hint', text: '(opinião da IA com dados limitados; não prevê compra. A análise envia nome, categoria, endereço, nota, site e suas notas à Anthropic)' }),
+        el('strong', { text: 'IA: tier ' + lead.ai.tier + ' · encaixe ' + lead.ai.fit + '/100' }), ' ',
+        el('span', { class: 'hint', text: '(opinião da IA com dados limitados; não prevê compra)' }),
         el('div', { text: lead.ai.reason }),
         lead.ai.opportunity ? el('div', null, [el('b', { text: 'Ideia de vídeo:' }), ' ' + lead.ai.opportunity + ' ', session ? el('button', { type: 'button', class: 'linkbtn', text: 'Guardar ideia', 'data-fk': fk('idea'), on: { click: function () { saveIdea(lead.ai.opportunity, lead); } } }) : null]) : null,
-        lead.ai.message ? el('div', null, [el('b', { text: 'Mensagem sugerida:' }), ' ' + lead.ai.message + ' ', aiWa ? extLink(aiWa, ['Enviar no WhatsApp'], 'wa', onApproach(lead, 'WhatsApp (IA)', lead.ai.message)) : null]) : null,
         lead.ai.missing.length > 0 ? el('div', { class: 'hint', text: 'Falta verificar: ' + lead.ai.missing.join('; ') }) : null
       ]);
     }
@@ -972,33 +966,31 @@
       var nid = 'n-' + encodeURIComponent(lead.id), did = 'd-' + encodeURIComponent(lead.id);
       var ta = el('textarea', { id: nid, class: 'input area', rows: '3', maxlength: '1000', placeholder: 'Quem atendeu, o que respondeu, o que combinar…', 'data-fk': fk('n') });
       ta.value = lead.notes || '';
-      ta.addEventListener('input', function () {
-        updateLeadQuiet(lead.id, { notes: ta.value });
-        var label = ta.value ? 'Notas ●' : 'Notas e retorno';
-        notesBtn.lastChild.textContent = ' ' + label;
-      });
-      ta.addEventListener('blur', function () { commit(); }); // atualiza contagens/busca ao sair do campo
+      ta.addEventListener('input', function () { updateLeadQuiet(lead.id, { notes: ta.value }); });
+      ta.addEventListener('blur', function () { commit(); });
       var date = el('input', { id: did, class: 'input date', type: 'date', 'data-fk': fk('d') });
       date.value = lead.nextAction || '';
       date.addEventListener('change', function () { updateLead(lead.id, { nextAction: LF.isDate(date.value) ? date.value : undefined }); });
       notesBox = el('div', { class: 'lead-notes' }, [
         el('label', { class: 'field-label', for: nid, text: 'Notas' }), ta,
         el('div', { class: 'notes-row' }, [
-          el('label', { class: 'field-label', for: did, text: 'Próxima ação' }), date,
+          el('label', { class: 'field-label', for: did, text: 'Próximo retorno' }), date,
           lead.lastContact ? el('span', { class: 'hint', text: 'Último contato: ' + fmtDate(lead.lastContact) }) : null
         ])
       ]);
     }
 
-    return el('article', { class: 'glass lead' }, [
-      el('div', null, [
-        el('div', { class: 'lead-title-row' }, [el('h3', { text: lead.name }), el('span', { class: 'tag' + (fake ? ' demo-tag' : ''), text: lead.category })]),
-        el('div', { class: 'lead-address' }, [icon('pin', 14), lead.address]),
-        meta, links
-      ]),
-      right, aiBox, S.openSell === lead.id ? sellPanel(lead, D) : null, notesBox
+    return el('article', { class: 'glass lead stage-' + stageOf(lead) }, [
+      opts.why ? el('div', { class: 'why', text: opts.why }) : null,
+      head,
+      el('div', { class: 'lead-sub' }, [el('div', { class: 'lead-address' }, [icon('pin', 14), lead.address]), stageBar(lead)]),
+      meta, actions, ctx,
+      S.openSell === lead.id ? sellPanel(lead) : null, aiBox,
+      S.openTimeline === lead.id ? timelineOf(lead) : null,
+      notesBox
     ]);
   }
+
 
 
 
@@ -1071,8 +1063,159 @@
     return el('div', { class: 'seq-track', 'aria-label': 'Sequência: ' + st.feito + ' de 3 passos feitos' }, [el('span', { class: 'seq-label', text: 'Sequência' }), el('span', { class: 'seq-dots' }, dots)]);
   }
 
+
+  /* ============================================================
+     Etapas: cada lead mostra UM próximo passo
+     ============================================================ */
+  var STAGES = [
+    { id: 'avaliar', nome: 'Avaliar', dica: 'Faça o raio-X do site para saber o que oferecer.' },
+    { id: 'abordar', nome: 'Abordar', dica: 'Mande a 1ª mensagem. O vídeo certo vai no passo 2.' },
+    { id: 'aguardando', nome: 'Aguardando', dica: 'A sequência agenda o próximo passo sozinha. Se responder, marque "Respondeu".' },
+    { id: 'proposta', nome: 'Respondeu', dica: 'Hora da proposta: ela já vem com o raio-X e os vídeos certos.' },
+    { id: 'resultado', nome: 'Negociando', dica: 'Registre se virou cliente ou não.' },
+    { id: 'cliente', nome: 'Clientes', dica: '' },
+    { id: 'descartado', nome: 'Descartados', dica: '' }
+  ];
+  var STAGE_BY = {}; STAGES.forEach(function (x, i) { STAGE_BY[x.id] = Object.assign({ n: i + 1 }, x); });
+  function stageOf(l) {
+    if (l.status === 'Cliente') return 'cliente';
+    if (l.status === 'Descartado') return 'descartado';
+    if (l.status === 'Reunião marcada') return 'resultado';
+    if (l.status === 'Respondeu') return 'proposta';
+    if ((l.seq || 0) > 0 || l.status === 'Contato pendente' || l.status === 'Contatado') return 'aguardando';
+    return l.raiox || l.demo ? 'abordar' : 'avaliar';
+  }
+  function hasProposal(l, D) { return R.propDone.has(l.id) || !!(D.touch.get(l.id) && D.touch.get(l.id).proposta); }
+
+  /* Ações feitas hoje (para a barra "X feitas") — guardadas por dia neste navegador. */
+  function doneKey() { return 'lf-feitos-' + LF.todayLocal(); }
+  function doneToday() { try { var v = JSON.parse(w.localStorage.getItem(doneKey()) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+  function markDone(id) {
+    var list = doneToday(); list.push(id);
+    try { w.localStorage.setItem(doneKey(), JSON.stringify(list.slice(-500))); } catch (e) { /* opcional */ }
+    if (S.focus) focusMaybeAdvance(id);
+  }
+  function setStatusAction(lead, status, extra) {
+    var patch = Object.assign({ status: status }, extra || {});
+    if (has(CONTACTED, status)) patch.lastContact = LF.todayLocal();
+    updateLead(lead.id, patch);
+    markDone(lead.id);
+  }
+
+  /** Por que o lead está na fila de hoje (ou null se não precisa de nada agora). */
+  function queueReason(l, D) {
+    var st = stageOf(l), sq = LF.seqState(l);
+    if (st === 'aguardando') {
+      if (sq.ativa && sq.feito === 0) return { pri: 3, why: 'Abordado fora da sequência: mande o passo 1' };
+      if (sq.ativa && l.nextAction && l.nextAction <= D.today) return l.nextAction < D.today ? { pri: 0, why: 'Atrasado desde ' + fmtDate(l.nextAction) + ': ' + sq.proximo.nome } : { pri: 2, why: 'Hoje: ' + sq.proximo.nome };
+      if (!sq.ativa && sq.feito >= 3 && !(l.nextAction && l.nextAction > D.today)) return { pri: 3, why: 'Sequência terminou sem resposta: decidir' };
+      return null;
+    }
+    if (st === 'proposta') return { pri: 1, why: hasProposal(l, D) ? 'Proposta enviada: registrar o resultado' : 'Respondeu: fazer a proposta' };
+    if (st === 'resultado') return !l.nextAction || l.nextAction <= D.today ? { pri: 2, why: 'Negociação: registrar o resultado' } : null;
+    if (st === 'abordar') return { pri: 4, why: 'Avaliado: pronto para abordar' };
+    if (st === 'avaliar') return { pri: 5, why: 'Novo: avaliar o site' };
+    return null;
+  }
+  var QUEUE_NEW = 10;
+  function buildQueue(D) {
+    var items = [];
+    D.scored.forEach(function (l) { var r = queueReason(l, D); if (r) items.push({ lead: l, pri: r.pri, why: r.why }); });
+    items.sort(function (a, b) { return a.pri - b.pri || b.lead.score - a.lead.score; });
+    var news = 0;
+    return items.filter(function (x) { if (x.pri < 4) return true; news++; return news <= QUEUE_NEW; });
+  }
+
+  /** Botões do próximo passo (o principal + no máximo um secundário). */
+  function nextActions(lead, D) {
+    var st = stageOf(lead), fk = function (k) { return k + '|' + lead.id; };
+    var btn = function (label, cls, onClick, k, extra) { return el('button', Object.assign({ type: 'button', class: cls, 'data-fk': fk(k), text: label, on: { click: onClick } }, extra || {})); };
+    var discard = function () { return btn('Não vale a pena', 'linkbtn', function () { setStatusAction(lead, 'Descartado'); }, 'nv'); };
+    if (st === 'avaliar') {
+      var b = busy('raioxBusy', lead.id);
+      return [btn(b ? 'Avaliando o site…' : 'Avaliar', 'button primary-step', function () { runRaiox(lead); }, 'av', { disabled: b || lead.pending }), discard()];
+    }
+    if (st === 'abordar') return [seqLink(lead, D) || el('span', { class: 'hint', text: 'Sem telefone: aborde por outro canal e marque em ⋯' }), discard()];
+    if (st === 'aguardando') {
+      var sq = LF.seqState(lead);
+      var replied = btn('Respondeu', 'button secondary small', function () { setStatusAction(lead, 'Respondeu', { nextAction: undefined }); }, 'resp');
+      if (sq.ativa && (sq.feito === 0 || !lead.nextAction || lead.nextAction <= D.today)) return [seqLink(lead, D), replied];
+      if (sq.ativa) return [el('span', { class: 'wait-chip' }, [icon('clock', 14), sq.proximo.nome + ' em ' + fmtDate(lead.nextAction)]), replied];
+      return [replied, btn('Não respondeu', 'linkbtn', function () { setStatusAction(lead, 'Descartado'); }, 'nr')];
+    }
+    if (st === 'proposta') {
+      if (hasProposal(lead, D)) return [
+        btn('Marcar reunião', 'button primary-step', function () { setStatusAction(lead, 'Reunião marcada'); }, 'meet'),
+        btn('Virou cliente', 'button secondary small', function () { setStatusAction(lead, 'Cliente', { nextAction: undefined }); }, 'won'),
+        btn('Não fechou', 'linkbtn', function () { setStatusAction(lead, 'Descartado', { nextAction: undefined }); }, 'lost')];
+      return [btn(S.openProp === lead.id ? 'Fechar proposta' : 'Fazer proposta', 'button primary-step', function () { set({ openProp: S.openProp === lead.id ? null : lead.id }); }, 'op')];
+    }
+    if (st === 'resultado') return [
+      btn('Virou cliente', 'button primary-step', function () { setStatusAction(lead, 'Cliente', { nextAction: undefined }); }, 'won'),
+      btn('Não fechou', 'linkbtn', function () { setStatusAction(lead, 'Descartado', { nextAction: undefined }); }, 'lost')];
+    return [el('span', { class: 'done-chip ' + st, text: st === 'cliente' ? 'Cliente' : 'Descartado' })];
+  }
+
+  /** O que mostrar no card para a etapa atual (o contexto da decisão). */
+  function stageContext(lead, D) {
+    var st = stageOf(lead);
+    if (st === 'avaliar') return busy('raioxBusy', lead.id) ? el('div', { class: 'sell-block scanning' }, [el('div', { class: 'hint', text: 'Lendo o site da empresa e medindo o que falta…' })]) : null;
+    if (st === 'abordar' || (st === 'aguardando' && LF.seqState(lead).ativa)) {
+      var parts = [];
+      if (st === 'aguardando') { var tr = seqTrack(lead); if (tr) parts.push(el('div', { class: 'sell-block' }, [el('h4', { text: 'Sequência' }), tr, el('div', { class: 'hint', text: STAGE_BY.aguardando.dica })])); }
+      if (lead.raiox) parts.push(rxBlock(lead));
+      parts.push(pfBlock(lead));
+      return el('div', { class: 'stage-ctx two' }, parts);
+    }
+    if (st === 'proposta' && (S.openProp === lead.id) && !hasProposal(lead, D)) return el('div', { class: 'stage-ctx' }, [propBlock(lead)]);
+    return null;
+  }
+
+  /** Mini barra de etapas: onde o lead está no caminho. */
+  function stageBar(lead) {
+    var st = stageOf(lead), cur = STAGE_BY[st];
+    var steps = STAGES.slice(0, 5);
+    var idx = st === 'cliente' ? 5 : st === 'descartado' ? -1 : cur.n - 1;
+    return el('div', { class: 'stage', title: cur.dica || cur.nome }, [
+      el('span', { class: 'stage-name ' + st, text: st === 'descartado' ? 'Descartado' : st === 'cliente' ? 'Cliente' : 'Etapa ' + cur.n + ' de 5 · ' + cur.nome }),
+      el('span', { class: 'stage-dots', 'aria-hidden': 'true' }, steps.map(function (x, i) { return el('i', { class: i < idx ? 'done' : i === idx ? 'now' : '' }); }))
+    ]);
+  }
+
+  /** Menu ⋯ com tudo que não é o próximo passo. */
+  function moreMenu(lead, D) {
+    var open = S.openMore === lead.id, fk = function (k) { return k + '|' + lead.id; };
+    var toggle = el('button', { type: 'button', class: 'button secondary small icon-only', 'aria-haspopup': 'true', 'aria-expanded': open ? 'true' : 'false', 'aria-label': 'Mais ações para ' + lead.name, 'data-fk': fk('more'), text: '⋯', on: { click: function () { set({ openMore: open ? null : lead.id }); } } });
+    if (!open) return el('div', { class: 'more' }, [toggle]);
+    var close = function (fn) { return function (e) { set({ openMore: null }); fn(e); }; };
+    var item = function (label, fn, k) { return el('button', { type: 'button', class: 'more-item', role: 'menuitem', 'data-fk': fk(k), text: label, on: { click: close(fn) } }); };
+    var sel = el('select', { 'aria-label': 'Status de ' + lead.name, class: 'select', 'data-fk': fk('st') });
+    LF.STATUSES.forEach(function (x) { var o = el('option', { text: x }); o.value = x; if (x === lead.status) o.selected = true; sel.appendChild(o); });
+    sel.addEventListener('change', function () { updateStatus(lead.id, sel.value); set({ openMore: null }); });
+    var menu = el('div', { class: 'more-menu', role: 'menu' }, [
+      item(lead.notes ? 'Notas e retorno ●' : 'Notas e retorno', function () { set({ openNotes: S.openNotes === lead.id ? null : lead.id }); }, 'm-notes'),
+      item('Raio-X, portfólio e proposta', function () { R.sellOpenAt[lead.id] = Date.now(); set({ openSell: S.openSell === lead.id ? null : lead.id }); }, 'm-sell'),
+      item('Linha do tempo', function () { set({ openTimeline: S.openTimeline === lead.id ? null : lead.id }); if (!S.hist.length) loadHistory(); }, 'm-tl'),
+      !lead.demo && !lead.pending ? item(lead.ai ? 'Reanalisar com IA' : 'Analisar com IA', function () { analyze(lead); }, 'm-ai') : null,
+      lead.website ? extLink(lead.website, ['Abrir site ', icon('out', 12)], 'more-item') : null,
+      lead.googleMapsUri ? extLink(lead.googleMapsUri, ['Google Maps ', icon('out', 12)], 'more-item') : null,
+      el('label', { class: 'more-status' }, ['Status', sel]),
+      item('Excluir da lista', function () { removeLead(lead); }, 'm-del')
+    ]);
+    return el('div', { class: 'more open' }, [toggle, menu]);
+  }
+
+  function timelineOf(lead) {
+    var rows = S.hist.filter(function (h) { return h.place_id === lead.id; }).slice(0, 30);
+    return el('div', { class: 'lead-notes' }, [el('strong', { text: 'Linha do tempo' }),
+      rows.length ? el('ol', { class: 'hist-list' }, rows.map(function (h) {
+        return el('li', { class: 'hist-item' }, [el('div', { class: 'hist-meta' }, [el('span', { class: 'tag', text: HIST_LABEL[h.tipo] || h.tipo }), fmtWhen(h.em) + ' · ' + who(h.email)]),
+          el('div', { class: 'hist-text', text: histText(h) }), h.texto && h.tipo !== 'busca' ? el('div', { class: 'hint', text: String(h.texto).slice(0, 220) }) : null]);
+      })) : el('div', { class: 'hint', text: 'Nada registrado ainda para esta empresa.' })]);
+  }
+
   /** Painel "Vender" do lead: raio-X, portfólio certo e proposta. */
-  function sellPanel(lead, D) {
+  function rxBlock(lead) {
     var fk = function (k) { return k + '|' + lead.id; };
     var rx = lead.raiox, rbusy = busy('raioxBusy', lead.id);
     var rxBox = el('div', { class: 'sell-block' + (rbusy ? ' scanning' : '') }, [
@@ -1100,7 +1243,11 @@
         ig ? extLink('https://www.instagram.com/' + ig + '/', ['Abrir @' + ig + ' ', icon('out', 12)]) : null]));
       if (rx.em) rxBox.appendChild(el('div', { class: 'hint', text: 'Feito em ' + fmtWhen(rx.em) + (rx.sinais && rx.sinais.plataforma ? ' · site em ' + rx.sinais.plataforma : '') + (rx.sinais && rx.sinais.ms ? ' · abriu em ' + (rx.sinais.ms / 1000).toFixed(1) + ' s' : '') }));
     }
+    return rxBox;
+  }
 
+  function pfBlock(lead) {
+    var rx = lead.raiox;
     var picks = portfolioFor(lead);
     var pfBox = el('div', { class: 'sell-block' }, [
       el('div', { class: 'sell-head' }, [el('h4', { text: 'Portfólio certo para este lead' }),
@@ -1108,7 +1255,11 @@
       picks.length ? el('div', { class: 'pf-grid' }, picks.map(function (p, i) { return fx.enter(pfThumb(p), 'pf|' + lead.id + '|' + p.item.id, i); })) : el('div', { class: 'hint', text: 'Catálogo de vídeos não carregado.' }),
       el('div', { class: 'hint', text: 'Escolhidos pela categoria do lead' + (rx ? ' e pelos serviços do raio-X' : '') + '. O 1º vídeo vai no passo 2 da sequência ({video}).' })
     ]);
+    return pfBox;
+  }
 
+  function propBlock(lead) {
+    var fk = function (k) { return k + '|' + lead.id; };
     var servs = propServices(lead), pbusy = busy('propBusy', lead.id);
     var checks = el('div', { class: 'sell-checks' }, Object.keys(LF.OFERTAS).map(function (k) {
       var cb = el('input', { type: 'checkbox', 'data-fk': fk('ps-' + k) }); cb.checked = has(servs, k);
@@ -1127,9 +1278,14 @@
       checks,
       el('div', { class: 'sell-row' }, [lang,
         el('button', { type: 'button', class: 'button small', disabled: pbusy, 'data-fk': fk('prop'), text: pbusy ? 'Gerando…' : 'Gerar proposta', on: { click: function () { gerarProposta(lead); } } })]),
-      el('div', { class: 'hint', text: 'Abre a proposta na marca Soft, com o diagnóstico do raio-X e os vídeos acima. Tudo é editável antes de salvar em PDF. Preços e entregáveis vêm de assets/js/leadfinder/ofertas.js (vazio = "sob consulta").' })
+      el('div', { class: 'hint', text: 'Abre a proposta na marca Soft, com o diagnóstico do raio-X e os vídeos certos. Tudo é editável antes de salvar em PDF. Preços e entregáveis vêm de assets/js/leadfinder/ofertas.js (vazio = "sob consulta").' })
     ]);
-    return fx.enter(el('section', { class: 'sell', 'aria-label': 'Vender para ' + lead.name }, [rxBox, pfBox, prBox]), 'sell|' + lead.id + '|' + (R.sellOpenAt[lead.id] || ''), 0, 'fx-open');
+    return prBox;
+  }
+
+  /** Detalhes completos (menu ⋯): raio-X, portfólio e proposta lado a lado. */
+  function sellPanel(lead) {
+    return fx.enter(el('section', { class: 'sell', 'aria-label': 'Detalhes de ' + lead.name }, [rxBlock(lead), pfBlock(lead), propBlock(lead)]), 'sell|' + lead.id + '|' + (R.sellOpenAt[lead.id] || ''), 0, 'fx-open');
   }
 
   function copyText(t, btn) {
@@ -1138,28 +1294,7 @@
     else w.prompt('Copie:', t);
   }
 
-  /** Quadro "Hoje" no topo da lista (o mesmo conteúdo do e-mail diário). */
-  function todayBox(D) {
-    var t = todayInfo(D);
-    if (!t.due.length && !t.hot.length && S.quick !== 'hoje') return null;
-    var parts = [];
-    if (t.due.length) parts.push(t.due.length + ' retorno(s)' + (t.seqDue ? ' · ' + t.seqDue + ' da sequência' : ''));
-    if (t.hot.length) parts.push(t.hot.length + ' lead(s) quente(s) sem contato');
-    var late = t.due.some(function (l) { return l.nextAction < D.today; });
-    var box = el('div', { class: 'glass today' + (late ? ' late' : ''), role: 'status' }, [
-      el('div', { class: 'today-nums' }, [el('strong', { text: 'Hoje' }),
-        t.due.length ? el('span', { class: 'today-n' }, [fx.count(el('b'), 'today-due', t.due.length), ' retorno(s)' + (t.seqDue ? ' · ' + t.seqDue + ' da sequência' : '')]) : null,
-        t.hot.length ? el('span', { class: 'today-n' }, [fx.count(el('b'), 'today-hot', t.hot.length), ' lead(s) quente(s) sem contato']) : null,
-        late ? el('span', { class: 'meta due', text: 'tem retorno atrasado' }) : null,
-        !t.due.length && !t.hot.length ? el('span', { text: 'nada pendente' }) : null]),
-      el('div', { class: 'today-actions' }, [
-        el('button', { type: 'button', class: 'button secondary small', 'data-fk': 'quick', text: S.quick === 'hoje' ? 'Mostrar todos' : 'Só os de hoje', on: { click: function () { set({ quick: S.quick === 'hoje' ? '' : 'hoje' }); } } }),
-        session ? el('button', { type: 'button', class: 'linkbtn', text: 'Enviar este resumo para meu e-mail', on: { click: function (e) { fx.fly(e.currentTarget); sendDigestTest(); } } }) : null
-      ])
-    ]);
-    if (late) fx.enter(box, 'late|' + D.today, 0, 'fx-alert');
-    return box;
-  }
+
 
   function renderRoute(view, D) {
     var cands = routeCandidates(D), sel = routeSel(D), r = S.route.result;
@@ -1284,7 +1419,6 @@
       el('label', { class: 'sortbox', title: 'Esconde empresas que já estão na carteira, mudaram de status ou já foram abordadas' }, [only, 'Só novos']),
       el('label', { class: 'sortbox' }, ['Ordenar', sort])])]));
 
-    var tb = todayBox(D); if (tb) view.appendChild(tb);
     if (D.pendingCount > 0 && !S.hydrating) {
       view.appendChild(el('div', { class: 'notice', role: 'status' }, [
         el('strong', { text: D.pendingCount + ' empresa(s) salva(s) ainda não carregada(s)' }),
@@ -1299,9 +1433,11 @@
       for (var i = 0; i < 3; i++) list.appendChild(el('div', { class: 'glass skeleton', 'aria-hidden': 'true' }));
     } else if (D.filtered.length) {
       var nNew = 0;
-      D.filtered.forEach(function (lead) { var c = leadCard(lead, D); if (fx.enter(c, 'card|' + lead.id, nNew) && c.classList.contains('fx-rise')) nNew++; list.appendChild(c); });
+      D.filtered.forEach(function (lead) { var c = leadCard(lead, D, { context: S.openSell === lead.id }); if (fx.enter(c, 'card|' + lead.id, nNew) && c.classList.contains('fx-rise')) nNew++; list.appendChild(c); });
     } else {
-      list.appendChild(el('div', { class: 'glass empty' }, [el('strong', { text: 'Nenhum lead para mostrar' }), 'Faça uma busca ou ajuste os filtros.']));
+      list.appendChild(el('div', { class: 'glass empty' }, S.leads.length
+        ? [el('strong', { text: 'Nenhum lead em "' + ((STAGE_BY[S.filter] || {}).nome || S.filter) + '"' }), (STAGE_BY[S.filter] && STAGE_BY[S.filter].dica) || 'Ajuste o filtro ou a busca.']
+        : [el('strong', { text: 'Nenhum lead ainda' }), 'Na coluna da esquerda, escolha a cidade, as categorias e clique em Buscar. Os leads aparecem aqui e na aba Hoje.']));
     }
     view.appendChild(list);
   }
@@ -1330,11 +1466,13 @@
   }
   function histText(h) {
     if (h.tipo === 'status') return h.de ? 'mudou de "' + h.de + '" para "' + h.para + '"' : 'entrou na carteira como "' + h.para + '"';
-    if (h.tipo === 'contato') return 'abordou' + (h.de ? ' pelo ' + h.de : '');
+    if (h.tipo === 'contato') { var m = /^Sequência (\d)/.exec(h.de || ''); return m ? 'mandou o passo ' + m[1] + ' da sequência' : 'abordou' + (h.de ? ' pelo ' + h.de : ''); }
+    if (h.tipo === 'proposta') return 'gerou a proposta' + (h.de ? ' (' + h.de + ')' : '');
+    if (h.tipo === 'raiox') return 'fez o raio-X do site';
     if (h.tipo === 'busca') return 'pesquisou ' + (h.texto || '?') + ' · ' + (h.de || '') + ' · ' + (h.para || '?') + ' lead(s)';
     return 'guardou uma ideia';
   }
-  var HIST_LABEL = { status: 'Status', contato: 'Abordagem', ideia: 'Ideia', busca: 'Busca' };
+  var HIST_LABEL = { status: 'Status', contato: 'Abordagem', ideia: 'Ideia', busca: 'Busca', proposta: 'Proposta', raiox: 'Raio-X' };
 
   function renderHistory(view, D) {
     view.appendChild(el('div', { class: 'toolbar' }, [el('h2', { text: 'Histórico da equipe' }),
@@ -1419,6 +1557,115 @@
     ]));
   }
 
+
+  /* ============================================================
+     Hoje: a fila do dia (tela inicial)
+     ============================================================ */
+  function batchEvaluate(ids) {
+    if (!ids.length) return;
+    if (!w.confirm('Avaliar ' + ids.length + ' lead(s) de uma vez?\n\nUsa ' + ids.length + ' consulta(s) ao Google e ' + ids.length + ' à IA (dentro do teto diário).')) return;
+    R.batchStop = false;
+    set({ batch: { done: 0, total: ids.length } });
+    var i = 0;
+    (function next() {
+      if (R.batchStop || i >= ids.length) { var n = S.batch ? S.batch.done : 0; set({ batch: null }); notify({ level: 'success', title: 'Avaliação concluída', detail: n + ' de ' + ids.length + ' avaliados.' }); return; }
+      var lead = S.leads.filter(function (l) { return l.id === ids[i]; })[0]; i++;
+      if (!lead) return next();
+      runRaiox(lead, true).then(function () { set({ batch: { done: (S.batch ? S.batch.done : 0) + 1, total: ids.length } }); next(); });
+    })();
+  }
+
+  function renderHoje(view, D) {
+    var q = buildQueue(D), done = doneToday().length;
+    var total = done + q.length;
+    var head = el('div', { class: 'glass today-head' });
+    var bar = el('span', { class: 'fbar ok' });
+    head.appendChild(el('div', { class: 'today-title' }, [
+      el('h2', { text: 'Hoje · ' + new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }) }),
+      el('div', { class: 'today-progress' }, [
+        el('span', { class: 'ftrack' }, [fx.grow(bar, 'today-bar', total ? done / total * 100 : 0, 60)]),
+        el('span', { class: 'hint' }, [fx.count(el('b'), 'today-done', done), ' feita(s) · ', fx.count(el('b'), 'today-left', q.length), ' na fila'])
+      ])
+    ]));
+    var news = q.filter(function (x) { return stageOf(x.lead) === 'avaliar' && !x.lead.pending; }).map(function (x) { return x.lead.id; });
+    head.appendChild(el('div', { class: 'today-actions' }, [
+      q.length ? el('button', { type: 'button', class: 'button', 'data-fk': 'focus', on: { click: function () { startFocus(q); } } }, [icon('chat', 15), ' Começar (' + q.length + ')']) : null,
+      news.length > 1 && session && !S.batch ? el('button', { type: 'button', class: 'button secondary', 'data-fk': 'batch', title: 'Faz o raio-X de todos os novos da fila, um depois do outro', text: 'Avaliar os ' + news.length + ' novos de uma vez', on: { click: function () { batchEvaluate(news); } } }) : null,
+      S.batch ? el('span', { class: 'hint' }, ['Avaliando ' + S.batch.done + ' de ' + S.batch.total + '… ', el('button', { type: 'button', class: 'linkbtn', text: 'Parar', on: { click: function () { R.batchStop = true; } } })]) : null,
+      session ? el('button', { type: 'button', class: 'linkbtn', text: 'Mandar este resumo para meu e-mail', on: { click: function (e) { fx.fly(e.currentTarget); sendDigestTest(); } } }) : null
+    ]));
+    view.appendChild(head);
+
+    if (!q.length) {
+      view.appendChild(el('div', { class: 'glass empty' }, S.leads.length
+        ? [el('strong', { text: done ? 'Tudo feito por hoje.' : 'Nada para hoje.' }), 'Os próximos retornos aparecem aqui sozinhos no dia certo. Para encontrar mais empresas, faça uma nova busca na coluna da esquerda.']
+        : [el('strong', { text: 'Comece por aqui' }), 'Na coluna da esquerda, escolha a cidade, o raio e as categorias e clique em Buscar. Os melhores leads entram nesta fila, cada um com o próximo passo pronto.']));
+      return;
+    }
+    var list = el('div', { class: 'lead-list' }), lastPri = -1, nNew = 0;
+    var GROUP = { 0: 'Atrasados', 1: 'Responderam', 2: 'Para hoje', 3: 'Decidir', 4: 'Prontos para abordar', 5: 'Novos para avaliar' };
+    q.forEach(function (x) {
+      if (x.pri !== lastPri) { list.appendChild(el('h3', { class: 'queue-group', text: GROUP[x.pri] })); lastPri = x.pri; }
+      var c = leadCard(x.lead, D, { context: true, why: x.why });
+      if (fx.enter(c, 'q|' + x.lead.id, nNew) && c.classList.contains('fx-rise')) nNew++;
+      list.appendChild(c);
+    });
+    view.appendChild(list);
+  }
+
+  /* ============================================================
+     Modo foco: um lead por vez, em tela cheia
+     ============================================================ */
+  function startFocus(q) { set({ focus: { ids: q.map(function (x) { return x.lead.id; }), i: 0, doneIds: [] } }); }
+  function focusGo(delta) {
+    if (!S.focus) return;
+    clearTimeout(R.focusTimer);
+    var i = S.focus.i + delta;
+    if (i >= S.focus.ids.length) { set({ focus: null }); notify({ level: 'success', title: 'Fila terminada', detail: 'Bom trabalho.' }); return; }
+    set({ focus: Object.assign({}, S.focus, { i: Math.max(0, i) }) });
+  }
+  /** Depois de uma ação: se o lead não precisa de mais nada agora, passa para o próximo. */
+  function focusMaybeAdvance(id) {
+    if (!S.focus || S.focus.ids[S.focus.i] !== id) return;
+    clearTimeout(R.focusTimer);
+    R.focusTimer = setTimeout(function () {
+      if (!S.focus || S.focus.ids[S.focus.i] !== id) return;
+      var lead = S.leads.filter(function (l) { return l.id === id; })[0], D = derive();
+      if (lead && queueReason(lead, D) && stageOf(lead) === 'abordar') return; // acabou de avaliar: fica para abordar
+      if (lead && stageOf(lead) === 'proposta' && !hasProposal(lead, D)) return;
+      S.focus.doneIds = S.focus.doneIds.concat([id]);
+      focusGo(1);
+    }, 700);
+  }
+  function renderFocus(D) {
+    var dlg = $('lf-focus');
+    if (!S.focus) { if (dlg && dlg.open) dlg.close(); return; }
+    if (!dlg) {
+      dlg = el('dialog', { id: 'lf-focus', class: 'focus-dlg', 'aria-labelledby': 'lf-focus-t' });
+      dlg.addEventListener('cancel', function (e) { e.preventDefault(); set({ focus: null }); });
+      dlg.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight' && !/input|textarea|select/i.test(e.target.tagName)) { e.preventDefault(); focusGo(1); } });
+      $('lf-root').appendChild(dlg);
+    }
+    var f = S.focus, id = f.ids[f.i], lead = D.scored.filter(function (l) { return l.id === id; })[0];
+    dlg.textContent = '';
+    if (!lead) { focusGo(1); return; }
+    var bar = el('span', { class: 'fbar ok' });
+    var reason = queueReason(lead, D);
+    dlg.appendChild(el('div', { class: 'focus-top' }, [
+      el('h2', { id: 'lf-focus-t', text: 'Modo foco · ' + (f.i + 1) + ' de ' + f.ids.length }),
+      el('span', { class: 'ftrack' }, [fx.grow(bar, 'focus-bar', f.i / f.ids.length * 100, 30)]),
+      el('div', { class: 'focus-nav' }, [
+        el('button', { type: 'button', class: 'button secondary small', 'data-fk': 'f-prev', disabled: f.i === 0, text: '← Anterior', on: { click: function () { focusGo(-1); } } }),
+        el('button', { type: 'button', class: 'button secondary small', 'data-fk': 'f-skip', text: 'Pular →', on: { click: function () { focusGo(1); } } }),
+        el('button', { type: 'button', class: 'linkbtn', 'data-fk': 'f-exit', text: 'Sair (Esc)', on: { click: function () { set({ focus: null }); } } })
+      ])
+    ]));
+    var card = leadCard(lead, D, { context: true, why: reason ? reason.why : 'Feito. Indo para o próximo…' });
+    fx.enter(card, 'focus|' + id + '|' + f.i, 0, 'fx-rise');
+    dlg.appendChild(card);
+    if (!dlg.open) { dlg.showModal(); }
+  }
+
   /** Guarda o controle focado (data-fk) para devolver o foco após redesenhar. */
   function captureFocus() {
     var a = d.activeElement;
@@ -1447,11 +1694,12 @@
       renderTop(D); renderNotices(); renderAside(D); renderStats(D); renderFunnel(D);
       var pb = $('lf-progress'); if (pb) pb.classList.toggle('on', !!(S.loading || S.hydrating || S.raioxBusy.length || S.propBusy.length || S.reportBusy || S.locating));
       var view = $('lf-view'); view.textContent = '';
-      if (S.tab === 'list') renderList(view, D); else if (S.tab === 'hist') renderHistory(view, D); else if (S.tab === 'report') renderReport(view); else renderMap(view, D);
+      if (S.tab === 'hoje') renderHoje(view, D); else if (S.tab === 'list') renderList(view, D); else if (S.tab === 'hist') renderHistory(view, D); else if (S.tab === 'report') renderReport(view); else renderMap(view, D);
     } catch (e) {
       crash(e);
       return;
     }
+    renderFocus(derive());
     restoreFocus(f);
   }
 
@@ -1510,22 +1758,13 @@
     $('lf-restore').addEventListener('click', function () { $('lf-file').click(); });
     $('lf-file').addEventListener('change', function () { var f = $('lf-file').files && $('lf-file').files[0]; if (f) importBackup(f); });
     $('lf-csv').addEventListener('click', exportCsv);
+    $('lf-tab-hoje').addEventListener('click', function () { set({ tab: 'hoje' }); });
     $('lf-tab-list').addEventListener('click', function () { set({ tab: 'list' }); });
     $('lf-tab-map').addEventListener('click', function () { set({ tab: 'map' }); });
     $('lf-tab-hist').addEventListener('click', function () { set({ tab: 'hist' }); if (!S.hist.length) loadHistory(); });
     $('lf-tab-report').addEventListener('click', function () { set({ tab: 'report' }); });
     $('lf-q').addEventListener('input', function () { set({ search: $('lf-q').value }); });
     $('lf-logout').addEventListener('click', logout);
-    // Guia "Como usar": aparece na 1ª visita; "Entendi" esconde; "Como usar" mostra de novo
-    var guide = $('lf-guide'), seenGuide = false;
-    try { seenGuide = w.localStorage.getItem('lf-guia-ok') === '1'; } catch (e) { /* sem armazenamento */ }
-    guide.hidden = seenGuide;
-    if (!seenGuide) fx.enter(guide, 'guide', 0, 'fx-rise');
-    $('lf-guide-close').addEventListener('click', function () {
-      try { w.localStorage.setItem('lf-guia-ok', '1'); } catch (e) { /* ignora */ }
-      guide.hidden = true; $('lf-guide-open').focus();
-    });
-    $('lf-guide-open').addEventListener('click', function () { guide.hidden = false; fx.flash(guide, 'fx-rise'); $('lf-guide-close').focus(); });
     w.addEventListener('resize', function () { fx.ink(d.querySelector('.lf-app .tabs')); });
   }
 

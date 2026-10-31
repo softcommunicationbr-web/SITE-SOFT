@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/leadfinder.css?v=20261031-3">
+<link rel="stylesheet" href="../assets/css/leadfinder.css?v=20261031-4">
 <!-- Trava de senha do painel (não mexer) -->
 <script src="../assets/js/admin-auth.js?v=20261030-1"></script>
 </head>
@@ -127,18 +127,6 @@
           </aside>
 
           <section class="maincol">
-            <section class="glass guide" id="lf-guide" aria-labelledby="lf-guide-t" hidden>
-              <div class="guide-head">
-                <h2 id="lf-guide-t">Como usar a prospecção</h2>
-                <button type="button" class="button secondary small" id="lf-guide-close">Entendi</button>
-              </div>
-              <ol class="guide-steps">
-                <li><b>1. Busque</b><span>Escolha a cidade, o raio e as categorias na coluna da esquerda e clique em Buscar.</span></li>
-                <li><b>2. Prepare a venda</b><span>No lead, clique em <em>Vender</em>: raio-X do site, vídeos do portfólio e proposta pronta.</span></li>
-                <li><b>3. Aborde</b><span>O botão verde do WhatsApp segue a sequência de 3 mensagens e agenda o retorno sozinho.</span></li>
-                <li><b>4. Acompanhe</b><span>O quadro <em>Hoje</em> diz o que fazer; <em>Mapa</em> monta a rota; <em>Relatório</em> mostra o que funciona.</span></li>
-              </ol>
-            </section>
             <div class="stats">
               <div class="glass stat"><div class="stat-label">Leads encontrados</div><div class="stat-value" id="lf-st-total">0</div><div class="stat-note">na lista atual</div></div>
               <div class="glass stat"><div class="stat-label">Alta prioridade</div><div class="stat-value" id="lf-st-priority">0</div><div class="stat-note">pontuação ≥ 80</div></div>
@@ -148,12 +136,12 @@
 
             <div class="toolbar">
               <div class="tabs" role="tablist" aria-label="Visualização">
-                <button type="button" role="tab" aria-selected="true" class="tab" id="lf-tab-list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Lista</button>
+                <button type="button" role="tab" aria-selected="true" class="tab" id="lf-tab-hoje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Hoje</button>
+                <button type="button" role="tab" aria-selected="false" class="tab" id="lf-tab-list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Todos os leads</button>
                 <button type="button" role="tab" aria-selected="false" class="tab" id="lf-tab-map"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>Mapa</button>
                 <button type="button" role="tab" aria-selected="false" class="tab" id="lf-tab-hist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/></svg>Histórico</button>
                 <button type="button" role="tab" aria-selected="false" class="tab" id="lf-tab-report"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Relatório</button>
               </div>
-              <button type="button" class="linkbtn guide-open" id="lf-guide-open" title="Mostrar o guia de uso"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17h.01"/></svg> Como usar</button>
               <div class="searchbox"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/></svg><input class="input" id="lf-q" placeholder="Buscar nome, cidade, categoria, notas…" aria-label="Buscar nos leads"></div>
             </div>
 
@@ -181,6 +169,6 @@
 <script src="../assets/js/leadfinder/vendas.js?v=20261031-1"></script>
 <script src="../assets/js/leadfinder/proposta.js?v=20261031-2"></script>
 <script src="../assets/js/leadfinder/motion.js?v=20261031-1"></script>
-<script src="../assets/js/admin-leads.js?v=20261031-3"></script>
+<script src="../assets/js/admin-leads.js?v=20261031-4"></script>
 </body>
 </html>

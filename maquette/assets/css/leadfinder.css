@@ -474,3 +474,59 @@ html.admin-locked .lf-app { display: none !important; }
 .lf-app .fold-sub { grid-column: 1; grid-row: 2; margin-left: 0; }
 .lf-app a.button { text-decoration: none; }
 .lf-app .map.empty { min-height: 0; padding: var(--space-6) var(--space-5); display: grid; place-items: center; text-align: center; }
+
+/* ============================================================
+   Fluxo por próximo passo: card, fila do dia e modo foco
+   ============================================================ */
+.lf-app .lead { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.lf-app .lead .why { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-accent-strong); }
+.lf-app .lead-head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3); }
+.lf-app .lead-sub { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-2) var(--space-4); }
+.lf-app .stage { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--color-ink-muted); }
+.lf-app .stage-dots { display: inline-flex; gap: 3px; }
+.lf-app .stage-dots i { width: 14px; height: 4px; border-radius: 99px; background: rgba(27, 31, 42, .12); }
+.lf-app .stage-dots i.done { background: var(--color-accent); opacity: .45; }
+.lf-app .stage-dots i.now { background: var(--color-accent); }
+.lf-app .stage-name.cliente { color: #15803d; } .lf-app .stage-name.descartado { color: var(--color-ink-muted); }
+.lf-app .lead-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; }
+.lf-app .lead-actions .next { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.lf-app .lead-actions .wa, .lf-app .button.primary-step { min-height: 42px; padding: 0 var(--space-5); font-size: 14px; font-weight: 700; }
+.lf-app .wait-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 var(--space-4); border-radius: var(--radius-sm); background: rgba(27, 31, 42, .05); font-size: 13px; font-weight: 600; color: var(--color-ink-muted); }
+.lf-app .done-chip { font-size: 13px; font-weight: 700; padding: 6px 12px; border-radius: 99px; background: rgba(27, 31, 42, .06); }
+.lf-app .done-chip.cliente { background: #dcfce7; color: #166534; }
+.lf-app .stage-descartado { opacity: .7; }
+
+.lf-app .more { position: relative; }
+.lf-app .icon-only { min-width: 40px; padding: 0 10px; font-size: 18px; line-height: 1; letter-spacing: 1px; }
+.lf-app .more-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 30; min-width: 240px; display: grid; padding: 6px; border-radius: var(--radius-md); background: #fff; border: 1px solid var(--glass-line); box-shadow: 0 12px 32px rgba(40, 30, 20, .16); animation: fx-open 180ms var(--fx-ease) both; }
+.lf-app .more-item { display: flex; align-items: center; gap: 6px; text-align: left; border: 0; background: none; padding: 9px 10px; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--color-ink); text-decoration: none; cursor: pointer; }
+.lf-app .more-item:hover, .lf-app .more-item:focus-visible { background: rgba(27, 31, 42, .06); }
+.lf-app .more-status { display: grid; gap: 4px; padding: 8px 10px; font-size: 12px; color: var(--color-ink-muted); border-top: 1px solid var(--glass-line); margin-top: 4px; }
+
+.lf-app .stage-ctx { display: grid; gap: var(--space-3); }
+.lf-app .stage-ctx.two { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+.lf-app .today-head { display: grid; gap: var(--space-3); padding: var(--space-4) var(--space-5); margin-bottom: var(--space-4); }
+.lf-app .today-title { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3); }
+.lf-app .today-title h2 { margin: 0; font-size: 18px; }
+.lf-app .today-title h2::first-letter { text-transform: uppercase; }
+.lf-app .today-progress { display: flex; align-items: center; gap: var(--space-3); min-width: 260px; }
+.lf-app .today-progress .ftrack, .lf-app .focus-top .ftrack { flex: 1; display: block; height: 8px; border-radius: 99px; background: rgba(27, 31, 42, .08); overflow: hidden; }
+.lf-app .today-progress .fbar, .lf-app .focus-top .fbar { height: 8px; border-radius: 99px; }
+.lf-app .today-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.lf-app .queue-group { margin: var(--space-4) 0 0; font-size: 13px; text-transform: uppercase; letter-spacing: .1em; color: var(--color-ink-muted); }
+.lf-app .queue-group:first-child { margin-top: 0; }
+
+.lf-app .focus-dlg { width: min(1040px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: var(--space-5); border: 0; border-radius: var(--radius-lg); background: var(--color-bg, #f7f6f4); color: var(--color-ink); overflow: auto; }
+.lf-app .focus-dlg::backdrop { background: rgba(20, 16, 12, .55); }
+.lf-app .focus-top { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-4); margin-bottom: var(--space-4); }
+.lf-app .focus-top h2 { margin: 0; font-size: 16px; }
+.lf-app .focus-nav { display: flex; align-items: center; gap: var(--space-2); }
+.lf-app .focus-dlg .lead { box-shadow: none; }
+@media (max-width: 760px) { .lf-app .focus-top { grid-template-columns: 1fr; } .lf-app .today-progress { min-width: 0; width: 100%; } }
+.lf-app .lead-actions a.wa { display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-sm); background: #16a34a; color: #fff; text-decoration: none; box-shadow: 0 4px 12px rgba(22, 163, 74, .25); transition: background 160ms, transform 160ms; }
+.lf-app .lead-actions a.wa:hover { background: #15803d; transform: translateY(-1px); }
+.lf-app .stage-ctx.two { align-items: start; }
+.lf-app .stage-ctx .pf-media { aspect-ratio: 16 / 10; }
+.lf-app .stage-ctx .sell-block { padding: var(--space-3) var(--space-4); }
+.lf-app .stage-ctx .seq-track { justify-content: flex-start; }

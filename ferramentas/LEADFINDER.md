@@ -48,6 +48,22 @@ O app LeadFinder (Next.js) portado para o site estático, com a mesma tela e o m
 
 Claude Sonnet 5.5 com esforço baixo (`output_config.effort: "low"`), API `2026-10-21`. Se o Sonnet recusar um pedido, a Anthropic tenta o modelo recomendado (`fallbacks: "default"`). O prompt fala dos serviços da Soft, usa só os dados do Google e diz o que falta.
 
+## Como a tela funciona (por próximo passo)
+
+Cada lead está numa etapa e mostra **um botão principal**: o que fazer agora. O resto fica no menu ⋯.
+
+| Etapa | Botão principal | O que aparece junto |
+|---|---|---|
+| 1. Avaliar | Avaliar (raio-X) | — |
+| 2. Abordar | Abordar no WhatsApp (passo 1) | raio-X e vídeos certos |
+| 3. Aguardando | Passo 2/3 no dia certo · "Respondeu" | trilha da sequência e vídeos |
+| 4. Respondeu | Fazer proposta → depois Marcar reunião / Virou cliente / Não fechou | formulário da proposta |
+| 5. Negociando | Virou cliente / Não fechou | — |
+
+- **Hoje** (tela inicial): a fila do dia em ordem — atrasados, quem respondeu, retornos de hoje, decisões, prontos para abordar e até 10 novos para avaliar. Barra "feitas · na fila", botão **Avaliar os N novos de uma vez** (mostra o custo antes) e **Começar**, o modo foco.
+- **Modo foco**: um lead por vez em tela cheia; depois de cada ação passa sozinho para o próximo. Pular (→), Anterior e Sair (Esc).
+- **Todos os leads**: consulta por etapa. **Histórico**, **Mapa/rota** e **Relatório** continuam como antes; a linha do tempo de cada empresa fica no ⋯ do card.
+
 ## Vender mais
 
 | Recurso | Onde fica | Custo por uso |
