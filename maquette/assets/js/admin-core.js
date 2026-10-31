@@ -30,7 +30,7 @@
     var act = b.getAttribute('data-core');
     if (act === 'export') { download('catalog.js', A.exportJs(), 'text/javascript'); toast('Catálogo exportado.'); }
     if (act === 'discard') { A.discardLocal(); toast('Alterações descartadas.'); setTimeout(function () { w.location.reload(); }, 600); }
-    if (act === 'logout') { A.logout(); w.location.reload(); }
+    if (act === 'logout') { if (w.AdminAuth) w.AdminAuth.logout(); else { A.logout(); w.location.reload(); } }
     if (act === 'seed') { A.save().then(function () { toast('Catálogo publicado.'); setTimeout(function () { w.location.reload(); }, 800); }, function (er) { toast('Não foi possível publicar: ' + er.message); }); }
   });
 
@@ -44,6 +44,7 @@
 
   /* ---------- login ---------- */
   function loginDialog(err) {
+    if (w.AdminAuth && w.AdminAuth.lock) { w.AdminAuth.lock(err); return; }
     var dlg = d.getElementById('a-login');
     if (!dlg) {
       dlg = d.createElement('dialog'); dlg.id = 'a-login'; dlg.className = 'a-login'; dlg.setAttribute('aria-labelledby', 'a-login-title');

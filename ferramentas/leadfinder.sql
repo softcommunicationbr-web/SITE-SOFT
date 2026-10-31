@@ -8,9 +8,9 @@
 create table if not exists public.leadfinder_membros (
   email text primary key
 );
--- Cadastre os 3 e-mails (uma linha por pessoa) e crie os mesmos usuários em
--- Authentication > Users > Invite. Sem cadastro aberto.
--- insert into public.leadfinder_membros (email) values ('calebe@exemplo.com') on conflict do nothing;
+-- Hoje só o dono usa. Para liberar mais alguém, acrescente uma linha aqui e em
+-- portfolio_admins (ferramentas/admin_login.sql) e crie o usuário no Supabase Auth.
+insert into public.leadfinder_membros (email) values ('soft.communicationbr@gmail.com') on conflict do nothing;
 
 create or replace function public.leadfinder_eh_membro() returns boolean
 language sql stable security definer set search_path = public as $$
@@ -108,3 +108,58 @@ create policy "membros leem log" on public.leadfinder_log
   for select to authenticated using (public.leadfinder_eh_membro());
 -- leadfinder_membros, escrita em uso e log: sem política = só o servidor (service_role).
 -- anon não tem nenhuma política aqui: o site público não enxerga nada disso.
+
+-- 6) Histórico da equipe: evita repetir lead, área pesquisada, abordagem e ideia.
+-- Só guarda o place_id (termos do Google); nome da empresa nunca vai para cá.
+create table if not exists public.leadfinder_historico (
+  id        bigserial primary key,
+  em        timestamptz not null default now(),
+  email     text not null default coalesce(auth.jwt() ->> 'email', ''),
+  tipo      text not null check (tipo in ('status','contato','ideia','busca')),
+  place_id  text check (place_id is null or place_id ~ '^[A-Za-z0-9_-]{10,200}$'),
+  categoria text check (char_length(categoria) <= 80),
+  de        text check (char_length(de) <= 60),
+  para      text check (char_length(para) <= 60),
+  texto     text check (char_length(texto) <= 1000)
+);
+create index if not exists leadfinder_historico_em on public.leadfinder_historico (em desc);
+create index if not exists leadfinder_historico_place on public.leadfinder_historico (place_id);
+
+-- Mudança de status e data de contato entram sozinhas no histórico.
+create or replace function public.leadfinder_registra() returns trigger
+language plpgsql security definer set search_path = public as $$
+declare quem text := coalesce(auth.jwt() ->> 'email', '');
+begin
+  if tg_op = 'INSERT' then
+    insert into public.leadfinder_historico (email, tipo, place_id, categoria, de, para)
+      values (quem, 'status', new.place_id, new.categoria, null, new.status);
+  elsif new.status is distinct from old.status then
+    insert into public.leadfinder_historico (email, tipo, place_id, categoria, de, para)
+      values (quem, 'status', new.place_id, new.categoria, old.status, new.status);
+  end if;
+  return new;
+end $$;
+revoke all on function public.leadfinder_registra() from public, anon, authenticated;
+drop trigger if exists leadfinder_leads_historico on public.leadfinder_leads;
+create trigger leadfinder_leads_historico after insert or update on public.leadfinder_leads
+  for each row execute function public.leadfinder_registra();
+
+alter table public.leadfinder_historico enable row level security;
+drop policy if exists "membros leem historico" on public.leadfinder_historico;
+create policy "membros leem historico" on public.leadfinder_historico
+  for select to authenticated using (public.leadfinder_eh_membro());
+-- O app registra só contato, ideia e busca, sempre no nome de quem está logado.
+drop policy if exists "membros registram" on public.leadfinder_historico;
+create policy "membros registram" on public.leadfinder_historico
+  for insert to authenticated with check (
+    public.leadfinder_eh_membro()
+    and tipo in ('contato','ideia','busca')
+    and lower(email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+  );
+-- Ninguém edita o histórico; cada um só apaga as próprias ideias.
+drop policy if exists "apaga a propria ideia" on public.leadfinder_historico;
+create policy "apaga a propria ideia" on public.leadfinder_historico
+  for delete to authenticated using (
+    public.leadfinder_eh_membro() and tipo = 'ideia'
+    and lower(email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+  );

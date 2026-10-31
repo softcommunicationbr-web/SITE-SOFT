@@ -7,21 +7,21 @@ O app LeadFinder (Next.js) portado para o site estático, com a mesma tela e o m
 | Tela | `maquette/admin/leads.html`, `maquette/assets/js/admin-leads.js`, `maquette/assets/css/leadfinder.css` |
 | Servidor (mesmas rotas do original: `/leads`, `/places`, `/ai`, `/geocode`, `/bug`) | `supabase/functions/leadfinder/index.ts` |
 | Banco (carteira compartilhada, teto de custo, registro) | `ferramentas/leadfinder.sql` |
-| Senha do painel no servidor | `ferramentas/admin_senha.sql` |
+| Login do painel (e-mail + senha ou Google, só e-mails da lista) | `ferramentas/admin_login.sql`, `maquette/assets/js/admin-auth.js` |
 
 ## Segurança
 
-- **Senha do painel:** só o hash fica no banco. O código do site não tem mais senha. 10 erros em 10 minutos bloqueiam por 10 minutos.
-- **Prospecção:** além da senha do painel, exige login por link mágico (Supabase Auth) de um e-mail cadastrado em `leadfinder_membros`. O servidor confere tudo; a senha do painel sozinha não libera o gasto.
+- **Login:** Supabase Auth com e-mail + senha ou Google. Só entra quem está em `portfolio_admins` (conferido no servidor por `admin_eh_permitido()`). Um login só vale para o painel inteiro e para a prospecção. A sessão some ao fechar a aba.
+- **Prospecção:** o servidor confere de novo se o e-mail está em `leadfinder_membros` antes de gastar Google ou Claude.
+- **Histórico:** `leadfinder_historico` guarda buscas, abordagens, mudanças de status e ideias (só o place_id, nunca dados da empresa). Ninguém edita; cada um só apaga as próprias ideias.
 - **Chaves:** Google e Anthropic só nos secrets do Supabase, nunca no navegador nem no Git.
 
 ## Ligar (uma vez, no Supabase do projeto)
 
-1. **SQL Editor:** rode `ferramentas/leadfinder.sql` e depois `ferramentas/admin_senha.sql`. Em seguida, defina a senha (troque pela senha escolhida):
-   `update public.admin_auth set password_hash = extensions.crypt('SENHA', extensions.gen_salt('bf'));`
-2. **Membros:** `insert into public.leadfinder_membros (email) values ('a@x.com'),('b@x.com'),('c@x.com');`
-3. **Usuários:** Authentication → Users → *Invite user* para os mesmos 3 e-mails.
-4. **Redirect:** Authentication → URL Configuration → *Redirect URLs*: `https://softcommunicaiton.com/admin/leads` e `https://www.softcommunicaiton.com/admin/leads`.
+1. **SQL Editor:** rode `ferramentas/leadfinder.sql` e depois `ferramentas/admin_login.sql`.
+2. **Usuário:** Authentication → Users → *Add user → Create new user* com o e-mail autorizado e a senha, marcando *Auto Confirm User*.
+3. **Fechar cadastro:** Authentication → Sign In / Providers → desligar *Allow new users to sign up* (ninguém cria conta sozinho, nem pelo Google).
+4. **Google:** Authentication → Sign In / Providers → Google → ligar e colar Client ID e Secret (criados no Google Cloud → APIs e serviços → Credenciais → ID do cliente OAuth, tipo Web, com o URI de redirecionamento `https://xvabghgvrhpnyywpmodb.supabase.co/auth/v1/callback`). Em URL Configuration → *Redirect URLs*: `https://softcommunicaiton.com/admin/**` e `https://www.softcommunicaiton.com/admin/**`.
 5. **Função:** publicar `leadfinder` com **verify JWT desligado** (a função confere o usuário por conta própria).
 6. **Secrets** (Edge Functions → Secrets):
 

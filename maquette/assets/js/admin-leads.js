@@ -27,7 +27,6 @@
   var ANON = CFG.supabaseAnonKey || '';
   var FN = URL_SB + '/functions/v1/leadfinder';
   var MAPS_KEY = typeof CFG.googleMapsBrowserKey === 'string' ? CFG.googleMapsBrowserKey.trim() : '';
-  var SESSION_KEY = 'soft_leads_session_v1';
   var TABLE = 'leadfinder_leads';
 
   /* ---------- constantes do page.tsx ---------- */
@@ -68,9 +67,10 @@
     leads: [], mode: null, template: DEFAULT_TEMPLATE,
     warning: '', message: '', error: '', loading: false,
     tab: 'list', filter: 'Todos', sort: 'score', search: '', openNotes: null,
-    loaded: false, savedAt: null, hydrating: false, autoHydrate: false, aiBusy: []
+    loaded: false, savedAt: null, hydrating: false, autoHydrate: false, aiBusy: [],
+    hist: [], histFilter: 'Todos', histQ: '', onlyNew: false, ideaDraft: ''
   };
-  var R = { cancelSweep: false, hydrated: new Set(), saveErrorShown: false, remoteIds: new Set(), started: false, crashed: false };
+  var R = { cancelSweep: false, hydrated: new Set(), saveErrorShown: false, remoteIds: new Set(), started: false, crashed: false, histTimer: null };
   var session = null;
 
   function set(patch) { Object.assign(S, patch); commit(); }
@@ -89,53 +89,16 @@
   /* ============================================================
      Sessão (Supabase Auth) — reaproveitado da versão anterior
      ============================================================ */
-  function saveSession(s) { session = s; try { if (s) w.localStorage.setItem(SESSION_KEY, JSON.stringify(s)); else w.localStorage.removeItem(SESSION_KEY); } catch (e) { /* ignora */ } }
-  function loadSession() {
-    try {
-      var s = JSON.parse(w.localStorage.getItem(SESSION_KEY) || 'null');
-      return s && typeof s.access_token === 'string' && typeof s.expires_at === 'number' ? s : null;
-    } catch (e) { return null; }
-  }
-
-  function consumeHash() {
-    var h = w.location.hash || '';
-    if (h.indexOf('access_token=') < 0 && h.indexOf('error') < 0) return;
-    var p = {};
-    h.replace(/^#/, '').split('&').forEach(function (kv) { var a = kv.split('='); try { p[a[0]] = decodeURIComponent((a[1] || '').replace(/\+/g, ' ')); } catch (e) { /* ignora */ } });
-    try { w.history.replaceState(null, '', w.location.pathname + w.location.search); } catch (e) { /* ignora */ }
-    if (p.error_description) { loginMsg('Link inválido ou expirado: ' + p.error_description, true); return; }
-    if (p.access_token) saveSession({ access_token: p.access_token, refresh_token: p.refresh_token || '', expires_at: Math.floor(Date.now() / 1000) + (+p.expires_in || 3600) });
-  }
-
-  /** Access token válido (renova com o refresh_token quando falta menos de 1 min). */
+  /* Sessão única do painel (assets/js/admin-auth.js): e-mail + senha ou Google. */
+  function saveSession(s) { session = s; if (!s && w.AdminAuth) w.AdminAuth.lock('Sessão expirada. Entre de novo.'); }
+  function loadSession() { return w.AdminAuth ? w.AdminAuth.session() : null; }
+  function consumeHash() { /* feito pelo admin-auth.js */ }
   function token() {
-    var s = session;
-    if (!s) return Promise.reject(new Error('Entre com seu e-mail.'));
-    if (s.expires_at * 1000 > Date.now() + 60000) return Promise.resolve(s.access_token);
-    if (!s.refresh_token) { saveSession(null); return Promise.reject(new Error('Sessão expirada. Entre de novo.')); }
-    return fetch(URL_SB + '/auth/v1/token?grant_type=refresh_token', {
-      method: 'POST', headers: { apikey: ANON, 'Content-Type': 'application/json' }, body: JSON.stringify({ refresh_token: s.refresh_token })
-    }).then(function (r) { return r.json().then(function (j) { if (!r.ok || !j.access_token) throw new Error('Sessão expirada. Entre de novo.'); return j; }); })
-      .then(function (j) {
-        saveSession({ access_token: j.access_token, refresh_token: j.refresh_token || s.refresh_token, expires_at: j.expires_at || Math.floor(Date.now() / 1000) + (j.expires_in || 3600) });
-        return j.access_token;
-      }, function (e) { saveSession(null); throw e; });
+    if (!w.AdminAuth) return Promise.reject(new Error('Entre no painel.'));
+    return w.AdminAuth.token();
   }
 
-  function sendLink(email) {
-    var redirect = w.location.origin + w.location.pathname;
-    return fetch(URL_SB + '/auth/v1/otp?redirect_to=' + encodeURIComponent(redirect), {
-      method: 'POST', headers: { apikey: ANON, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, create_user: false })
-    }).then(function (r) { if (!r.ok && r.status !== 400 && r.status !== 422) throw new Error('Não foi possível enviar agora. Tente em instantes.'); });
-  }
-
-  function logout() {
-    var t = session && session.access_token;
-    if (t) fetch(URL_SB + '/auth/v1/logout', { method: 'POST', headers: { apikey: ANON, Authorization: 'Bearer ' + t } }).catch(function () {});
-    saveSession(null);
-    showLogin('Você saiu. Seus leads continuam salvos neste navegador.');
-  }
+  function logout() { if (w.AdminAuth) w.AdminAuth.logout(); }
 
   /* ============================================================
      lfFetch: chamadas à Edge Function (mesmas rotas do /api/*)
@@ -243,6 +206,7 @@
     if (!rows.length || !session) return;
     rest('POST', TABLE + '?on_conflict=place_id', rows, 'resolution=merge-duplicates,return=minimal').then(function () {
       rows.forEach(function (r) { R.remoteIds.add(r.place_id); });
+      refreshHistorySoon();
     }, function (e) {
       var st = isApiError(e) ? e.status : 0;
       notify({ level: st >= 400 && st < 500 ? 'warn' : 'error', title: 'Não sincronizei com a carteira da equipe', detail: (e && e.message ? e.message : 'Sem conexão.') + ' As mudanças continuam salvas neste navegador.', source: 'sync' });
@@ -315,6 +279,116 @@
     }).then(function () { set({ hydrating: false }); });
   }
 
+
+  /* ============================================================
+     Histórico da equipe (tabela leadfinder_historico)
+     Evita repetir lead, área pesquisada, abordagem e ideia.
+     Só guarda place_id; o nome da empresa nunca vai para a tabela.
+     ============================================================ */
+  var HIST = 'leadfinder_historico';
+  var HIST_TYPES = [
+    { id: 'Todos', label: 'Tudo' }, { id: 'status', label: 'Status' }, { id: 'contato', label: 'Abordagens' },
+    { id: 'ideia', label: 'Ideias' }, { id: 'busca', label: 'Buscas' }
+  ];
+  function myEmail() { var s = w.AdminAuth && w.AdminAuth.session(); return (s && s.email) || ''; }
+  function who(email) { return email ? String(email).split('@')[0] : 'alguém'; }
+  function fmtWhen(iso) {
+    var t = Date.parse(iso); if (isNaN(t)) return '';
+    return new Date(t).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' });
+  }
+  function loadHistory() {
+    if (!session) return Promise.resolve();
+    return rest('GET', HIST + '?select=id,em,email,tipo,place_id,categoria,de,para,texto&order=em.desc&limit=1000').then(function (rows) {
+      S.hist = Array.isArray(rows) ? rows : [];
+      commit();
+    }).catch(function (e) {
+      if (isApiError(e) && e.status === 401) return;
+      notify({ level: 'warn', title: 'Não carreguei o histórico', detail: e && e.message ? e.message : 'Sem conexão.', source: 'historico' });
+    });
+  }
+  /** Recarrega o histórico pouco depois de salvar (o banco registra as mudanças de status sozinho). */
+  function refreshHistorySoon() { clearTimeout(R.histTimer); R.histTimer = setTimeout(loadHistory, 1500); }
+  function logHist(row) {
+    if (!session) return Promise.resolve(null);
+    row.email = myEmail();
+    return rest('POST', HIST, row, 'return=representation').then(function (r) {
+      var x = Array.isArray(r) ? r[0] : r;
+      if (x) { S.hist = [x].concat(S.hist); commit(); }
+      return x || null;
+    }, function (e) {
+      notify({ level: 'warn', title: 'Não registrei no histórico', detail: e && e.message ? e.message : 'Sem conexão.', source: 'historico' });
+      return null;
+    });
+  }
+  function lastOf(tipo, test) {
+    for (var i = 0; i < S.hist.length; i++) { var h = S.hist[i]; if (h.tipo === tipo && test(h)) return h; }
+    return null;
+  }
+  function lastContato(id) { return lastOf('contato', function (h) { return h.place_id === id; }); }
+  function regionKey() { return String((S.region && S.region.label) || S.regionText || '').trim().slice(0, 200); }
+  function lastBusca(label) {
+    var k = label.toLocaleLowerCase('pt-BR');
+    return lastOf('busca', function (h) { return String(h.texto || '').toLocaleLowerCase('pt-BR') === k; });
+  }
+  /** Empresas que já passaram pela equipe (carteira, status ou abordagem). */
+  function touchIndex() {
+    var m = new Map();
+    S.hist.forEach(function (h) {
+      if (!h.place_id) return;
+      var t = m.get(h.place_id) || {};
+      if (h.tipo === 'contato' && !t.contato) t.contato = h;
+      if (h.tipo === 'status' && !t.status) t.status = h;
+      m.set(h.place_id, t);
+    });
+    return m;
+  }
+  function worked(l, touch) { return R.remoteIds.has(l.id) || l.status !== 'Novo' || touch.has(l.id); }
+  /** A mensagem vai para o histórico com {nome} no lugar do nome da empresa. */
+  function anonMsg(msg, name) { msg = String(msg || ''); return (name ? msg.split(name).join('{nome}') : msg).slice(0, 1000); }
+
+  /* Ideias parecidas: palavras em comum (sem acento, ignorando palavras curtas). */
+  function words(t) {
+    return String(t || '').toLocaleLowerCase('pt-BR').normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9 ]+/g, ' ').split(/\s+/).filter(function (x) { return x.length > 3; });
+  }
+  function similarIdeas(text) {
+    var a = new Set(words(text)); if (a.size < 2) return [];
+    return S.hist.filter(function (h) { return h.tipo === 'ideia'; }).map(function (h) {
+      var b = new Set(words(h.texto)); var inter = 0;
+      a.forEach(function (x) { if (b.has(x)) inter++; });
+      return { h: h, sim: b.size ? inter / Math.min(a.size, b.size) : 0, inter: inter };
+    }).filter(function (x) { return x.inter >= 2 && x.sim >= 0.6; })
+      .sort(function (x, y) { return y.sim - x.sim; }).slice(0, 3).map(function (x) { return x.h; });
+  }
+  function saveIdea(text, lead) {
+    text = String(text || '').trim().slice(0, 1000);
+    if (!text) return Promise.resolve(null);
+    var sims = similarIdeas(text);
+    if (sims.length && !w.confirm('Parecida com uma ideia de ' + who(sims[0].email) + ' em ' + fmtWhen(sims[0].em) + ':\n"' + String(sims[0].texto).slice(0, 160) + '"\n\nSalvar mesmo assim?')) return Promise.resolve(null);
+    return logHist({ tipo: 'ideia', texto: lead ? anonMsg(text, lead.name) : text, place_id: lead && isReal(lead) ? lead.id : null, categoria: lead ? lead.category : null }).then(function (x) {
+      if (x) notify({ level: 'success', title: 'Ideia guardada no histórico' });
+      return x;
+    });
+  }
+  function deleteIdea(h) {
+    if (!w.confirm('Apagar esta ideia do histórico?')) return;
+    rest('DELETE', HIST + '?id=eq.' + encodeURIComponent(h.id)).then(function () {
+      S.hist = S.hist.filter(function (x) { return x.id !== h.id; }); commit();
+    }, function (e) { notify({ level: 'warn', title: 'Não apaguei a ideia', detail: e && e.message, source: 'historico' }); });
+  }
+  /** Clique em "Abordar": avisa se a empresa já foi abordada e registra a abordagem. */
+  function onApproach(lead, kind, message) {
+    return function (e) {
+      var prev = isReal(lead) ? lastContato(lead.id) : null;
+      if (prev) {
+        var same = prev.texto && prev.texto === anonMsg(message, lead.name);
+        if (!w.confirm(lead.name + ' já foi abordada em ' + fmtWhen(prev.em) + ' por ' + who(prev.email) + (same ? ', com esta mesma mensagem' : '') + '.\n\nAbordar de novo?')) { e.preventDefault(); return; }
+      }
+      approach(lead);
+      if (isReal(lead)) logHist({ tipo: 'contato', place_id: lead.id, categoria: lead.category, de: kind, texto: anonMsg(message, lead.name) });
+    };
+  }
+
   /* ============================================================
      Derivados (useMemo do original)
      ============================================================ */
@@ -323,6 +397,7 @@
     var today = LF.todayLocal();
     var statusCounts = new Map();
     scored.forEach(function (l) { statusCounts.set(l.status, (statusCounts.get(l.status) || 0) + 1); });
+    var touch = touchIndex();
     var term = S.search.trim().toLocaleLowerCase('pt-BR');
     var region = S.region;
     var km = function (l) { return region && typeof l.lat === 'number' && typeof l.lng === 'number' ? LF.distanceKm(region.lat, region.lng, l.lat, l.lng) : 1e9; };
@@ -336,10 +411,10 @@
     var filtered = scored.filter(function (l) {
       var matchesStatus = S.filter === 'Todos' || l.status === S.filter;
       var matchesSearch = !term || [l.name, l.address, l.category, l.phone || '', l.notes || ''].some(function (v) { return v.toLocaleLowerCase('pt-BR').indexOf(term) >= 0; });
-      return matchesStatus && matchesSearch;
+      return matchesStatus && matchesSearch && (!S.onlyNew || !worked(l, touch));
     }).sort(sorters[S.sort] || sorters.score);
     return {
-      scored: scored, today: today, statusCounts: statusCounts, filtered: filtered,
+      scored: scored, today: today, statusCounts: statusCounts, filtered: filtered, touch: touch,
       contacted: S.leads.filter(function (l) { return has(CONTACTED, l.status); }).length,
       priority: scored.filter(function (l) { return l.score >= 80; }).length,
       followUps: S.leads.filter(function (l) { return l.nextAction && l.nextAction <= today && !has(CLOSED, l.status); }).length,
@@ -412,12 +487,20 @@
 
   function searchLeads() {
     if (!precheck() || !S.region) return;
+    var label = regionKey();
+    var prev = label ? lastBusca(label) : null;
+    if (prev && !w.confirm('Você já pesquisou "' + label + '" em ' + fmtWhen(prev.em) + ' (' + who(prev.email) + ', ' + (prev.para || '?') + ' leads).\n\nPesquisar de novo gasta chamadas pagas ao Google. Continuar?')) return;
     set({ loading: true, error: '', warning: '', message: '' });
     fetchCell({ lat: S.region.lat, lng: S.region.lng }, S.radiusKm).then(function (result) {
       mergeResult(result);
       set({ warning: result.warning || '', message: result.message || '' });
       if (result.warning && result.mode === 'google') notify({ level: 'warn', title: 'Algumas buscas falharam', detail: result.warning.slice(0, 200), source: 'api/leads' });
-      else notify({ level: 'success', title: result.leads.length + ' lead(s) na lista', detail: result.mode === 'demo' ? 'Dados fictícios (modo demonstração).' : undefined });
+      else {
+        var touch = touchIndex();
+        var known = result.leads.filter(function (l) { return worked(l, touch); }).length;
+        notify({ level: 'success', title: result.leads.length + ' lead(s) na lista', detail: result.mode === 'demo' ? 'Dados fictícios (modo demonstração).' : (result.leads.length - known) + ' novo(s) · ' + known + ' já trabalhado(s) pela equipe.' });
+      }
+      if (result.mode === 'google') logHist({ tipo: 'busca', texto: label, de: S.radiusKm + ' km', para: String(result.leads.length), categoria: S.selectedCategories.length + ' categoria(s)' });
     }).catch(reportError).then(function () { set({ loading: false }); });
   }
 
@@ -432,6 +515,7 @@
     var failures = 0, consecutive = 0, partial = 0, lastError = '';
     var i = 0;
     function finish() {
+      if (i > 0 && S.mode === 'google') logHist({ tipo: 'busca', texto: regionKey(), de: 'varredura ' + S.sweepKm + ' km', para: String(S.leads.length), categoria: S.selectedCategories.length + ' categoria(s)' });
       set({ warning: failures || partial ? 'Varredura com lacunas: ' + failures + ' ponto(s) falharam e ' + partial + ' vieram incompletos (alguma categoria falhou). ' + (lastError ? 'Último erro: ' + lastError : '') : '' });
       notify({ level: failures || partial ? 'warn' : 'success', title: R.cancelSweep ? 'Varredura cancelada' : 'Varredura concluída', detail: failures || partial ? failures + ' falha(s), ' + partial + ' incompleto(s).' : undefined });
       set({ loading: false, sweepProgress: null });
@@ -618,11 +702,13 @@
     $('lf-st-followups').textContent = String(D.followUps);
     $('lf-tab-list').setAttribute('aria-selected', S.tab === 'list' ? 'true' : 'false');
     $('lf-tab-map').setAttribute('aria-selected', S.tab === 'map' ? 'true' : 'false');
+    $('lf-tab-hist').setAttribute('aria-selected', S.tab === 'hist' ? 'true' : 'false');
     var q = $('lf-q'); if (q.value !== S.search) q.value = S.search;
   }
 
   function renderFunnel(D) {
     var box = $('lf-funnel'); box.textContent = '';
+    box.hidden = S.tab === 'hist';
     ['Todos'].concat(LF.STATUSES).forEach(function (s) {
       var n = s === 'Todos' ? S.leads.length : D.statusCounts.get(s) || 0;
       box.appendChild(el('button', { type: 'button', class: 'fchip', 'aria-pressed': S.filter === s ? 'true' : 'false', 'data-fk': 'f|' + s, on: { click: function () { set({ filter: s }); } } }, [s, el('b', { text: String(n) })]));
@@ -648,6 +734,9 @@
       lead.phone ? el('a', { class: 'meta', href: 'tel:' + lead.phone.replace(/[^\d+]/g, '') }, [icon('phone', 13), lead.phone]) : null,
       lead.website ? el('span', { class: 'meta' }, [icon('globe', 13), 'Tem site']) : el('span', { class: 'meta gap' }, [icon('globe', 13), 'Sem site']),
       fake ? el('span', { class: 'meta warn', text: 'Dado fictício' }) : null,
+      D.touch.get(lead.id) && D.touch.get(lead.id).contato
+        ? el('span', { class: 'meta seen', title: 'Já abordada pela equipe' }, [icon('chat', 13), 'Abordada ' + fmtWhen(D.touch.get(lead.id).contato.em) + ' · ' + who(D.touch.get(lead.id).contato.email)])
+        : R.remoteIds.has(lead.id) ? el('span', { class: 'meta seen', text: 'Já na carteira' }) : null,
       lead.nextAction ? el('span', { class: 'meta' + (due ? ' due' : '') }, [icon('clock', 13), (due ? 'Retornar: ' : 'Retorno: ') + fmtDate(lead.nextAction)]) : null
     ]);
 
@@ -655,7 +744,7 @@
       [icon('note', 13), ' ' + (lead.notes ? 'Notas ●' : 'Notas e retorno')]);
 
     var links = el('div', { class: 'lead-links' }, [
-      wa ? extLink(wa, [icon('chat', 14), 'Abordar no WhatsApp'], 'wa', function () { approach(lead); }) : null,
+      wa ? extLink(wa, [icon('chat', 14), 'Abordar no WhatsApp'], 'wa', onApproach(lead, 'WhatsApp', S.template)) : null,
       lead.website ? extLink(lead.website, ['Abrir site ', icon('out', 12)]) : null,
       lead.googleMapsUri ? extLink(lead.googleMapsUri, ['Google Maps ', icon('out', 12)]) : null,
       !fake && !lead.pending ? el('button', { type: 'button', class: 'linkbtn', disabled: busy, 'data-fk': fk('ai'), text: busy ? 'Analisando…' : lead.ai ? 'Reanalisar com IA' : 'Analisar com IA', on: { click: function () { analyze(lead); } } }) : null,
@@ -680,8 +769,8 @@
         el('strong', { text: 'Tier ' + lead.ai.tier + ' · fit ' + lead.ai.fit + '/100' }), ' ',
         el('span', { class: 'hint', text: '(opinião da IA com dados limitados; não prevê compra. A análise envia nome, categoria, endereço, nota, site e suas notas à Anthropic)' }),
         el('div', { text: lead.ai.reason }),
-        lead.ai.opportunity ? el('div', null, [el('b', { text: 'Ideia de vídeo:' }), ' ' + lead.ai.opportunity]) : null,
-        lead.ai.message ? el('div', null, [el('b', { text: 'Mensagem sugerida:' }), ' ' + lead.ai.message + ' ', aiWa ? extLink(aiWa, ['Enviar no WhatsApp'], 'wa', function () { approach(lead); }) : null]) : null,
+        lead.ai.opportunity ? el('div', null, [el('b', { text: 'Ideia de vídeo:' }), ' ' + lead.ai.opportunity + ' ', session ? el('button', { type: 'button', class: 'linkbtn', text: 'Guardar ideia', 'data-fk': fk('idea'), on: { click: function () { saveIdea(lead.ai.opportunity, lead); } } }) : null]) : null,
+        lead.ai.message ? el('div', null, [el('b', { text: 'Mensagem sugerida:' }), ' ' + lead.ai.message + ' ', aiWa ? extLink(aiWa, ['Enviar no WhatsApp'], 'wa', onApproach(lead, 'WhatsApp (IA)', lead.ai.message)) : null]) : null,
         lead.ai.missing.length > 0 ? el('div', { class: 'hint', text: 'Falta verificar: ' + lead.ai.missing.join('; ') }) : null
       ]);
     }
@@ -723,7 +812,11 @@
     var sort = el('select', { class: 'select', 'data-fk': 'sort' });
     SORTS.forEach(function (s) { var o = el('option', { text: s.label }); o.value = s.id; if (s.id === S.sort) o.selected = true; sort.appendChild(o); });
     sort.addEventListener('change', function () { set({ sort: sort.value }); });
-    view.appendChild(el('div', { class: 'toolbar' }, [el('h2', { text: 'Leads para avaliar' }), el('label', { class: 'sortbox' }, ['Ordenar', sort])]));
+    var only = el('input', { type: 'checkbox', 'data-fk': 'onlynew' }); only.checked = S.onlyNew;
+    only.addEventListener('change', function () { set({ onlyNew: only.checked }); });
+    view.appendChild(el('div', { class: 'toolbar' }, [el('h2', { text: 'Leads para avaliar' }), el('div', { class: 'toolbar-right' }, [
+      el('label', { class: 'sortbox', title: 'Esconde empresas que já estão na carteira, mudaram de status ou já foram abordadas' }, [only, 'Só novos']),
+      el('label', { class: 'sortbox' }, ['Ordenar', sort])])]));
 
     if (D.pendingCount > 0 && !S.hydrating) {
       view.appendChild(el('div', { class: 'notice', role: 'status' }, [
@@ -760,6 +853,103 @@
     }
   }
 
+
+  function histLeadLabel(h) {
+    var l = h.place_id ? S.leads.filter(function (x) { return x.id === h.place_id; })[0] : null;
+    if (l && l.name) return l.name;
+    return h.place_id ? 'Empresa salva' + (h.categoria ? ' (' + h.categoria + ')' : '') : '';
+  }
+  function histText(h) {
+    if (h.tipo === 'status') return h.de ? 'mudou de "' + h.de + '" para "' + h.para + '"' : 'entrou na carteira como "' + h.para + '"';
+    if (h.tipo === 'contato') return 'abordou' + (h.de ? ' pelo ' + h.de : '');
+    if (h.tipo === 'busca') return 'pesquisou ' + (h.texto || '?') + ' · ' + (h.de || '') + ' · ' + (h.para || '?') + ' lead(s)';
+    return 'guardou uma ideia';
+  }
+  var HIST_LABEL = { status: 'Status', contato: 'Abordagem', ideia: 'Ideia', busca: 'Busca' };
+
+  function renderHistory(view, D) {
+    view.appendChild(el('div', { class: 'toolbar' }, [el('h2', { text: 'Histórico da equipe' }),
+      el('button', { type: 'button', class: 'button secondary', text: 'Atualizar', on: { click: loadHistory } })]));
+    view.appendChild(el('div', { class: 'hint', text: 'Tudo o que a equipe já pesquisou, abordou e pensou, para ninguém repetir. Guardamos só o ID da empresa no Google, nunca os dados dela.' }));
+
+    var contatos = new Set(), areas = new Map(), ideas = [];
+    S.hist.forEach(function (h) {
+      if (h.tipo === 'contato' && h.place_id) contatos.add(h.place_id);
+      if (h.tipo === 'ideia') ideas.push(h);
+      if (h.tipo === 'busca' && h.texto) {
+        var k = h.texto.toLocaleLowerCase('pt-BR'); var a = areas.get(k);
+        if (!a) areas.set(k, { label: h.texto, n: 1, last: h }); else a.n++;
+      }
+    });
+    view.appendChild(el('div', { class: 'stats hist-stats' }, [
+      [R.remoteIds.size, 'Na carteira'], [contatos.size, 'Empresas abordadas'], [areas.size, 'Áreas pesquisadas'], [ideas.length, 'Ideias']
+    ].map(function (x) { return el('div', { class: 'glass stat' }, [el('div', { class: 'stat-label', text: x[1] }), el('div', { class: 'stat-value', text: String(x[0]) })]); })));
+
+    // Ideias
+    var ta = el('textarea', { id: 'lf-idea', class: 'input area', rows: '3', maxlength: '1000', placeholder: 'Ideia de abordagem, pauta, vídeo, oferta…', 'data-fk': 'idea' });
+    ta.value = S.ideaDraft;
+    var warn = el('div', { class: 'hint hist-warn', 'aria-live': 'polite' });
+    function showSimilar() {
+      var sims = similarIdeas(ta.value); warn.textContent = '';
+      if (sims.length) warn.appendChild(el('span', null, [el('b', { text: 'Parecida com: ' }), sims.map(function (h) { return '"' + String(h.texto).slice(0, 90) + '" (' + who(h.email) + ', ' + fmtWhen(h.em) + ')'; }).join(' · ')]));
+    }
+    ta.addEventListener('input', function () { S.ideaDraft = ta.value; showSimilar(); });
+    showSimilar();
+    var save = el('button', { type: 'button', class: 'button', text: 'Guardar ideia', on: { click: function () {
+      saveIdea(ta.value, null).then(function (x) { if (x) { S.ideaDraft = ''; commit(); } });
+    } } });
+    var me = myEmail().toLowerCase();
+    var ideaList = el('div', { class: 'hist-list' }, ideas.slice(0, 60).map(function (h) {
+      var lbl = histLeadLabel(h);
+      return el('div', { class: 'hist-item' }, [
+        el('div', { class: 'hist-text', text: h.texto || '' }),
+        el('div', { class: 'hist-meta' }, [who(h.email) + ' · ' + fmtWhen(h.em) + (lbl ? ' · ' + lbl : ''),
+          String(h.email || '').toLowerCase() === me ? el('button', { type: 'button', class: 'linkbtn', text: 'Apagar', on: { click: function () { deleteIdea(h); } } }) : null])
+      ]);
+    }));
+    view.appendChild(el('section', { class: 'glass hist-box', 'aria-labelledby': 'h-ideias' }, [
+      el('h3', { id: 'h-ideias', text: 'Ideias' }),
+      el('label', { class: 'field-label', for: 'lf-idea', text: 'Nova ideia (aviso se parecer com uma já guardada)' }), ta, warn,
+      el('div', { class: 'hist-actions' }, [save]),
+      ideas.length ? ideaList : el('div', { class: 'hint', text: 'Nenhuma ideia guardada ainda.' })
+    ]));
+
+    // Áreas já pesquisadas
+    var areaList = Array.from(areas.values()).sort(function (a, b) { return String(b.last.em).localeCompare(String(a.last.em)); }).slice(0, 40);
+    view.appendChild(el('section', { class: 'glass hist-box', 'aria-labelledby': 'h-areas' }, [
+      el('h3', { id: 'h-areas', text: 'Áreas já pesquisadas' }),
+      areaList.length ? el('div', { class: 'hist-chips' }, areaList.map(function (a) {
+        return el('span', { class: 'meta', title: 'Última: ' + fmtWhen(a.last.em) + ' por ' + who(a.last.email) }, [a.label + ' · ' + a.n + 'x · ' + fmtWhen(a.last.em)]);
+      })) : el('div', { class: 'hint', text: 'Nenhuma busca real registrada ainda.' })
+    ]));
+
+    // Linha do tempo
+    var chips = el('div', { class: 'funnel', role: 'group', 'aria-label': 'Filtrar histórico' }, HIST_TYPES.map(function (t) {
+      return el('button', { type: 'button', class: 'fchip', 'aria-pressed': S.histFilter === t.id ? 'true' : 'false', 'data-fk': 'hf|' + t.id, on: { click: function () { set({ histFilter: t.id }); } } }, [t.label]);
+    }));
+    var q = el('input', { class: 'input', placeholder: 'Buscar no histórico (empresa, pessoa, área, ideia)…', 'aria-label': 'Buscar no histórico', 'data-fk': 'hq' });
+    q.value = S.histQ;
+    q.addEventListener('input', function () { set({ histQ: q.value }); });
+    var term = S.histQ.trim().toLocaleLowerCase('pt-BR');
+    var items = S.hist.filter(function (h) {
+      if (S.histFilter !== 'Todos' && h.tipo !== S.histFilter) return false;
+      if (!term) return true;
+      return [histLeadLabel(h), h.email, h.texto, h.de, h.para, h.categoria].some(function (v) { return String(v || '').toLocaleLowerCase('pt-BR').indexOf(term) >= 0; });
+    }).slice(0, 200);
+    view.appendChild(el('section', { class: 'glass hist-box', 'aria-labelledby': 'h-tl' }, [
+      el('h3', { id: 'h-tl', text: 'Linha do tempo' }), chips, q,
+      items.length ? el('ol', { class: 'hist-list hist-tl' }, items.map(function (h) {
+        var lbl = histLeadLabel(h);
+        return el('li', { class: 'hist-item' }, [
+          el('div', { class: 'hist-meta' }, [el('span', { class: 'tag', text: HIST_LABEL[h.tipo] || h.tipo }), fmtWhen(h.em) + ' · ' + who(h.email)]),
+          el('div', { class: 'hist-text' }, [lbl ? el('b', { text: lbl + ' ' }) : null, histText(h)]),
+          h.tipo !== 'busca' && h.tipo !== 'ideia' && h.texto ? el('div', { class: 'hint', text: '"' + h.texto.slice(0, 220) + '"' }) : null,
+          h.tipo === 'ideia' ? el('div', { class: 'hint', text: h.texto || '' }) : null
+        ]);
+      })) : el('div', { class: 'hint', text: session ? 'Nada no histórico com esse filtro.' : 'Entre no painel para ver o histórico.' })
+    ]));
+  }
+
   /** Guarda o controle focado (data-fk) para devolver o foco após redesenhar. */
   function captureFocus() {
     var a = d.activeElement;
@@ -787,7 +977,7 @@
       var D = derive();
       renderTop(D); renderNotices(); renderAside(D); renderStats(D); renderFunnel(D);
       var view = $('lf-view'); view.textContent = '';
-      if (S.tab === 'list') renderList(view, D); else renderMap(view, D);
+      if (S.tab === 'list') renderList(view, D); else if (S.tab === 'hist') renderHistory(view, D); else renderMap(view, D);
     } catch (e) {
       crash(e);
       return;
@@ -849,6 +1039,7 @@
     $('lf-csv').addEventListener('click', exportCsv);
     $('lf-tab-list').addEventListener('click', function () { set({ tab: 'list' }); });
     $('lf-tab-map').addEventListener('click', function () { set({ tab: 'map' }); });
+    $('lf-tab-hist').addEventListener('click', function () { set({ tab: 'hist' }); if (!S.hist.length) loadHistory(); });
     $('lf-q').addEventListener('input', function () { set({ search: $('lf-q').value }); });
     $('lf-logout').addEventListener('click', logout);
   }
@@ -862,8 +1053,8 @@
     m.classList.toggle('err', !!isErr);
   }
   function showLogin(text) {
-    $('lf-app').hidden = true; $('lf-login').hidden = false;
-    if (text) loginMsg(text, true);
+    $('lf-app').hidden = true; $('lf-login').hidden = true;
+    if (w.AdminAuth) w.AdminAuth.lock(text);
   }
   function showApp() {
     $('lf-login').hidden = true; $('lf-app').hidden = false;
@@ -874,20 +1065,10 @@
       scheduleSave();
     } else commit();
     pullRemote().then(function () { maybeHydrate(); });
+    loadHistory();
   }
 
-  function bindLogin() {
-    $('lf-login-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      var email = $('lf-email').value.trim().toLowerCase();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { loginMsg('Digite um e-mail válido.', true); return; }
-      var btn = $('lf-login-btn'); btn.disabled = true; btn.textContent = 'Enviando…';
-      loginMsg('');
-      sendLink(email).then(function () {
-        loginMsg('Se este e-mail tiver acesso, o link chega em instantes. Confira também o spam.');
-      }, function (er) { loginMsg(er.message, true); }).then(function () { btn.disabled = false; btn.textContent = 'Enviar link de acesso'; });
-    });
-  }
+  function bindLogin() { /* login fica no admin-auth.js */ }
 
   function start() {
     LF.notifyMount({ toasts: $('lf-toasts'), bell: $('lf-bell'), button: $('lf-bell-btn'), sendBug: sendBug });
@@ -896,7 +1077,7 @@
     if (!URL_SB || !ANON) { showLogin('Supabase não configurado em assets/js/config.js.'); return; }
     consumeHash();
     if (!session) session = loadSession();
-    if (session) showApp(); else showLogin();
+    if (session) showApp(); else if (w.AdminAuth) w.AdminAuth.lock(); else showLogin();
   }
 
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', start); else start();

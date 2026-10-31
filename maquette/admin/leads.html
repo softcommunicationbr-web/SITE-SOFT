@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>LeadFinder — prospecção local · Soft &amp; Co.</title>
+<title>LeadFinder — CRM de prospecção · Soft &amp; Co.</title>
 <meta name="description" content="Encontre empresas para prospectar em qualquer lugar do mundo (uso interno).">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="icon" type="image/svg+xml" href="../assets/brand/soft-simbolo-tiki-chocolate.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/leadfinder.css?v=20261029-2">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/leadfinder.css?v=20261031-1">
 <!-- Trava de senha do painel (não mexer) -->
-<script src="../assets/js/admin-auth.js?v=20261025-5"></script>
+<script src="../assets/js/admin-auth.js?v=20261030-1"></script>
 </head>
 <body class="lf-body">
 <!--
@@ -27,22 +27,7 @@
   <main class="shell">
     <a class="lf-back" href="index.html">← Voltar ao painel</a>
 
-    <!-- 1. Login (Supabase Auth, link mágico). Sem sessão, o app não aparece. -->
-    <section class="glass lf-login" id="lf-login" aria-labelledby="lf-login-t">
-      <div class="brand">
-        <div class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/></svg></div>
-        <div><h1 id="lf-login-t">LeadFinder</h1><div class="sub">Entre com seu e-mail para acessar a prospecção</div></div>
-      </div>
-      <form id="lf-login-form" novalidate>
-        <div class="field">
-          <label class="field-label" for="lf-email">E-mail</label>
-          <input class="input" id="lf-email" type="email" autocomplete="email" required maxlength="200" placeholder="voce@empresa.com">
-        </div>
-        <button class="button block" type="submit" id="lf-login-btn">Enviar link de acesso</button>
-        <p class="hint lf-login-msg" id="lf-login-msg" role="status" aria-live="polite"></p>
-      </form>
-      <div class="hint">Só e-mails autorizados recebem o link. Abra o link neste mesmo navegador.</div>
-    </section>
+    <div id="lf-login" hidden></div><!-- login fica no admin-auth.js (painel inteiro) -->
 
     <!-- 2. App (port de app/page.tsx) -->
     <div id="lf-app" hidden>
@@ -143,6 +128,7 @@
               <div class="tabs" role="tablist" aria-label="Visualização">
                 <button type="button" role="tab" aria-selected="true" class="tab" id="lf-tab-list"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Lista</button>
                 <button type="button" role="tab" aria-selected="false" class="tab" id="lf-tab-map"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg>Mapa</button>
+                <button type="button" role="tab" aria-selected="false" class="tab" id="lf-tab-hist"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2"/></svg>Histórico</button>
               </div>
               <div class="searchbox"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/></svg><input class="input" id="lf-q" placeholder="Buscar nome, cidade, categoria, notas…" aria-label="Buscar nos leads"></div>
             </div>
@@ -165,6 +151,6 @@
 <script src="../assets/js/leadfinder/lib.js?v=20261029-2"></script>
 <script src="../assets/js/leadfinder/notify.js?v=20261029-2"></script>
 <script src="../assets/js/leadfinder/maps.js?v=20261029-2"></script>
-<script src="../assets/js/admin-leads.js?v=20261029-2"></script>
+<script src="../assets/js/admin-leads.js?v=20261031-1"></script>
 </body>
 </html>

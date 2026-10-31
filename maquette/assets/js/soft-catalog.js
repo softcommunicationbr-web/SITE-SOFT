@@ -157,34 +157,10 @@
       return fetchT(CFG.supabaseUrl + path, { method: 'POST', headers: { apikey: CFG.supabaseAnonKey, 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 10000)
         .then(function (r) { return r.text().then(function (b) { if (!r.ok) throw new Error(errText(r, b)); return b ? JSON.parse(b) : {}; }); });
     }
-    function login(a, b) {
-      var pass = (b !== undefined ? b : a);
-      if (typeof pass === 'string') pass = pass.trim();
-      if (!pass) return Promise.reject(new Error('Digite a senha de administrador.'));
-
-      function grant(email) {
-        var s = setSession({
-          access_token: CFG.supabaseAnonKey,
-          expires_in: 86400 * 30,
-          user: { email: email || 'admin@softcommunicaiton.com' }
-        }, email || 'admin@softcommunicaiton.com');
-        try { w.sessionStorage.setItem('soft_admin_session_auth_v1', 'authenticated'); } catch (e) {}
-        return s;
-      }
-
-      // Senha conferida só no servidor (ferramentas/admin_senha.sql).
-      return fetchT(CFG.supabaseUrl + '/rest/v1/rpc/admin_verificar_senha', {
-        method: 'POST',
-        headers: sbHeaders(null, { Accept: 'application/json', 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ p_senha: pass })
-      }, 8000)
-      .then(function (r) {
-        return r.json().catch(function () { return null; }).then(function (ok) {
-          if (!r.ok) throw new Error(ok && ok.message && /tentativas/i.test(ok.message) ? ok.message : 'Não foi possível verificar agora.');
-          if (ok !== true) throw new Error('Senha incorreta. Tente novamente.');
-          return grant('admin@softcommunicaiton.com');
-        });
-      });
+    function login(email, pass) {
+      // Login real do Supabase Auth (assets/js/admin-auth.js).
+      if (w.AdminAuth && w.AdminAuth.loginPassword) return w.AdminAuth.loginPassword(email, pass);
+      return Promise.reject(new Error('Login indisponível nesta página.'));
     }
     function magicLink(email) {
       return authPost('/auth/v1/otp', { email: email, create_user: false, gotrue_meta_security: {} });
@@ -196,14 +172,9 @@
       } catch (e) { /* ignora */ }
     }
     function ensureToken() {
+      if (w.AdminAuth && w.AdminAuth.token) return w.AdminAuth.token();
       var s = session();
-      if (!s) return Promise.reject(new Error('Sessão expirada. Entre novamente.'));
-      if (s.expires_at * 1000 > Date.now() + 60000) return Promise.resolve(s.access_token);
-      if (s.access_token) {
-        s.expires_at = Math.floor(Date.now() / 1000) + (86400 * 30);
-        try { w.sessionStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch (e) {}
-        return Promise.resolve(s.access_token);
-      }
+      if (s && s.expires_at * 1000 > Date.now() + 60000) return Promise.resolve(s.access_token);
       logout();
       return Promise.reject(new Error('Sessão expirada. Entre novamente.'));
     }

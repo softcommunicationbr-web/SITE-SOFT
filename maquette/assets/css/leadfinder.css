@@ -3,7 +3,7 @@
    Gerado a partir de app/globals.css do LeadFinder (Next.js),
    com TODOS os seletores escopados sob .lf-app para não vazar
    no resto do painel. :root/html/body viraram .lf-app e as
-   animações ganharam o prefixo lf-. Fonte: DM Sans (carregada
+   animações ganharam o prefixo lf-. Fontes: Montserrat ExtraBold nos títulos + Inter no texto (carregadas
    no <head> da página). Leaflet CSS é carregado sob demanda.
    ============================================================ */
 
@@ -39,7 +39,7 @@
 }
 
 .lf-app, .lf-app * { box-sizing: border-box; }
-.lf-app { margin: 0; min-height: 100%; background: var(--color-bg); color: var(--color-ink); font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+.lf-app { margin: 0; min-height: 100%; background: var(--color-bg); color: var(--color-ink); font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
 .lf-app h1, .lf-app h2, .lf-app h3, .lf-app p { margin-top: 0; }
 .lf-app button, .lf-app input, .lf-app select, .lf-app textarea { font: inherit; color: inherit; }
 .lf-app button { cursor: pointer; }
@@ -252,10 +252,13 @@ body.lf-body { margin: 0; background: #f7f6f4; }
 .lf-app { min-height: 100vh; }
 .lf-app [hidden] { display: none !important; }
 
+/* Títulos e números: Montserrat ExtraBold (regra da marca no painel) */
+.lf-app h1, .lf-app h2, .lf-app h3, .lf-app .stat-value, .lf-app .section-label, .lf-app .score, .admin-auth-card h2 { font-family: 'Montserrat', 'Inter', system-ui, sans-serif; font-weight: 800; }
+
 /* Trava de senha do painel (admin-auth.js): esconde o app até liberar
    e estiliza o modal dele sem carregar o admin.css inteiro. */
 html.admin-locked .lf-app { display: none !important; }
-.admin-auth-overlay { position: fixed; inset: 0; z-index: 99999; background: #f7f6f4; display: flex; align-items: center; justify-content: center; padding: 20px; font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; color: #1b1f2a; }
+.admin-auth-overlay { position: fixed; inset: 0; z-index: 99999; background: #f7f6f4; display: flex; align-items: center; justify-content: center; padding: 20px; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; color: #1b1f2a; }
 .admin-auth-card { width: 100%; max-width: 400px; background: #fff; border: 1px solid rgba(27, 31, 42, .08); border-radius: 20px; padding: 32px; box-shadow: 0 10px 32px rgba(40, 30, 20, .08); }
 .admin-auth-brand { margin-bottom: 20px; display: flex; justify-content: center; }
 .admin-auth-brand img { filter: invert(1) brightness(0.15); }
@@ -284,3 +287,20 @@ html.admin-locked .lf-app { display: none !important; }
 
 /* Link de popup do Leaflet no acento do app */
 .lf-app .leaflet-popup-content a { color: var(--color-accent); font-weight: 600; }
+
+/* ---------- Histórico da equipe (não repetir lead, área, abordagem, ideia) ---------- */
+.lf-app .toolbar-right { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.lf-app .sortbox input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--color-accent); margin: 0; }
+.lf-app .meta.seen { background: #ecfdf5; color: #065f46; font-weight: 600; }
+.lf-app .hist-stats { margin-top: var(--space-3); }
+.lf-app .hist-box { padding: var(--space-5); margin-top: var(--space-4); display: grid; gap: var(--space-3); }
+.lf-app .hist-box h3 { font-size: 16px; margin: 0; letter-spacing: -.1px; }
+.lf-app .hist-actions { display: flex; justify-content: flex-end; }
+.lf-app .hist-warn:empty { display: none; }
+.lf-app .hist-warn { padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); background: #fffbeb; color: #92400e; }
+.lf-app .hist-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); max-height: 520px; overflow: auto; }
+.lf-app .hist-item { padding: var(--space-3); border-radius: var(--radius-sm); background: rgba(27, 31, 42, .04); display: grid; gap: 4px; overflow-wrap: anywhere; }
+.lf-app .hist-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); font-size: 12px; color: var(--color-ink-muted); }
+.lf-app .hist-text { font-size: 14px; }
+.lf-app .hist-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.lf-app .hist-box .funnel { margin: 0; }
