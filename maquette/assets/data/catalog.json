@@ -1,167 +1,7 @@
 {
- "version": "2026-10-12.1",
+ "version": "2026-10-29.1612",
  "base": "https://xvabghgvrhpnyywpmodb.supabase.co/storage/v1/object/public/videos-portifolio/",
  "items": [
-  {
-   "id": "v-01",
-   "filename": "mkt.webm",
-   "aspect": "9:16",
-   "w": 600,
-   "h": 1066,
-   "duration": 15.11,
-   "size": 3222366,
-   "placement": "grid-1",
-   "position": 1,
-   "title": "Hotel na Lagoa · Refúgio Exclusivo",
-   "label": "Hotel na Lagoa · Refúgio Exclusivo",
-   "tags": "Marketing, Campanha",
-   "alt": "Campanha de marketing e redes",
-   "active": true,
-   "hero": false,
-   "rights": "a-confirmar",
-   "note": "Produto \"Rosehip Morning Society\" visível. Confirmar se é cliente ou conceito.",
-   "poster": "assets/posters/mkt.jpg",
-   "i18n": {
-    "fr": {
-     "title": "Hôtel de Lagon · Écrin Préservé",
-     "label": "Hôtel de Lagon · Écrin Préservé",
-     "service": "Films de marque",
-     "sector": "Hôtellerie",
-     "meta": "Réalisation, image, montage"
-    },
-    "en": {
-     "title": "Lagoon Hotel · Serene Haven",
-     "label": "Lagoon Hotel · Serene Haven",
-     "service": "Brand films",
-     "sector": "Hospitality",
-     "meta": "Direction, cinematography, editing"
-    }
-   },
-   "service": "Filmes de marca",
-   "sector": "Hotelaria",
-   "meta": "Direção, cinematografia, edição",
-   "ai": false
-  },
-  {
-   "id": "v-02",
-   "filename": "generation-1.webm",
-   "aspect": "9:16",
-   "w": 1080,
-   "h": 1920,
-   "duration": 20.04,
-   "size": 9571309,
-   "placement": "grid-2",
-   "position": 2,
-   "title": "Villa Sunset · Projeção & Arquitetura IA",
-   "label": "Villa Sunset · Projeção & Arquitetura IA",
-   "tags": "IA, Conceito",
-   "alt": "Síntese de inteligência artificial",
-   "active": true,
-   "hero": false,
-   "rights": "a-confirmar",
-   "note": "",
-   "poster": "assets/posters/generation-1.jpg",
-   "i18n": {
-    "fr": {
-     "title": "Villa Sunset · Projection & Architecture IA",
-     "label": "Villa Sunset · Projection & Architecture IA",
-     "service": "Immobilier IA",
-     "sector": "Immobilier",
-     "meta": "Direction artistique, génération IA, retouche"
-    },
-    "en": {
-     "title": "Villa Sunset · AI Architectural Projection",
-     "label": "Villa Sunset · AI Architectural Projection",
-     "service": "AI property visuals",
-     "sector": "Real estate",
-     "meta": "Art direction, AI generation, retouching"
-    }
-   },
-   "service": "Imobiliário IA",
-   "sector": "Imobiliário",
-   "meta": "Direção de arte, geração por IA, retoque",
-   "ai": true
-  },
-  {
-   "id": "v-03",
-   "filename": "generation.webm",
-   "aspect": "9:16",
-   "w": 720,
-   "h": 1280,
-   "duration": 9.72,
-   "size": 3392283,
-   "placement": "grid-3",
-   "position": 3,
-   "title": "À Beira-Mar · Gastronomia & Lifestyle",
-   "label": "À Beira-Mar · Gastronomia & Lifestyle",
-   "tags": "IA, Direção de Arte",
-   "alt": "Direção de arte generativa",
-   "active": true,
-   "hero": false,
-   "rights": "a-confirmar",
-   "note": "",
-   "poster": "assets/posters/generation.jpg",
-   "i18n": {
-    "fr": {
-     "title": "Bord de Mer · Gastronomie & Art de Vivre",
-     "label": "Bord de Mer · Gastronomie & Art de Vivre",
-     "service": "Contenus courts & UGC",
-     "sector": "Restauration",
-     "meta": "Tournage, montage, présence face caméra"
-    },
-    "en": {
-     "title": "Seaside Restaurant · Gastronomy & Lifestyle",
-     "label": "Seaside Restaurant · Gastronomy & Lifestyle",
-     "service": "Short-form & UGC",
-     "sector": "Restaurants",
-     "meta": "Filming, editing, on-camera presence"
-    }
-   },
-   "service": "Conteúdos curtos & UGC",
-   "sector": "Gastronomia",
-   "meta": "Captação, edição, presença em câmera",
-   "ai": false
-  },
-  {
-   "id": "v-04",
-   "filename": "defender-dakar-introducing-the-d7x-r-rally-car-d.webm",
-   "aspect": "2:1",
-   "w": 1920,
-   "h": 960,
-   "duration": 67.52,
-   "size": 9589266,
-   "placement": "grid-4",
-   "position": 4,
-   "title": "Rallye D7X · Performance & Dinamismo",
-   "label": "Rallye D7X · Performance & Dinamismo",
-   "tags": "Automotivo, Campanha",
-   "alt": "Campanha Rally Defender Dakar",
-   "active": true,
-   "hero": false,
-   "rights": "a-confirmar",
-   "note": "Vídeo e texto oficiais da Land Rover Defender (marca de terceiros). Confirmar licença ou remover.",
-   "poster": "assets/posters/defender-dakar-introducing-the-d7x-r-rally-car-d.jpg",
-   "i18n": {
-    "fr": {
-     "title": "Rallye D7X · Performance & Dynamisme",
-     "label": "Rallye D7X · Performance & Dynamisme",
-     "service": "Films d’action",
-     "sector": "Automobile",
-     "meta": "Action cinématographique, dynamisme et performance"
-    },
-    "en": {
-     "title": "D7X Rally · Performance & Dynamism",
-     "label": "D7X Rally · Performance & Dynamism",
-     "service": "Action films",
-     "sector": "Automotive",
-     "meta": "Cinematic action, dynamism and performance"
-    }
-   },
-   "service": "Filmes de ação",
-   "sector": "Automotivo",
-   "meta": "Ação cinematográfica, dinamismo e performance",
-   "ai": false
-  },
   {
    "id": "v-05",
    "filename": "calebe-versao-final.webm",
@@ -182,15 +22,16 @@
    "note": "",
    "poster": "assets/posters/calebe-versao-final.jpg",
    "i18n": {
-    "fr": {
-     "title": "Calebe · Production finale",
-     "label": "Calebe · Final"
-    },
     "en": {
-     "title": "Calebe · Final production",
-     "label": "Calebe · Final"
+     "label": "Calebe · Final",
+     "title": "Calebe · Final production"
+    },
+    "fr": {
+     "label": "Calebe · Final",
+     "title": "Calebe · Production finale"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-06",
@@ -212,15 +53,16 @@
    "note": "Aparece \"Pedra Branca\". Confirmar autorização do cliente.",
    "poster": "assets/posters/miria-s-project-final-v01-1-2.jpg",
    "i18n": {
-    "fr": {
-     "title": "Miria Project · Campagne de marque",
-     "label": "Miria · Campagne"
-    },
     "en": {
-     "title": "Miria Project · Brand campaign",
-     "label": "Miria · Campaign"
+     "label": "Miria · Campaign",
+     "title": "Miria Project · Brand campaign"
+    },
+    "fr": {
+     "label": "Miria · Campagne",
+     "title": "Miria Project · Campagne de marque"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-07",
@@ -242,15 +84,16 @@
    "note": "",
    "poster": "assets/posters/img-4465.jpg",
    "i18n": {
-    "fr": {
-     "title": "Cinématographie Polynésie 01",
-     "label": "Îles · Lumière naturelle"
-    },
     "en": {
-     "title": "Polynesian cinematography 01",
-     "label": "Islands · Natural light"
+     "label": "Islands · Natural light",
+     "title": "Polynesian cinematography 01"
+    },
+    "fr": {
+     "label": "Îles · Lumière naturelle",
+     "title": "Cinématographie Polynésie 01"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-08",
@@ -272,15 +115,16 @@
    "note": "",
    "poster": "assets/posters/img-4473.jpg",
    "i18n": {
-    "fr": {
-     "title": "Cinématographie Polynésie 02",
-     "label": "Polynésie 02"
-    },
     "en": {
-     "title": "Polynesian cinematography 02",
-     "label": "Polynesia 02"
+     "label": "Polynesia 02",
+     "title": "Polynesian cinematography 02"
+    },
+    "fr": {
+     "label": "Polynésie 02",
+     "title": "Cinématographie Polynésie 02"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-09",
@@ -302,15 +146,16 @@
    "note": "",
    "poster": "assets/posters/img-4501.jpg",
    "i18n": {
-    "fr": {
-     "title": "Cinématographie îles 03",
-     "label": "Lumière du Pacifique"
-    },
     "en": {
-     "title": "Island cinematography 03",
-     "label": "Pacific light"
+     "label": "Pacific light",
+     "title": "Island cinematography 03"
+    },
+    "fr": {
+     "label": "Lumière du Pacifique",
+     "title": "Cinématographie îles 03"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-10",
@@ -332,15 +177,16 @@
    "note": "Logotipo Ford visível (marca de terceiros). Confirmar autorização.",
    "poster": "assets/posters/img-4728.jpg",
    "i18n": {
-    "fr": {
-     "title": "Lagon & couleurs 04",
-     "label": "Lagon & couleurs"
-    },
     "en": {
-     "title": "Lagoon & colors 04",
-     "label": "Lagoon & colors"
+     "label": "Lagoon & colors",
+     "title": "Lagoon & colors 04"
+    },
+    "fr": {
+     "label": "Lagon & couleurs",
+     "title": "Lagon & couleurs 04"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-11",
@@ -362,15 +208,16 @@
    "note": "",
    "poster": "assets/posters/img-4879.jpg",
    "i18n": {
-    "fr": {
-     "title": "Culture & paysages 05",
-     "label": "Culture vivante"
-    },
     "en": {
-     "title": "Culture & landscapes 05",
-     "label": "Living culture"
+     "label": "Living culture",
+     "title": "Culture & landscapes 05"
+    },
+    "fr": {
+     "label": "Culture vivante",
+     "title": "Culture & paysages 05"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-12",
@@ -386,21 +233,22 @@
    "label": "Retrato Ilhas",
    "tags": "Cinema, Retrato",
    "alt": "Retrato cinematográfico",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/img-4903.jpg",
    "i18n": {
-    "fr": {
-     "title": "Lumière naturelle & portrait 06",
-     "label": "Portrait îles"
-    },
     "en": {
-     "title": "Natural light & portrait 06",
-     "label": "Island portrait"
+     "label": "Natural light & portrait 06",
+     "title": "Natural light & portrait 06"
+    },
+    "fr": {
+     "label": "Lumière naturelle & portrait",
+     "title": "Lumière naturelle & portrait 06"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-13",
@@ -422,15 +270,16 @@
    "note": "",
    "poster": "assets/posters/img-4983.jpg",
    "i18n": {
-    "fr": {
-     "title": "Architecture tropicale 07",
-     "label": "Architecture"
-    },
     "en": {
-     "title": "Tropical architecture 07",
-     "label": "Architecture"
+     "label": "Architecture",
+     "title": "Tropical architecture 07"
+    },
+    "fr": {
+     "label": "Architecture",
+     "title": "Architecture tropicale 07"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-14",
@@ -452,15 +301,16 @@
    "note": "",
    "poster": "assets/posters/img-5168.jpg",
    "i18n": {
-    "fr": {
-     "title": "Sunset & textures 08",
-     "label": "Sunset Vibes"
-    },
     "en": {
-     "title": "Sunset & textures 08",
-     "label": "Sunset Vibes"
+     "label": "Sunset Vibes",
+     "title": "Sunset & textures 08"
+    },
+    "fr": {
+     "label": "Sunset Vibes",
+     "title": "Sunset & textures 08"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-15",
@@ -476,21 +326,22 @@
    "label": "Motion & Luz",
    "tags": "Cinema, Motion",
    "alt": "Efeitos de reflexo e água",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/img-5169.jpg",
    "i18n": {
-    "fr": {
-     "title": "Motion & lumière 09",
-     "label": "Motion & lumière"
-    },
     "en": {
-     "title": "Motion & light 09",
-     "label": "Motion & light"
+     "label": "Motion & light 09",
+     "title": "Motion & light 09"
+    },
+    "fr": {
+     "label": "Motion & lumière 09",
+     "title": "Motion & lumière 09"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-16",
@@ -512,15 +363,16 @@
    "note": "",
    "poster": "assets/posters/img-5170.jpg",
    "i18n": {
-    "fr": {
-     "title": "Détails cinématographiques 10",
-     "label": "Détails 10"
-    },
     "en": {
-     "title": "Cinematic details 10",
-     "label": "Details 10"
+     "label": "Details 10",
+     "title": "Cinematic details 10"
+    },
+    "fr": {
+     "label": "Détails 10",
+     "title": "Détails cinématographiques 10"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-17",
@@ -542,15 +394,16 @@
    "note": "",
    "poster": "assets/posters/img-5389.jpg",
    "i18n": {
-    "fr": {
-     "title": "Ambiance & mer 11",
-     "label": "Ambiance & mer"
-    },
     "en": {
-     "title": "Atmosphere & sea 11",
-     "label": "Atmosphere & sea"
+     "label": "Atmosphere & sea",
+     "title": "Atmosphere & sea 11"
+    },
+    "fr": {
+     "label": "Ambiance & mer",
+     "title": "Ambiance & mer 11"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-18",
@@ -572,15 +425,16 @@
    "note": "",
    "poster": "assets/posters/img-7032.jpg",
    "i18n": {
-    "fr": {
-     "title": "Nature vivante 12",
-     "label": "Nature vivante"
-    },
     "en": {
-     "title": "Living nature 12",
-     "label": "Living nature"
+     "label": "Living nature",
+     "title": "Living nature 12"
+    },
+    "fr": {
+     "label": "Nature vivante",
+     "title": "Nature vivante 12"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-19",
@@ -588,7 +442,7 @@
    "aspect": "9:16",
    "w": 1080,
    "h": 1920,
-   "duration": 9,
+   "duration": 9.0,
    "size": 6206992,
    "placement": "band-1",
    "position": 15,
@@ -596,21 +450,22 @@
    "label": "Horizonte 13",
    "tags": "Cinema, Cor",
    "alt": "Gradação de cor e estilo",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/img-7197.jpg",
    "i18n": {
-    "fr": {
-     "title": "Aventures & horizon 13",
-     "label": "Horizon 13"
-    },
     "en": {
-     "title": "Adventures & horizon 13",
-     "label": "Horizon 13"
+     "label": "Adventures & horizon 13",
+     "title": "Adventures & horizon 13"
+    },
+    "fr": {
+     "label": "Aventures & horizon 13",
+     "title": "Aventures & horizon 13"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-20",
@@ -626,21 +481,22 @@
    "label": "Comunicação 14",
    "tags": "Marketing, Motion",
    "alt": "Motion design para marketing",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/mktt.jpg",
    "i18n": {
-    "fr": {
-     "title": "Communication créative 14",
-     "label": "Communication 14"
-    },
     "en": {
-     "title": "Creative communication 14",
-     "label": "Communication 14"
+     "label": "Creative communication 14",
+     "title": "Creative communication 14"
+    },
+    "fr": {
+     "label": "Communication créative 14",
+     "title": "Communication créative 14"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-21",
@@ -662,15 +518,16 @@
    "note": "",
    "poster": "assets/posters/soubarbarotti-servicos-9x16.jpg",
    "i18n": {
-    "fr": {
-     "title": "Serviços Soft Motion · 9:16",
-     "label": "Services Soft"
-    },
     "en": {
-     "title": "Serviços Soft Motion · 9:16",
-     "label": "Soft services"
+     "label": "Soft services",
+     "title": "Serviços Soft Motion · 9:16"
+    },
+    "fr": {
+     "label": "Services Soft",
+     "title": "Serviços Soft Motion · 9:16"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-22",
@@ -692,15 +549,16 @@
    "note": "",
    "poster": "assets/posters/quem-e-soubarbarotti-stories-9x16-v2.jpg",
    "i18n": {
-    "fr": {
-     "title": "Présentation Calebe · Stories",
-     "label": "Calebe"
-    },
     "en": {
-     "title": "Calebe introduction · Stories",
-     "label": "Calebe"
+     "label": "Calebe",
+     "title": "Calebe introduction · Stories"
+    },
+    "fr": {
+     "label": "Calebe",
+     "title": "Présentation Calebe · Stories"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-23",
@@ -722,15 +580,16 @@
    "note": "",
    "poster": "assets/posters/soft-motion-fr-9x16-60fps-1.jpg",
    "i18n": {
-    "fr": {
-     "title": "Soft Motion Reel · 60fps",
-     "label": "Motion 60fps"
-    },
     "en": {
-     "title": "Soft Motion Reel · 60fps",
-     "label": "Motion 60fps"
+     "label": "Motion 60fps",
+     "title": "Soft Motion Reel · 60fps"
+    },
+    "fr": {
+     "label": "Motion 60fps",
+     "title": "Soft Motion Reel · 60fps"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-24",
@@ -752,15 +611,16 @@
    "note": "",
    "poster": "assets/posters/saveclip-app-aqpvjyamwmee4zspdgq34jxhumqlm4ohuvm.jpg",
    "i18n": {
-    "fr": {
-     "title": "Reel impact visuel",
-     "label": "Reel impact"
-    },
     "en": {
-     "title": "Visual impact reel",
-     "label": "Impact Reel"
+     "label": "Impact Reel",
+     "title": "Visual impact reel"
+    },
+    "fr": {
+     "label": "Reel impact",
+     "title": "Reel impact visuel"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-25",
@@ -782,15 +642,16 @@
    "note": "",
    "poster": "assets/posters/saveclip-app-aqojydcalld4fboi8d3hibfg2q-wktxpfx-.jpg",
    "i18n": {
-    "fr": {
-     "title": "Gastronomie & lifestyle",
-     "label": "Gastronomie"
-    },
     "en": {
-     "title": "Gastronomy & lifestyle",
-     "label": "Gastronomy"
+     "label": "Gastronomy",
+     "title": "Gastronomy & lifestyle"
+    },
+    "fr": {
+     "label": "Gastronomie",
+     "title": "Gastronomie & lifestyle"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-26",
@@ -806,21 +667,22 @@
    "label": "Moda & Presença",
    "tags": "Reels, Design",
    "alt": "Estética contemporânea em reels",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/saveclip-app-aqpih5tj8rmpriemnuk97e2ojkug-9eipzs.jpg",
    "i18n": {
-    "fr": {
-     "title": "Style & présence à l’écran",
-     "label": "Mode & présence"
-    },
     "en": {
-     "title": "Style & on-camera presence",
-     "label": "Fashion & presence"
+     "label": "Style & on-camera presence",
+     "title": "Style & on-camera presence"
+    },
+    "fr": {
+     "label": "Style & présence à l’écran",
+     "title": "Style & présence à l’écran"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-27",
@@ -836,21 +698,22 @@
    "label": "Storytelling",
    "tags": "Reels, Motion",
    "alt": "Recorte dinâmico vertical",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/saveclip-app-aqoznyxrj4saxc0fuim2izvfneajkziyfgs.jpg",
    "i18n": {
-    "fr": {
-     "title": "Storytelling vertical",
-     "label": "Storytelling"
-    },
     "en": {
-     "title": "Vertical storytelling",
-     "label": "Storytelling"
+     "label": "Vertical storytelling",
+     "title": "Vertical storytelling"
+    },
+    "fr": {
+     "label": "Storytelling vertical",
+     "title": "Storytelling vertical"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-28",
@@ -872,15 +735,16 @@
    "note": "",
    "poster": "assets/posters/saveclip-app-aqn7upaehwixmbz0b2hrpfoyzkuaatqhuec.jpg",
    "i18n": {
-    "fr": {
-     "title": "UGC & lien de marque",
-     "label": "UGC authentique"
-    },
     "en": {
-     "title": "UGC & brand connection",
-     "label": "Authentic UGC"
+     "label": "UGC & brand connection",
+     "title": "UGC & brand connection"
+    },
+    "fr": {
+     "label": "UGC & lien de marque",
+     "title": "UGC & lien de marque"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-29",
@@ -896,21 +760,22 @@
    "label": "Social Trends",
    "tags": "Reels, Viral",
    "alt": "Formato vertical otimizado",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/saveclip-app-aqpzp4elexuw9jzzw8pg-ntfpbyjn9nas56.jpg",
    "i18n": {
-    "fr": {
-     "title": "Tendances & son social",
-     "label": "Tendances sociales"
-    },
     "en": {
-     "title": "Trends & social sound",
-     "label": "Social trends"
+     "label": "Trends & social sound",
+     "title": "Trends & social sound"
+    },
+    "fr": {
+     "label": "Tendances & son social",
+     "title": "Tendances & son social"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-30",
@@ -932,15 +797,16 @@
    "note": "",
    "poster": "assets/posters/a6bd1da8-b768-425e-beb6-821075efbc2e-6748bfc5a91.jpg",
    "i18n": {
-    "fr": {
-     "title": "Motion Art 9:16",
-     "label": "Motion Art"
-    },
     "en": {
-     "title": "Motion Art 9:16",
-     "label": "Motion Art"
+     "label": "Motion Art",
+     "title": "Motion Art 9:16"
+    },
+    "fr": {
+     "label": "Motion Art",
+     "title": "Motion Art 9:16"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-31",
@@ -962,15 +828,16 @@
    "note": "",
    "poster": "assets/posters/whatsapp-video-2026-09-19-at-23-46-34.jpg",
    "i18n": {
-    "fr": {
-     "title": "Coulisses de tournage",
-     "label": "Coulisses"
-    },
     "en": {
-     "title": "Behind the scenes",
-     "label": "Behind the scenes"
+     "label": "Behind the scenes",
+     "title": "Behind the scenes"
+    },
+    "fr": {
+     "label": "Coulisses",
+     "title": "Coulisses de tournage"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-32",
@@ -992,15 +859,16 @@
    "note": "",
    "poster": "assets/posters/hf-20261011-205447-8e5d6ddd-dc00-49ea-9c0f-811a8.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 01",
-     "label": "Lab IA 01"
-    },
     "en": {
-     "title": "Generative AI · Lab 01",
-     "label": "AI Lab 01"
+     "label": "AI Lab 01",
+     "title": "Generative AI · Lab 01"
+    },
+    "fr": {
+     "label": "Lab IA 01",
+     "title": "IA générative · Lab 01"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-33",
@@ -1022,15 +890,16 @@
    "note": "",
    "poster": "assets/posters/hf-20261011-144855-f123ae85-d29b-4e90-9e21-1536a.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 02",
-     "label": "Lab IA 02"
-    },
     "en": {
-     "title": "Generative AI · Lab 02",
-     "label": "AI Lab 02"
+     "label": "AI Lab 02",
+     "title": "Generative AI · Lab 02"
+    },
+    "fr": {
+     "label": "Lab IA 02",
+     "title": "IA générative · Lab 02"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-34",
@@ -1052,15 +921,16 @@
    "note": "",
    "poster": "assets/posters/hf-20260921-194749-5e8280bb-9362-4fb0-952f-7445a.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 03",
-     "label": "Lab IA 03"
-    },
     "en": {
-     "title": "Generative AI · Lab 03",
-     "label": "AI Lab 03"
+     "label": "AI Lab 03",
+     "title": "Generative AI · Lab 03"
+    },
+    "fr": {
+     "label": "Lab IA 03",
+     "title": "IA générative · Lab 03"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-35",
@@ -1082,15 +952,16 @@
    "note": "",
    "poster": "assets/posters/hf-20260919-011209-f8f32146-09b2-420f-bc1d-19a30.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 04",
-     "label": "Lab IA 04"
-    },
     "en": {
-     "title": "Generative AI · Lab 04",
-     "label": "AI Lab 04"
+     "label": "AI Lab 04",
+     "title": "Generative AI · Lab 04"
+    },
+    "fr": {
+     "label": "Lab IA 04",
+     "title": "IA générative · Lab 04"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-36",
@@ -1106,21 +977,22 @@
    "label": "IA Lab 05",
    "tags": "IA, Lab",
    "alt": "Modelagem de movimento por IA",
-   "active": true,
+   "active": false,
    "hero": true,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/hf-20260918-032056-188e0b0e-dcc5-45ea-9d7b-752d3.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 05",
-     "label": "Lab IA 05"
-    },
     "en": {
-     "title": "Generative AI · Lab 05",
-     "label": "AI Lab 05"
+     "label": "Generative AI · Lab 05",
+     "title": "Generative AI · Lab 05"
+    },
+    "fr": {
+     "label": "IA générative · Lab 05",
+     "title": "IA générative · Lab 05"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-37",
@@ -1136,21 +1008,22 @@
    "label": "IA Lab 06",
    "tags": "IA, Quadrado",
    "alt": "Arte procedural em vídeo",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/hf-20260916-205451-ffa9c935-4f6e-41eb-b441-f85c6.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 06",
-     "label": "Lab IA 06"
-    },
     "en": {
-     "title": "Generative AI · Lab 06",
-     "label": "AI Lab 06"
+     "label": "Generative AI · Lab 06",
+     "title": "Generative AI · Lab 06"
+    },
+    "fr": {
+     "label": "IA générative · Lab 06",
+     "title": "IA générative · Lab 06"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-38",
@@ -1172,15 +1045,16 @@
    "note": "",
    "poster": "assets/posters/hf-20260916-202713-c1d6d6c3-5880-472e-8418-e38c1.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 07",
-     "label": "Lab IA 07"
-    },
     "en": {
-     "title": "Generative AI · Lab 07",
-     "label": "AI Lab 07"
+     "label": "AI Lab 07",
+     "title": "Generative AI · Lab 07"
+    },
+    "fr": {
+     "label": "Lab IA 07",
+     "title": "IA générative · Lab 07"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-39",
@@ -1202,15 +1076,16 @@
    "note": "",
    "poster": "assets/posters/hf-20260916-175331-858d1e7b-fe93-481c-b4ee-5e259.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 08",
-     "label": "Lab IA 08"
-    },
     "en": {
-     "title": "Generative AI · Lab 08",
-     "label": "AI Lab 08"
+     "label": "AI Lab 08",
+     "title": "Generative AI · Lab 08"
+    },
+    "fr": {
+     "label": "Lab IA 08",
+     "title": "IA générative · Lab 08"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-40",
@@ -1226,21 +1101,22 @@
    "label": "IA Lab 09",
    "tags": "IA, Lab",
    "alt": "Render cinematográfico IA",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/hf-20260916-172714-1af6ca43-fdb5-4844-91c5-2e49e.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 09",
-     "label": "Lab IA 09"
-    },
     "en": {
-     "title": "Generative AI · Lab 09",
-     "label": "AI Lab 09"
+     "label": "Generative AI · Lab 09",
+     "title": "Generative AI · Lab 09"
+    },
+    "fr": {
+     "label": "IA générative · Lab 09",
+     "title": "IA générative · Lab 09"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-41",
@@ -1262,15 +1138,16 @@
    "note": "Embalagem \"Easy Dose\" visível. Confirmar se é cliente ou conceito.",
    "poster": "assets/posters/hf-20260916-121927-1205b7db-e9d4-4899-9b7b-79a52.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 10",
-     "label": "Lab IA 10"
-    },
     "en": {
-     "title": "Generative AI · Lab 10",
-     "label": "AI Lab 10"
+     "label": "AI Lab 10",
+     "title": "Generative AI · Lab 10"
+    },
+    "fr": {
+     "label": "Lab IA 10",
+     "title": "IA générative · Lab 10"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-42",
@@ -1292,15 +1169,16 @@
    "note": "",
    "poster": "assets/posters/hf-20260916-115912-cd9efcc6-cf5b-43e1-9ddb-155cc.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 11",
-     "label": "Lab IA 11"
-    },
     "en": {
-     "title": "Generative AI · Lab 11",
-     "label": "AI Lab 11"
+     "label": "AI Lab 11",
+     "title": "Generative AI · Lab 11"
+    },
+    "fr": {
+     "label": "Lab IA 11",
+     "title": "IA générative · Lab 11"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-43",
@@ -1322,15 +1200,16 @@
    "note": "",
    "poster": "assets/posters/hf-20260915-233031-db9219cb-f246-4f96-beee-46cab.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 12",
-     "label": "Lab IA 12"
-    },
     "en": {
-     "title": "Generative AI · Lab 12",
-     "label": "AI Lab 12"
+     "label": "AI Lab 12",
+     "title": "Generative AI · Lab 12"
+    },
+    "fr": {
+     "label": "Lab IA 12",
+     "title": "IA générative · Lab 12"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-44",
@@ -1352,15 +1231,16 @@
    "note": "",
    "poster": "assets/posters/hf-20260912-023042-6ecde9b3-903b-4a78-8a68-27fdf.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 13",
-     "label": "Lab IA 13"
-    },
     "en": {
-     "title": "Generative AI · Lab 13",
-     "label": "AI Lab 13"
+     "label": "AI Lab 13",
+     "title": "Generative AI · Lab 13"
+    },
+    "fr": {
+     "label": "Lab IA 13",
+     "title": "IA générative · Lab 13"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-45",
@@ -1382,15 +1262,16 @@
    "note": "Logotipo \"Pacific Solaire\" visível. Confirmar se é cliente ou conceito.",
    "poster": "assets/posters/hf-20260824-000231-2fe11333-8f72-49d5-811f-84a4d.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 14",
-     "label": "Lab IA 14"
-    },
     "en": {
-     "title": "Generative AI · Lab 14",
-     "label": "AI Lab 14"
+     "label": "AI Lab 14",
+     "title": "Generative AI · Lab 14"
+    },
+    "fr": {
+     "label": "Lab IA 14",
+     "title": "IA générative · Lab 14"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-46",
@@ -1412,15 +1293,16 @@
    "note": "",
    "poster": "assets/posters/hf-20260823-153751-621e55a6-c7dd-43d0-b2fb-339e5.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 15",
-     "label": "Lab IA 15"
-    },
     "en": {
-     "title": "Generative AI · Lab 15",
-     "label": "AI Lab 15"
+     "label": "Generative AI · Lab 15",
+     "title": "Generative AI · Lab 15"
+    },
+    "fr": {
+     "label": "IA générative · Lab 15",
+     "title": "IA générative · Lab 15"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-47",
@@ -1436,21 +1318,22 @@
    "label": "IA Lab 16",
    "tags": "IA, Lab",
    "alt": "Geração de paisagem oceânica",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/hf-20260814-024423-23e78b00-c455-420b-b72f-fc8e9.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 16",
-     "label": "Lab IA 16"
-    },
     "en": {
-     "title": "Generative AI · Lab 16",
-     "label": "AI Lab 16"
+     "label": "Generative AI · Lab 16",
+     "title": "Generative AI · Lab 16"
+    },
+    "fr": {
+     "label": "IA générative · Lab 16",
+     "title": "IA générative · Lab 16"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-48",
@@ -1466,21 +1349,22 @@
    "label": "IA Lab 17",
    "tags": "IA, Lab",
    "alt": "Estudo pioneiro de síntese neural",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/hf-20260622-203946-f032365c-922c-40d5-b866-3aab1.jpg",
    "i18n": {
-    "fr": {
-     "title": "IA générative · Lab 17",
-     "label": "Lab IA 17"
-    },
     "en": {
-     "title": "Generative AI · Lab 17",
-     "label": "AI Lab 17"
+     "label": "Generative AI · Lab 17",
+     "title": "Generative AI · Lab 17"
+    },
+    "fr": {
+     "label": "IA générative · Lab 17",
+     "title": "IA générative · Lab 17"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-49",
@@ -1502,15 +1386,16 @@
    "note": "",
    "poster": "assets/posters/9fa65923708f383e16e3afbb718e4dcd-720w.jpg",
    "i18n": {
-    "fr": {
-     "title": "Rendu conceptuel 18",
-     "label": "Render 18"
-    },
     "en": {
-     "title": "Concept render 18",
-     "label": "Render 18"
+     "label": "Render 18",
+     "title": "Concept render 18"
+    },
+    "fr": {
+     "label": "Render 18",
+     "title": "Rendu conceptuel 18"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-50",
@@ -1532,15 +1417,16 @@
    "note": "",
    "poster": "assets/posters/downloaded-file-1.jpg",
    "i18n": {
-    "fr": {
-     "title": "Motion court 19",
-     "label": "Motion 19"
-    },
     "en": {
-     "title": "Motion short 19",
-     "label": "Motion 19"
+     "label": "Motion 19",
+     "title": "Motion short 19"
+    },
+    "fr": {
+     "label": "Motion 19",
+     "title": "Motion court 19"
     }
-   }
+   },
+   "ai": false
   },
   {
    "id": "v-51",
@@ -1556,21 +1442,182 @@
    "label": "Loop 20",
    "tags": "Conceito, Inspiração",
    "alt": "Pesquisa visual de referência",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/downloaded-file.jpg",
    "i18n": {
-    "fr": {
-     "title": "Boucle expérimentale 20",
-     "label": "Loop 20"
-    },
     "en": {
-     "title": "Experimental loop 20",
-     "label": "Loop 20"
+     "label": "Experimental loop 20",
+     "title": "Experimental loop 20"
+    },
+    "fr": {
+     "label": "Boucle expérimentale 20",
+     "title": "Boucle expérimentale 20"
     }
-   }
+   },
+   "ai": false
+  },
+  {
+   "id": "v-01",
+   "filename": "mkt.webm",
+   "aspect": "9:16",
+   "w": 600,
+   "h": 1066,
+   "duration": 15.11,
+   "size": 3222366,
+   "placement": "grid-1",
+   "position": 1,
+   "title": "Exemplo 01 · Hotel na lagoa",
+   "label": "Exemplo 01 · Hotel na lagoa",
+   "tags": "Marketing, Campanha",
+   "alt": "Campanha de marketing e redes",
+   "active": false,
+   "hero": false,
+   "rights": "a-confirmar",
+   "note": "Produto \"Rosehip Morning Society\" visível. Confirmar se é cliente ou conceito.",
+   "poster": "assets/posters/mkt.jpg",
+   "i18n": {
+    "en": {
+     "meta": "Direction, cinematography, editing",
+     "label": "Sample 01 · Lagoon hotel",
+     "title": "Sample 01 · Lagoon hotel",
+     "sector": "Hospitality",
+     "service": "Brand films"
+    },
+    "fr": {
+     "meta": "Réalisation, image, montage",
+     "label": "Exemple 01 · Hôtel de lagon",
+     "title": "Exemple 01 · Hôtel de lagon",
+     "sector": "Hôtellerie",
+     "service": "Films de marque"
+    }
+   },
+   "service": "Filmes de marca",
+   "sector": "Hotelaria",
+   "meta": "Direção, cinematografia, edição",
+   "ai": false
+  },
+  {
+   "id": "v-02",
+   "filename": "generation-1.webm",
+   "aspect": "9:16",
+   "w": 1080,
+   "h": 1920,
+   "duration": 20.04,
+   "size": 9571309,
+   "placement": "grid-2",
+   "position": 2,
+   "title": "Exemplo 03 · Villa em projeção",
+   "label": "Exemplo 03 · Villa em projeção",
+   "tags": "IA, Conceito",
+   "alt": "Síntese de inteligência artificial",
+   "active": false,
+   "hero": false,
+   "rights": "a-confirmar",
+   "note": "",
+   "poster": "assets/posters/generation-1.jpg",
+   "i18n": {
+    "en": {
+     "meta": "Art direction, AI generation, retouching",
+     "label": "Sample 03 · Villa projection",
+     "title": "Sample 03 · Villa projection",
+     "sector": "Real estate",
+     "service": "AI property visuals"
+    },
+    "fr": {
+     "meta": "Direction artistique, génération IA, retouche",
+     "label": "Exemple 03 · Villa en projec",
+     "title": "Exemple 03 · Villa en projection",
+     "sector": "Immobilier",
+     "service": "Immobilier IA"
+    }
+   },
+   "service": "Imobiliário IA",
+   "sector": "Imobiliário",
+   "meta": "Direção de arte, geração por IA, retoque",
+   "ai": true
+  },
+  {
+   "id": "v-03",
+   "filename": "generation.webm",
+   "aspect": "9:16",
+   "w": 720,
+   "h": 1280,
+   "duration": 9.72,
+   "size": 3392283,
+   "placement": "grid-3",
+   "position": 3,
+   "title": "Exemplo 02 · Restaurante à beira-mar",
+   "label": "Exemplo 02 · Restaurante à beira-mar",
+   "tags": "IA, Direção de Arte",
+   "alt": "Direção de arte generativa",
+   "active": false,
+   "hero": false,
+   "rights": "a-confirmar",
+   "note": "",
+   "poster": "assets/posters/generation.jpg",
+   "i18n": {
+    "en": {
+     "meta": "Filming, editing, on-camera presence",
+     "label": "Sample 02 · Seaside restaura",
+     "title": "Sample 02 · Seaside restaurant",
+     "sector": "Restaurants",
+     "service": "Short-form & UGC"
+    },
+    "fr": {
+     "meta": "Tournage, montage, présence face caméra",
+     "label": "Exemple 02 · Restaurant en b",
+     "title": "Exemple 02 · Restaurant en bord de mer",
+     "sector": "Restauration",
+     "service": "Contenus courts & UGC"
+    }
+   },
+   "service": "Conteúdos curtos & UGC",
+   "sector": "Gastronomia",
+   "meta": "Captação, edição, presença em câmera",
+   "ai": false
+  },
+  {
+   "id": "v-04",
+   "filename": "defender-dakar-introducing-the-d7x-r-rally-car-d.webm",
+   "aspect": "2:1",
+   "w": 1920,
+   "h": 960,
+   "duration": 67.52,
+   "size": 9589266,
+   "placement": "grid-4",
+   "position": 4,
+   "title": "Exemplo 06 · Rally & Concessionária",
+   "label": "Exemplo 06 · Rally & Concessionária",
+   "tags": "Automotivo, Campanha",
+   "alt": "Campanha Rally Defender Dakar",
+   "active": false,
+   "hero": false,
+   "rights": "a-confirmar",
+   "note": "Vídeo e texto oficiais da Land Rover Defender (marca de terceiros). Confirmar licença ou remover.",
+   "poster": "assets/posters/defender-dakar-introducing-the-d7x-r-rally-car-d.jpg",
+   "i18n": {
+    "en": {
+     "meta": "Cinematic action, dynamism and performance",
+     "label": "Sample 06 · Rally & dealersh",
+     "title": "Sample 06 · Rally & dealership",
+     "sector": "Automotive",
+     "service": "Action films"
+    },
+    "fr": {
+     "meta": "Action cinématographique, dynamisme et performance",
+     "label": "Exemple 06 · Rallye & conces",
+     "title": "Exemple 06 · Rallye & concession",
+     "sector": "Automobile",
+     "service": "Films d’action"
+    }
+   },
+   "service": "Filmes de ação",
+   "sector": "Automotivo",
+   "meta": "Ação cinematográfica, dinamismo e performance",
+   "ai": false
   },
   {
    "id": "v-52",
@@ -1586,21 +1633,22 @@
    "label": "Soft Reel",
    "tags": "Hero, Showreel",
    "alt": "Vídeo institucional Soft Communication",
-   "active": true,
+   "active": false,
    "hero": false,
    "rights": "a-confirmar",
    "note": "",
    "poster": "assets/posters/preview-30fps-1-hero.jpg",
    "i18n": {
-    "fr": {
-     "title": "Soft Motion Reel · Présentation",
-     "label": "Soft Reel"
-    },
     "en": {
-     "title": "Soft Motion Reel · Introduction",
-     "label": "Soft Reel"
+     "label": "Soft Motion Reel · Introduct",
+     "title": "Soft Motion Reel · Introduction"
+    },
+    "fr": {
+     "label": "Soft Motion Reel · Présentat",
+     "title": "Soft Motion Reel · Présentation"
     }
-   }
+   },
+   "ai": false
   }
  ]
 }
