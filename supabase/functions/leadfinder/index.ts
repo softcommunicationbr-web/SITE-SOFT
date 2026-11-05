@@ -16,7 +16,7 @@ const env = (k: string) => (Deno.env.get(k) ?? "").trim();
 const SB_URL = env("SUPABASE_URL");
 const SB_SERVICE = env("SUPABASE_SERVICE_ROLE_KEY");
 const ORIGINS = (env("LEADFINDER_ORIGINS") ||
-  "https://softcommunicaiton.com,https://www.softcommunicaiton.com,https://site-soft.vercel.app,http://localhost:8000,http://127.0.0.1:8000")
+  "https://softcommunication.com,https://www.softcommunication.com,https://softcommunicaiton.com,https://www.softcommunicaiton.com,https://site-soft.vercel.app,http://localhost:8000,http://127.0.0.1:8000,http://localhost:8080,http://127.0.0.1:8080,http://localhost:3000,http://127.0.0.1:3000")
   .split(",").map((s) => s.trim()).filter(Boolean);
 const capOf = (name: string, def: number) => {
   const n = Number.parseInt(env(name), 10);

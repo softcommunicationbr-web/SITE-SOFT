@@ -24,7 +24,11 @@
   function save(s) {
     try {
       if (s) w.sessionStorage.setItem(KEY, JSON.stringify(s));
-      else { w.sessionStorage.removeItem(KEY); w.sessionStorage.removeItem('soft_admin_session_auth_v1'); }
+      else {
+        w.sessionStorage.removeItem(KEY);
+        w.sessionStorage.removeItem('soft_admin_session_auth_v1');
+        w.sessionStorage.removeItem('soft_admin_authenticated');
+      }
     } catch (e) { /* ignora */ }
   }
   function fromTokens(j, email) {
@@ -205,13 +209,106 @@
     lock();
   }
 
-  d.addEventListener('DOMContentLoaded', function () {
-    var sideLogout = d.querySelector('.a-side-foot button, [data-admin-logout]');
-    if (sideLogout) {
-      sideLogout.removeAttribute('data-mock-action');
-      sideLogout.addEventListener('click', function (e) { e.preventDefault(); logout(); });
+  /* ---------- interceptação universal de logout ---------- */
+  d.addEventListener('click', function (e) {
+    var btn = e.target && e.target.closest ? e.target.closest('#btn-side-logout, .a-side-foot button, [data-admin-logout]') : null;
+    if (btn) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      logout();
     }
+  }, true);
+
+  /* ---------- sentinela de bugs & autodiagnóstico do painel ---------- */
+  var BUG_KEY = 'soft_admin_bugs_v1';
+  var seenBugs = {};
+
+  function getBugs() {
+    try { return JSON.parse(w.sessionStorage.getItem(BUG_KEY) || '[]') || []; }
+    catch (e) { return []; }
+  }
+
+  function reportBug(origem, erro, extra) {
+    try {
+      var msg = typeof erro === 'string' ? erro : (erro && (erro.message || erro.reason || String(erro))) || 'Erro desconhecido';
+      var sig = (origem || 'admin') + ':' + msg.slice(0, 140);
+      if (seenBugs[sig]) return;
+      seenBugs[sig] = true;
+
+      var entry = {
+        ts: new Date().toISOString(),
+        page: w.location.pathname,
+        origem: String(origem || 'runtime').slice(0, 80),
+        mensagem: String(msg).slice(0, 400),
+        extra: extra || null
+      };
+      var list = getBugs();
+      list.unshift(entry);
+      if (list.length > 30) list = list.slice(0, 30);
+      try { w.sessionStorage.setItem(BUG_KEY, JSON.stringify(list)); } catch (e) {}
+
+      var s = read();
+      var tk = (s && s.access_token) ? s.access_token : SUPABASE_ANON;
+      fetch(SUPABASE_URL + '/rest/v1/leadfinder_log', {
+        method: 'POST',
+        headers: {
+          apikey: SUPABASE_ANON,
+          Authorization: 'Bearer ' + tk,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal'
+        },
+        body: JSON.stringify({
+          email: (s && s.email) || 'admin-sentinel',
+          acao: 'bug:' + entry.origem,
+          alvo: (entry.page + ' — ' + entry.mensagem).slice(0, 240),
+          ok: false
+        })
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
+  w.addEventListener('error', function (ev) {
+    if (!ev) return;
+    reportBug('window.error', ev.message || 'Script error', {
+      file: ev.filename || '',
+      line: ev.lineno || 0
+    });
   });
+
+  w.addEventListener('unhandledrejection', function (ev) {
+    if (!ev) return;
+    var r = ev.reason;
+    var m = (r && (r.message || String(r))) || 'Promise rejeitada';
+    if (/Sessão expirada|abort/i.test(m)) return;
+    reportBug('unhandledrejection', m);
+  });
+
+  function runDiagnostics() {
+    var s = read();
+    var tk = (s && s.access_token) ? s.access_token : SUPABASE_ANON;
+    var hdr = { apikey: SUPABASE_ANON, Authorization: 'Bearer ' + tk };
+    var endpoints = [
+      { name: 'auth_session', run: function () { return Promise.resolve({ ok: !!s, detail: s ? s.email : 'not_logged_in' }); } },
+      { name: 'rpc_admin_eh_permitido', run: function () { return api('/rest/v1/rpc/admin_eh_permitido', { token: tk, body: {} }).then(function (r) { return { ok: r.ok && r.data === true, status: r.status }; }); } },
+      { name: 'table_portfolio_videos', run: function () { return fetch(SUPABASE_URL + '/rest/v1/portfolio_videos?select=id&limit=1', { headers: hdr }).then(function (r) { return { ok: r.ok, status: r.status }; }); } },
+      { name: 'table_soft_kanban_columns', run: function () { return fetch(SUPABASE_URL + '/rest/v1/soft_kanban_columns?select=id&limit=1', { headers: hdr }).then(function (r) { return { ok: r.ok, status: r.status }; }); } },
+      { name: 'table_soft_kanban_cards', run: function () { return fetch(SUPABASE_URL + '/rest/v1/soft_kanban_cards?select=id&limit=1', { headers: hdr }).then(function (r) { return { ok: r.ok, status: r.status }; }); } },
+      { name: 'table_pedidos_orcamento', run: function () { return fetch(SUPABASE_URL + '/rest/v1/pedidos_orcamento?select=id&limit=1', { headers: hdr }).then(function (r) { return { ok: r.ok, status: r.status }; }); } },
+      { name: 'table_soft_client_pages', run: function () { return fetch(SUPABASE_URL + '/rest/v1/soft_client_pages?select=id&limit=1', { headers: hdr }).then(function (r) { return { ok: r.ok, status: r.status }; }); } },
+      { name: 'table_leadfinder_leads', run: function () { return fetch(SUPABASE_URL + '/rest/v1/leadfinder_leads?select=id&limit=1', { headers: hdr }).then(function (r) { return { ok: r.ok, status: r.status }; }); } },
+      { name: 'table_leadfinder_historico', run: function () { return fetch(SUPABASE_URL + '/rest/v1/leadfinder_historico?select=id&limit=1', { headers: hdr }).then(function (r) { return { ok: r.ok, status: r.status }; }); } }
+    ];
+    return Promise.all(endpoints.map(function (ep) {
+      return ep.run().then(function (res) {
+        return { check: ep.name, ok: !!res.ok, status: res.status || 200, detail: res.detail || '' };
+      }).catch(function (err) {
+        return { check: ep.name, ok: false, status: 0, detail: err.message || String(err) };
+      });
+    })).then(function (results) {
+      var allOk = results.every(function (x) { return x.ok; });
+      return { ok: allOk, checks: results, bugs: getBugs() };
+    });
+  }
 
   w.AdminAuth = {
     isAuth: isAuth,
@@ -220,6 +317,14 @@
     loginPassword: loginPassword,
     loginGoogle: loginGoogle,
     lock: function (msg) { save(null); lock(msg); },
-    logout: logout
+    logout: logout,
+    reportBug: reportBug,
+    diagnostics: runDiagnostics
+  };
+
+  w.SoftAdminDiag = {
+    run: runDiagnostics,
+    bugs: getBugs,
+    reportBug: reportBug
   };
 })(window, document);
